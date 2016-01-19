@@ -1,0 +1,19 @@
+{
+  "title": "Example Installer",
+  "background": "./background.png",
+  "icon-size": 80,
+  "contents": [
+    {
+      "x": 50,
+      "y": 100,
+      "type": "file",
+      "path": "./release/osx/Example.app"
+    },
+    {
+      "x": 200,
+      "y": 100,
+      "type": "link",
+      "path": "/Applications"
+    }
+  ]
+}
