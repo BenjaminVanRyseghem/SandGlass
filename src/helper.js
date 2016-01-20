@@ -1,4 +1,3 @@
-'use strict';
 
 const db = require("./db");
 const timeComputer = require("./timeComputer");
@@ -6,7 +5,9 @@ const moment = require("moment");
 require("moment-duration-format");
 
 function helper() {
-    var that = {};
+    'use strict';
+
+    let that = {};
 
     that.getDurationFor = (project, day) => {
         let records = db.getRecordsFor(project, day);

@@ -1,7 +1,7 @@
-'use strict';
-
 function db() {
-    var that = {};
+    "use strict";
+
+    let that = {};
 
     const moment = require("moment");
 
@@ -13,7 +13,7 @@ function db() {
      * Start the timer for the provided project
      * @param project
      */
-    that.start = function(project) {
+    that.start = (project) => {
         project = project || "default";
 
         let date = moment(new Date(Date.now())).format("YYYY-MM-DD");
@@ -28,7 +28,7 @@ function db() {
      * Stop the timer for the provided project
      * @param project
      */
-    that.stop = function(project) {
+    that.stop = (project) => {
         project = project || "default";
 
         let date = moment(new Date(Date.now())).format("YYYY-MM-DD");
@@ -46,7 +46,7 @@ function db() {
      * @param day
      * @returns {*}
      */
-    that.getRecordsFor = function(project, day) {
+    that.getRecordsFor = (project, day) => {
         project = project || "default";
 
         if (!day) {
@@ -56,7 +56,7 @@ function db() {
         return db(day)
             .chain()
             .filter({project: project})
-            .sortBy('timestamp')
+            .sortBy("timestamp")
             .value();
     };
 

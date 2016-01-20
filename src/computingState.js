@@ -1,10 +1,10 @@
-"use strict";
-
 function computingState(spec, my) {
+    "use strict";
+
     spec = spec || {};
     my = my || {};
 
-    var that = {};
+    let that = {};
 
     my.accumulated = spec.accumulated || 0;
     my.startingTime = spec.startingTime;

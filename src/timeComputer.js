@@ -1,10 +1,10 @@
-"use strict";
-
 const activeState = require("./activeState");
 
 // This is a state machine
 function timeComputer() {
-    var that = {};
+    "use strict";
+
+    let that = {};
 
     that.computeWorkingTimeFor = (records) => {
         if (!(records[0].action === "start")) {

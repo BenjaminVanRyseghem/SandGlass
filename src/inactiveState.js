@@ -1,14 +1,14 @@
-"use strict";
-
 const computingState = require("./computingState");
 const activeState = require("./activeState");
 const endState = require("./endState");
 
 function inactiveState(spec, my) {
+    "use strict";
+
     spec = spec || {};
     my = my || {};
 
-    var that = computingState(spec, my);
+    let that = computingState(spec, my);
 
     that.compute = (record) => {
         if (record === null) {
