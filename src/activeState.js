@@ -1,6 +1,4 @@
-
 const computingState = require("./computingState");
-const inactiveState = require("./inactiveState");
 
 function activeState(spec, my) {
     "use strict";
@@ -14,7 +12,7 @@ function activeState(spec, my) {
         if (record.action === "stop") {
             let delta = record.timestamp - my.startingTime;
 
-            return inactiveState({
+            return require("./inactiveState")({
                 accumulated: my.accumulated + delta,
                 startingTime: record.timestamp
             });

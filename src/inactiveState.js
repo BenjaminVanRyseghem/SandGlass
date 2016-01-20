@@ -1,5 +1,4 @@
 const computingState = require("./computingState");
-const activeState = require("./activeState");
 const endState = require("./endState");
 
 function inactiveState(spec, my) {
@@ -18,7 +17,7 @@ function inactiveState(spec, my) {
         }
 
         if (record.action === "start") {
-            return activeState({
+            return require("./activeState")({
                 accumulated: my.accumulated,
                 startingTime: record.timestamp
             });

@@ -1,13 +1,13 @@
+const settings = require("./settings");
+
 function db() {
     "use strict";
 
     let that = {};
 
-    const moment = require("moment");
-
     const low = require("lowdb");
     const storage = require("lowdb/file-sync");
-    const db = low("db.json", {storage});
+    const db = low(`${settings.ensureSettingsFolderPath()}db.json`, {storage});
 
     /**
      * Start the timer for the provided project
@@ -16,7 +16,7 @@ function db() {
     that.start = (project) => {
         project = project || "default";
 
-        let date = moment(new Date(Date.now())).format("YYYY-MM-DD");
+        let date = require("./time").formatDay(Date.now());
         db(date).push({
             project: project,
             action: "start",
@@ -31,7 +31,7 @@ function db() {
     that.stop = (project) => {
         project = project || "default";
 
-        let date = moment(new Date(Date.now())).format("YYYY-MM-DD");
+        let date = require("./time").formatDay(Date.now());
         db(date).push({
             project: project,
             action: "stop",
@@ -57,7 +57,8 @@ function db() {
             .chain()
             .filter({project: project})
             .sortBy("timestamp")
-            .value();
+            .value()
+            .slice();
     };
 
     return that;

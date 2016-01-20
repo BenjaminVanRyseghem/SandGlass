@@ -11,10 +11,6 @@ function timeComputer() {
             throw new Error("The day should begin with a \"start\" event");
         }
 
-        if (!(records[records.length - 1].action === "stop")) {
-            throw new Error("The day should end with a \"stop\" event");
-        }
-
         // Append `null` at the end as ending flag, and remove the head
         // as the iteration can start on the second element
         let allRecords = records.slice(1);
