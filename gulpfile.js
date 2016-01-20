@@ -9,12 +9,12 @@ var $ = require('gulp-load-plugins')({
 
 // App options
 var options = {
-    name: 'Example',
-    app: 'Example.app',
-    dmg: 'example-installer-1.0.0.dmg',
-    icon: './example.icns',
+    name: 'SandGlass',
+    app: 'SandGlass.app',
+    dmg: 'SandGlass-1.0.0.dmg',
+    icon: './resources/sandGlass.icns',
     plist: './Info.plist',
-    bundle: 'com.example.upload'
+    bundle: 'com.sandglass.www'
 };
 
 gulp.task('download', function(cb) {

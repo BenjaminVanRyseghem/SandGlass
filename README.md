@@ -1,6 +1,15 @@
 # SandGlass
 An electron-based time tracker
 
+# How to
+
+```
+npm install gulp -g
+npm install
+gulp mac
+```
+
+The `dmg` file will be located in the `dist` directory.
 
 # License
 

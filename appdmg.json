@@ -1,13 +1,13 @@
 {
-  "title": "Example Installer",
-  "background": "./background.png",
+  "title": "SandGlass",
+  "background": "./resources/background.png",
   "icon-size": 80,
   "contents": [
     {
       "x": 50,
       "y": 100,
       "type": "file",
-      "path": "./release/osx/Example.app"
+      "path": "./release/osx/SandGlass.app"
     },
     {
       "x": 200,
