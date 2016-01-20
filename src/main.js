@@ -3,6 +3,7 @@
 const electron = require("electron");
 const app = electron.app;
 const Tray = electron.Tray;
+const menu = require("./menu");
 
 let tray = null;
 
@@ -29,6 +30,7 @@ function initializeTray() {
     tray = new Tray("./resources/trayIconTemplate.png");
     tray.setHighlightMode(false);
 
+    menu.init(tray);
     tray.setTitle("00:00");
     blinkingTitle(true);
 }
