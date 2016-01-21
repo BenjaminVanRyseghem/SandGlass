@@ -14,6 +14,8 @@ function urlHandler() {
     };
 
     function urlHandler(event, url) {
+        event.preventDefault();
+
         let args = url.split("://").pop().split("/");
         let head = args.shift();
 

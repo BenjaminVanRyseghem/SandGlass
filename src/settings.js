@@ -36,8 +36,9 @@ function settings() {
             let result = my.get("databaseFolder") || my.defaultDatabaseFolder();
             my.ensureSettingsFolderPath(result);
             if (result[result.length - 1] !== path.sep) {
-                return result + path.sep;
+                result += path.sep;
             }
+            return result;
         } else {
             let oldPath = that.databaseFolder();
             let result = my.set("projectToShowInTray", newPath || undefined);
