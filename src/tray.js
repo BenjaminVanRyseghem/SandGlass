@@ -3,6 +3,7 @@ const Tray = electron.Tray;
 
 const settings = require("./settings");
 const time = require("./time");
+const db = require("./db");
 
 function tray() {
     "use strict";
@@ -34,9 +35,16 @@ function tray() {
     function blinkingTitle(dotted) {
         setTimeout(function() {
             if (settings.showTimerInTray()) {
-                var title = getDurationFor(settings.projectToShowInTray(), {
-                    undotted: !dotted
-                });
+                let title = "";
+                if (db.isRunningFor(settings.projectToShowInTray())) {
+                    title = getDurationFor(settings.projectToShowInTray(), {
+                        undotted: !dotted
+                    });
+                } else {
+                    title = getDurationFor(settings.projectToShowInTray(), {
+                        undotted: false
+                    });
+                }
 
                 tray.setTitle(title);
 
