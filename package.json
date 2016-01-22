@@ -1,7 +1,9 @@
 {
   "name": "SandGlass",
   "version": "1.0.0",
+  "year": "2016",
   "description": "A small app to log your working time",
+  "homepage": "https://github.com/BenjaminVanRyseghem/SandGlass/",
   "main": "src/main.js",
   "keywords": [
     "Electron",
@@ -9,8 +11,23 @@
     "tracking",
     "work"
   ],
-  "author": "Benjamin Van Ryseghem<benjamin.vanryseghem@gmail.com>",
+  "author": {
+    "name": "Benjamin Van Ryseghem",
+    "email": "benjamin.vanryseghem@gmail.com",
+    "url": "https://benjamin.vanryseghem.com"
+  },
+  "contributors": [
+    {
+      "name": "Benjamin Van Ryseghem",
+      "email": "benjamin.vanryseghem@gmail.com",
+      "url": "https://benjamin.vanryseghem.com"
+    }
+  ],
   "license": "GPL-3.0",
+  "licenseUrl": "http://www.gnu.org/licenses/gpl-3.0.en.html",
+  "repository": "https://github.com/BenjaminVanRyseghem/SandGlass",
+  "bugs": "https://github.com/BenjaminVanRyseghem/SandGlass/issues",
+
   "devDependencies": {
     "appdmg": "^0.3.5",
     "del": "^2.2.0",
@@ -22,6 +39,7 @@
     "run-sequence": "^1.1.5"
   },
   "dependencies": {
+    "command-line-args": "^2.1.4",
     "electron-settings": "^0.1.1",
     "fs": "0.0.2",
     "lowdb": "^0.12.1",

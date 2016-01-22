@@ -9,6 +9,7 @@ const repl = require("./repl");
 (() => {
     "use strict";
 
+    app.dock.hide();
     app.on("ready", init);
     app.on("window-all-closed", function(e) {
         e.preventDefault();

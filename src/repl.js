@@ -3,28 +3,79 @@ const app = electron.app;
 
 const settings = require("./settings");
 const db = require("./db");
+const info = require("./info");
 
-const net = require('net');
-const nodeREPL = require('repl');
+const net = require("net");
+const nodeREPL = require("repl");
+const commandLineArgs = require("command-line-args");
 
 function repl() {
     "use strict";
 
     let that = {};
 
+    const cliOptions = [
+        {
+            name: "help",
+            alias: "h",
+            type: Boolean,
+            defaultOption: true,
+            description: "Display this text"
+        },
+        {
+            name: "version",
+            alias: "v",
+            type: Boolean,
+            description: "Display the version text"
+        },
+
+        {
+            name: "start",
+            alias: "s",
+            type: Boolean,
+            description: "Start the clock"
+        },
+        {
+            name: "stop",
+            alias: "S",
+            type: Boolean,
+            description: "Stop the clock"
+        },
+        {
+            name: "option",
+            alias: "o",
+            type: String,
+            description: "Get an option. Set it if --value is used"
+        },
+        {
+            name: "project",
+            alias: "p",
+            type: String,
+            description: "Display this text"
+        },
+        {
+            name: "value",
+            type: String,
+            //multiple: true,
+            description: "New value of an option"
+        }
+    ];
+
+    const usageOptions = {
+        title: info.name,
+        description: info.description,
+        synopsis: [
+            '$ example [[bold]{--timeout} [underline]{ms}] [bold]{--src} [underline]{file} ...',
+            '$ example [bold]{--help}'
+        ]
+    };
+
+    let cli = commandLineArgs(cliOptions);
+
     that.init = () => {
         let sockets = [];
         let replServer;
 
-        app.on("quit", function() {
-            for (let socket of sockets) {
-                socket.end();
-            }
-
-            if (replServer) {
-                replServer.close();
-            }
-        });
 
         let server = net.createServer(function(socket) {
             sockets.push(socket);
@@ -41,80 +92,131 @@ function repl() {
             });
 
         });
-
         server.listen("/tmp/sand-glass-sock");
+
         app.on("quit", function() {
+            for (let socket of sockets) {
+                socket.end();
+            }
+
+            if (replServer) {
+                replServer.close();
+            }
+
             server.close();
-        })
+        });
     };
 
     function evalCmd(cmd, context, filename, callback) {
         cmd = cmd.trim();
-
         let args = cmd.split(" ");
-        let head = args.shift();
+        let options = {};
 
-        if (head == "") {
-            callback(null, "URLs should at least have one segment, `start`, `stop`, or `settings`");
+        try {
+            options = cli.parse(args);
+        } catch (e) {
+            if (e.name === "UNKNOWN_OPTION") {
+                let output = cli.getUsage(usageOptions);
+                callback(null, output);
+            } else {
+                console.error(e);
+            }
             return;
         }
 
-        let result = dispatchAction(head, args);
+        if (args[0] === "" || options.help) {
+            let output = cli.getUsage(usageOptions);
+            callback(null, output);
+            return;
+        }
+
+        if (options.version) {
+            let output = info.longVersion;
+            callback(null, output);
+            return;
+        }
+
+        //let head = args.shift();
+        //
+        //if (head == "") {
+        //    callback(null, "URLs should at least have one segment, `start`, `stop`, or `settings`");
+        //    return;
+        //}
+        //
+
+        let result = dispatchAction(options);
         callback(null, result);
     }
 
-    function dispatchAction(head, args) {
-        switch (head.toLowerCase()) {
-            case "start":
-                return start(args);
-                break;
-            case "stop":
-                return stop(args);
-                break;
-            case "settings":
-                return setSettings(args);
-                break;
-            default:
-                return `First url segment should be "start", "stop", or "settings", not "${head}"`;
+    function dispatchAction(options) {
+
+        if (options.start) {
+            return start(options.project);
         }
+
+        if (options.stop) {
+            return stop(options.project);
+        }
+
+        if (options.option) {
+            return setSettings(options);
+        }
+
+        //switch (head.toLowerCase()) {
+        //    case "start":
+        //        return start(args);
+        //        break;
+        //    case "stop":
+        //        return stop(args);
+        //        break;
+        //    case "settings":
+        //        return setSettings(args);
+        //        break;
+        //    default:
+        //        return `First url segment should be "start", "stop", or "settings", not "${head}"`;
+        //}
     }
 
-    function start(options) {
-        db.start(options[0]);
+    function start(project) {
+        db.start(project);
 
-        if (options[0]) {
-            return `Clock started for the project "${options[0]}"`;
+        if (project) {
+            return `Clock started for the project "${project}"`;
         } else {
             return "Clock started";
         }
     }
 
-    function stop(options) {
-        db.stop(options[0]);
+    function stop(project) {
+        db.stop(project);
 
-        if (options[0]) {
-            return `Clock stopped for the project "${options[0]}"`;
+        if (project) {
+            return `Clock stopped for the project "${project}"`;
         } else {
             return "Clock stopped";
         }
     }
 
     function setSettings(options) {
-        if (options.length < 2) {
-            return "Settings options should at least be 2 parts";
-        }
+        let key = options.option;
 
-        let key = options.shift();
-
-        var fn = settings[key];
+        let fn = settings[key];
 
         if (!fn) {
             return `Unknown setting "${key}"`;
         }
 
-        fn.apply(null, options.map(sanitizeValue));
+        let message;
 
-        return `Setting ${key} set`;
+        if (options.value) {
+            let args = sanitizeValue(options.value);
+            fn.apply(null, args);
+            message = `Option ${key} set to ${args}`;
+        } else {
+            message = fn.apply(null, []);
+        }
+
+        return message;
     }
 
     function sanitizeValue(value) {
