@@ -22,7 +22,7 @@ function menu() {
     function buildMenuTemplate() {
         let items = [
             {
-                label: "Settings",
+                label: "Preferences",
                 click: toggleSettings,
                 accelerator: "CmdOrCtrl+,"
             },
@@ -67,7 +67,7 @@ function menu() {
                 settingWindow = null;
             });
 
-            settingWindow.loadURL(`file://${__dirname}/../resources/settings.html`);
+            settingWindow.loadURL(`file://${__dirname}/../resources/preferences.html`);
             settingWindow.show();
             settingWindow.focus();
         }
