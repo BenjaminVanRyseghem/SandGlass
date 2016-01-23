@@ -27,7 +27,7 @@ var options = {
 gulp.task('default', ['lint', 'tests']);
 
 gulp.task('css', function() {
-    var scssStream = gulp.src('./resources/scss/*.scss')
+    var scssStream = gulp.src('./resources/s+(a|c)ss/*.s+(a|c)ss')
         .pipe($.sass())
         .pipe($.concat('scss-files.scss'));
 
@@ -38,7 +38,7 @@ gulp.task('css', function() {
 });
 
 gulp.task('sass-lint', function() {
-    return gulp.src('./resources/sass/**/*.s+(a|c)ss')
+    return gulp.src('./resources/s+(a|c)ss/**/*.s+(a|c)ss')
         .pipe($.sasslint());
 });
 
