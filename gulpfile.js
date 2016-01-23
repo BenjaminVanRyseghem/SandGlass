@@ -14,7 +14,7 @@ var options = {
     dmg: 'SandGlass-1.0.0.dmg',
     icon: './resources/img/sandGlass.icns',
     plist: './Info.plist',
-    bundle: 'com.sandglass.www'
+    bundle: 'io.sandglass.www'
 };
 
 gulp.task('download', function(cb) {
