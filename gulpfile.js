@@ -8,7 +8,7 @@ var $ = require('gulp-load-plugins')({
     rename: {
         'gulp-sass-lint': 'sasslint',
         'gulp-concat': 'concat',
-        'gulp-minify-css': 'minify',
+        'gulp-cssnano': 'cssnano',
         'gulp-jshint': 'jshint',
         'gulp-jasmine': 'jasmine'
     }
@@ -33,7 +33,7 @@ gulp.task('css', function() {
 
     return merge(scssStream)
         .pipe($.concat('sand-glass.css'))
-        .pipe($.minify())
+        .pipe($.cssnano())
         .pipe(gulp.dest('resources/css'));
 });
 
