@@ -1,9 +1,16 @@
 var gulp = require('gulp');
 var sequence = require('run-sequence');
 var del = require('del');
+var merge = require('merge-stream');
+var reporters = require('jasmine-reporters');
+
 var $ = require('gulp-load-plugins')({
     rename: {
-        'gulp-download-electron': 'electron'
+        'gulp-sass-lint': 'sasslint',
+        'gulp-concat': 'concat',
+        'gulp-minify-css': 'minify',
+        'gulp-jshint': 'jshint',
+        'gulp-jasmine': 'jasmine'
     }
 });
 
@@ -17,12 +24,41 @@ var options = {
     bundle: 'io.sandglass.www'
 };
 
-gulp.task('download', function(cb) {
-    $.electron({
-        version: '0.35.4',
-        outputDir: 'cache'
-    }, cb);
+gulp.task('default', ['lint', 'tests']);
+
+gulp.task('css', function() {
+    var scssStream = gulp.src('./resources/scss/*.scss')
+        .pipe($.sass())
+        .pipe($.concat('scss-files.scss'));
+
+    return merge(scssStream)
+        .pipe($.concat('sand-glass.css'))
+        .pipe($.minify())
+        .pipe(gulp.dest('resources/css'));
 });
+
+gulp.task('sass-lint', function() {
+    return gulp.src('./resources/sass/**/*.s+(a|c)ss')
+        .pipe($.sasslint());
+});
+
+gulp.task('js-lint', function() {
+    return gulp.src('./src/**/*.js')
+        .pipe($.jshint())
+        .pipe($.jshint.reporter('jshint-stylish'))
+        .pipe($.jshint.reporter('fail'));
+});
+
+gulp.task('lint', ['sass-lint', 'js-lint']);
+
+gulp.task('tests', function() {
+    return gulp.src('./tests/**/*.js')
+        .pipe($.jasmine({
+            reporter: new reporters.TerminalReporter()
+        }));
+});
+
+// Build
 
 gulp.task('build', function() {
     return gulp.src('').pipe($.shell([
@@ -73,15 +109,16 @@ gulp.task('dmg', function() {
     }));
 });
 
+gulp.task('mac', function(cb) {
+    sequence('download', 'build', 'dmg', cb);
+});
+
+// Clean
+
 gulp.task('clean', function(cb) {
     del([
         'dist',
         'build',
-        'cache',
         'release'
     ], cb);
-});
-
-gulp.task('mac', function(cb) {
-    sequence('download', 'build', 'dmg', cb);
 });

@@ -27,16 +27,25 @@
   "licenseUrl": "http://www.gnu.org/licenses/gpl-3.0.en.html",
   "repository": "https://github.com/BenjaminVanRyseghem/SandGlass",
   "bugs": "https://github.com/BenjaminVanRyseghem/SandGlass/issues",
-
   "devDependencies": {
     "appdmg": "^0.3.5",
     "del": "^2.2.0",
     "electron-prebuilt": "^0.36.4",
     "gulp": "^3.9.0",
-    "gulp-download-electron": "0.0.5",
+    "gulp-concat": "^2.6.0",
+    "gulp-jasmine": "^2.2.1",
+    "gulp-jshint": "^2.0.0",
     "gulp-load-plugins": "^1.1.0",
+    "gulp-minify-css": "^1.2.3",
+    "gulp-sass": "^2.1.1",
+    "gulp-sass-lint": "^1.1.1",
     "gulp-shell": "^0.5.1",
-    "run-sequence": "^1.1.5"
+    "jasmine-reporters": "^2.1.1",
+    "jshint": "^2.9.1",
+    "jshint-stylish": "^2.1.0",
+    "merge-stream": "^1.0.0",
+    "run-sequence": "^1.1.5",
+    "sass": "^0.5.0"
   },
   "dependencies": {
     "command-line-args": "^2.1.4",

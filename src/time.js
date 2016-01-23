@@ -22,7 +22,7 @@ function time() {
             return moment.duration(0);
         }
 
-        if (!(records[records.length - 1].action === "stop")) {
+        if ((records[records.length - 1].action !== "stop")) {
             throw new Error("The day should end with a \"stop\" event");
         }
 

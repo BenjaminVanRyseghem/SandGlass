@@ -63,11 +63,12 @@ function menu() {
                 settingWindow = null;
             });
 
-            settingWindow.on("close", function(event) {
+            settingWindow.on("close", function() {
                 settingWindow = null;
             });
 
             settingWindow.loadURL(`file://${__dirname}/../resources/preferences.html`);
+            settingWindow.openDevTools();
             settingWindow.show();
             settingWindow.focus();
         }

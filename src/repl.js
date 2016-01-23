@@ -212,7 +212,7 @@ function repl() {
             case "null":
                 return null;
             default:
-                return value
+                return value;
         }
     }
 

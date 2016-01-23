@@ -7,8 +7,12 @@ function timeComputer() {
     let that = {};
 
     that.computeWorkingTimeFor = (records) => {
-        if (!(records[0].action === "start")) {
-            throw new Error("The day should begin with a \"start\" event");
+        if ((records[0].action !== "start")) {
+            throw new Error("The day should begin with a \"start\" record");
+        }
+
+        if ((records[records.length - 1].action !== "stop")) {
+            throw new Error("The day should end with a \"stop\" record");
         }
 
         // Append `null` at the end as ending flag, and remove the head
