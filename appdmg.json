@@ -1,6 +1,6 @@
 {
   "title": "SandGlass",
-  "background": "./resources/background.png",
+  "background": "./resources/img/background.png",
   "icon-size": 80,
   "contents": [
     {

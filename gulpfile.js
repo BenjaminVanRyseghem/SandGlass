@@ -12,7 +12,7 @@ var options = {
     name: 'SandGlass',
     app: 'SandGlass.app',
     dmg: 'SandGlass-1.0.0.dmg',
-    icon: './resources/sandGlass.icns',
+    icon: './resources/img/sandGlass.icns',
     plist: './Info.plist',
     bundle: 'com.sandglass.www'
 };

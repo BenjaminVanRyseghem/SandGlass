@@ -13,7 +13,7 @@ function tray() {
     let tray;
 
     that.init = () => {
-        tray = new Tray("./resources/trayIconTemplate.png");
+        tray = new Tray("./resources/img/trayIconTemplate.png");
         tray.setHighlightMode(false);
 
         initTitle();

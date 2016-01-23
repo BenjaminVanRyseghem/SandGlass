@@ -67,7 +67,7 @@ function menu() {
                 settingWindow = null;
             });
 
-            settingWindow.loadURL(`file://${__dirname}/../settings.html`);
+            settingWindow.loadURL(`file://${__dirname}/../resources/settings.html`);
             settingWindow.show();
             settingWindow.focus();
         }
