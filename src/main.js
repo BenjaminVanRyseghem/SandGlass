@@ -3,7 +3,6 @@ const app = electron.app;
 
 const tray = require("./tray");
 const menu = require("./menu");
-//const urlHandler = require("./urlHandler");
 const repl = require("./repl");
 
 (() => {
@@ -15,8 +14,6 @@ const repl = require("./repl");
         e.preventDefault();
     });
 
-    //urlHandler.init();
-
     function init() {
         initializeTray();
         repl.init();
@@ -27,19 +24,3 @@ const repl = require("./repl");
         menu.init(currentTray);
     }
 })();
-
-// Playground
-
-//db.start();
-//db.stop();
-//let time = require("./time");
-//
-//let duration = helper.getDurationFor(undefined, "2016-01-19");
-//console.log(helper.formatDuration(duration));
-
-//setTimeout(function() {
-//settings.showTimerInTray(false);
-//    setTimeout(function() {
-//        settings.showTimerInTray(false);
-//    }, 10000);
-//}, 2000);

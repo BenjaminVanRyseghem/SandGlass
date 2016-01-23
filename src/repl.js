@@ -136,14 +136,6 @@ function repl() {
             return;
         }
 
-        //let head = args.shift();
-        //
-        //if (head == "") {
-        //    callback(null, "URLs should at least have one segment, `start`, `stop`, or `settings`");
-        //    return;
-        //}
-        //
-
         let result = dispatchAction(options);
         callback(null, result);
     }
@@ -161,20 +153,6 @@ function repl() {
         if (options.option) {
             return setSettings(options);
         }
-
-        //switch (head.toLowerCase()) {
-        //    case "start":
-        //        return start(args);
-        //        break;
-        //    case "stop":
-        //        return stop(args);
-        //        break;
-        //    case "settings":
-        //        return setSettings(args);
-        //        break;
-        //    default:
-        //        return `First url segment should be "start", "stop", or "settings", not "${head}"`;
-        //}
     }
 
     function start(project) {
