@@ -1,15 +1,15 @@
 const moment = require("moment");
+const low = require("lowdb");
+const storage = require("lowdb/file-sync");
 
 const settings = require("./settings");
+const tickler = require("./tickler");
 
 function db() {
     "use strict";
 
     let that = {};
-
-    const low = require("lowdb");
-    const storage = require("lowdb/file-sync");
-    const db = low(`${settings.databaseFolder()}db.json`, {storage});
+    let database = low(`${settings.databaseFolder()}db.json`, {storage});
 
     /**
      * Start the timer for the provided project
@@ -18,8 +18,12 @@ function db() {
     that.start = (project) => {
         project = project || "default";
 
+        if (project === settings.projectToShowInTray() && settings.showTimerInTray()) {
+            tickler.start();
+        }
+
         let date = require("./time").formatDay(Date.now());
-        db(date).push({
+        database(date).push({
             project: project,
             action: "start",
             timestamp: Date.now(),
@@ -34,8 +38,12 @@ function db() {
     that.stop = (project) => {
         project = project || "default";
 
+        if (project === settings.projectToShowInTray()) {
+            tickler.stop();
+        }
+
         let date = require("./time").formatDay(Date.now());
-        db(date).push({
+        database(date).push({
             project: project,
             action: "stop",
             timestamp: Date.now(),
@@ -57,7 +65,7 @@ function db() {
             throw new Error("`day` is mandatory");
         }
 
-        return db(day)
+        return database(day)
             .chain()
             .filter({project: project})
             .sortBy("timestamp")
@@ -80,6 +88,8 @@ function db() {
     that.migrate = (options) => {
         let from = options.from;
         let to = options.to;
+
+        database = low(`${settings.databaseFolder()}db.json`, {storage});
     };
 
     return that;

@@ -26,12 +26,12 @@
 
     function initializeHooks() {
         $("#showTimerInTray").change(() => {
-            let value = $(this).is(':checked');
+            let value = $("#showTimerInTray").is(':checked');
             settings.showTimerInTray(value);
         });
 
         $("#projectToShowInTray").keyup(() => {
-            let value = $(this).val();
+            let value = $("#projectToShowInTray").val();
             settings.projectToShowInTray(value);
         });
     }

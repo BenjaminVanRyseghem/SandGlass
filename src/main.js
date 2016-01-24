@@ -3,6 +3,7 @@ const app = electron.app;
 
 const tray = require("./tray");
 const menu = require("./menu");
+const tickler = require("./tickler");
 const repl = require("./repl");
 
 (() => {
@@ -17,6 +18,7 @@ const repl = require("./repl");
     function init() {
         initializeTray();
         repl.init();
+        tickler.init();
     }
 
     function initializeTray() {

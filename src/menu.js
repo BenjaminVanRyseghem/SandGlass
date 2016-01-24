@@ -24,12 +24,14 @@ function menu() {
             {
                 label: "Preferences",
                 click: toggleSettings,
-                accelerator: "CmdOrCtrl+,"
+                accelerator: "CmdOrCtrl+,",
+                enabled: true
             },
             {
                 label: "Quit SandGlass",
                 click: quit,
-                accelerator: "CmdOrCtrl+Q"
+                accelerator: "CmdOrCtrl+Q",
+                enabled: true
             }
         ];
 

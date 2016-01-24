@@ -2,6 +2,8 @@ const ElectronSettings = require("electron-settings");
 const path = require("path");
 const fs = require("fs");
 
+const tickler = require("./tickler");
+
 function settings() {
     "use strict";
 
@@ -15,16 +17,31 @@ function settings() {
             return my.get("showTimerInTray");
         } else {
             let result = my.set("showTimerInTray", boolean);
-            require("./tray").updateTitle();
+            if (boolean && require("./db").isRunningFor(that.projectToShowInTray())) {
+                tickler.start();
+            }
+
+            if (!boolean) {
+                tickler.stop();
+            }
+
             return result;
         }
     };
 
     that.projectToShowInTray = (project) => {
         if (project === undefined) {
-            return my.get("projectToShowInTray") || undefined;
+            return my.get("projectToShowInTray") || "default";
         } else {
-            return my.set("projectToShowInTray", project || undefined);
+            let result = my.set("projectToShowInTray", project || undefined);
+            require("./tray").updateTitle();
+            if (require("./db").isRunningFor(project) && that.showTimerInTray()) {
+                tickler.start();
+            } else {
+                tickler.stop();
+            }
+
+            return result;
         }
     };
 

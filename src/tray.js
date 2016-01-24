@@ -3,6 +3,7 @@ const Tray = electron.Tray;
 
 const settings = require("./settings");
 const time = require("./time");
+const tickler = require("./tickler");
 const db = require("./db");
 
 function tray() {
@@ -10,6 +11,7 @@ function tray() {
 
     let that = {};
 
+    let dotted = true;
     let tray;
 
     that.init = () => {
@@ -22,37 +24,51 @@ function tray() {
     };
 
     that.updateTitle = () => {
-        initTitle();
+        if (settings.showTimerInTray()) {
+            setDottedDurationTitle();
+        } else {
+            tray.setTitle("");
+        }
     };
 
+    function setDottedDurationTitle() {
+        let project = settings.projectToShowInTray();
+        let title = getDurationFor(project, {
+            undotted: false
+        });
+
+        tray.setTitle(title);
+    }
+
     function initTitle() {
+        iniBblinkingTitle();
+        tickler.onStart(() => dotted = true);
+        tickler.onStop(() => that.updateTitle());
+
         if (settings.showTimerInTray()) {
-            tray.setTitle(getDurationFor(settings.projectToShowInTray()));
-            blinkingTitle(true);
+            setDottedDurationTitle();
         }
     }
 
-    function blinkingTitle(dotted) {
-        setTimeout(function() {
-            if (settings.showTimerInTray()) {
-                let title = "";
-                if (db.isRunningFor(settings.projectToShowInTray())) {
-                    title = getDurationFor(settings.projectToShowInTray(), {
-                        undotted: !dotted
-                    });
-                } else {
-                    title = getDurationFor(settings.projectToShowInTray(), {
-                        undotted: false
-                    });
-                }
+    function iniBblinkingTitle() {
+        tickler.onTick(() => {
+            let title = "";
+            let project = settings.projectToShowInTray();
 
-                tray.setTitle(title);
-
-                blinkingTitle(!dotted);
+            if (db.isRunningFor(project)) {
+                title = getDurationFor(project, {
+                    undotted: !dotted
+                });
             } else {
-                tray.setTitle("");
+                title = getDurationFor(project, {
+                    undotted: false
+                });
             }
-        }, 1000);
+
+            tray.setTitle(title);
+
+            dotted = !dotted;
+        });
     }
 
     function getDurationFor(project, options) {
