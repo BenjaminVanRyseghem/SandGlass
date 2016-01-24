@@ -188,7 +188,7 @@ function repl() {
 
         if (options.value) {
             let args = sanitizeValue(options.value);
-            fn.apply(null, args);
+            fn.apply(null, [args]);
             message = `Option ${key} set to ${args}`;
         } else {
             message = fn.apply(null, []);
