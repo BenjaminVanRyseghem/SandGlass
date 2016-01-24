@@ -58,13 +58,14 @@ function menu() {
         } else {
             settingWindow = new BrowserWindow({
                 width: 540,
-                height: 170,
+                height: 237,
                 show: false,
                 titleBarStyle: "hidden",
                 resizable: false,
                 center: true,
                 transparent: true
             });
+            
             settingWindow.on("closed", function() {
                 settingWindow = null;
             });
@@ -72,8 +73,10 @@ function menu() {
             settingWindow.loadURL(`file://${__dirname}/../resources/preferences.html`);
             settingWindow.openDevTools();
             settingWindow.webContents.on('did-finish-load', function() {
+                settingWindow.webContents.executeJavaScript(`window.windowId = ${settingWindow.id};`);
                 settingWindow.show();
             });
+
             settingWindow.focus();
         }
     }

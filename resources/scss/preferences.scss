@@ -8,21 +8,35 @@
     float: none;
   }
 
+  .form-group.databaseFolder {
+    .db-path {
+      height: 34px;
+      line-height: 34px;
+      white-space: nowrap;
+      padding-right: 15px;
+      overflow-y: scroll;
+    }
+    .button-bar {
+      padding-right: 15px;
+      float: right;
+
+      .btn {
+        font-size: 12px;
+        padding: 2px 10px;
+        margin-right: 12px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
   .form-footer {
     border-top: 1px solid #888;
     width: 100%;
     text-align: right;
     margin-top: 20px;
     padding-top: 20px;
-
-    .btn {
-      font-size: 12px;
-      padding: 2px 10px;
-      margin-right: 12px;
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
   }
 }
