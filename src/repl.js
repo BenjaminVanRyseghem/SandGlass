@@ -67,8 +67,10 @@ function repl() {
         title: info.name,
         description: info.description,
         synopsis: [
-            '$ example [[bold]{--timeout} [underline]{ms}] [bold]{--src} [underline]{file} ...',
-            '$ example [bold]{--help}'
+            '$ sand-glass [bold]{--start} [[bold]{--project} [underline]{projectName}]',
+            '$ sand-glass [bold]{--option}',
+            '$ sand-glass [bold]{--option} [bold]{--value} [underline]{newValue}',
+            '$ sand-glass [bold]{--help}'
         ]
     };
 
@@ -77,7 +79,6 @@ function repl() {
     that.init = () => {
         let sockets = [];
         let replServer;
-
 
         let server = net.createServer(function(socket) {
             sockets.push(socket);
@@ -116,8 +117,7 @@ function repl() {
     };
 
     function evalCmd(cmd, context, filename, callback) {
-        cmd = cmd.trim();
-        let args = spawnargs(cmd);
+        let args = spawnargs(cmd.trim());
         args = args.map((value) => {
             return value.replace(/^['"]|['"]$/g, '');
         });
