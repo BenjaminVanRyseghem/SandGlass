@@ -35,6 +35,7 @@ function settings() {
         } else {
             let result = my.set("projectToShowInTray", project || undefined);
             require("./tray").updateTitle();
+
             if (require("./db").isRunningFor(project) && that.showTimerInTray()) {
                 tickler.start();
             } else {
@@ -49,18 +50,26 @@ function settings() {
         if (newPath === undefined) {
             let result = my.get("databaseFolder") || my.defaultDatabaseFolder();
             my.ensureSettingsFolderPath(result);
-            if (result[result.length - 1] !== path.sep) {
-                result += path.sep;
-            }
+            
             return result;
         } else {
             let oldPath = that.databaseFolder();
-            let result = my.set("projectToShowInTray", newPath || undefined);
+
+            if (oldPath === newPath) {
+                return;
+            }
+
+            if (newPath[newPath.length - 1] !== path.sep) {
+                newPath += path.sep;
+            }
+
+            let result = my.set("databaseFolder", newPath || undefined);
             my.ensureSettingsFolderPath(newPath);
             require("./db").migrate({
                 from: oldPath,
                 to: newPath
             });
+
             return result;
         }
     };

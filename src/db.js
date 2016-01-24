@@ -1,5 +1,6 @@
 const moment = require("moment");
 const low = require("lowdb");
+const fs = require("fs");
 const storage = require("lowdb/file-sync");
 
 const settings = require("./settings");
@@ -88,6 +89,8 @@ function db() {
     that.migrate = (options) => {
         let from = options.from;
         let to = options.to;
+
+        fs.renameSync(`${from}db.json`, `${to}db.json`);
 
         database = low(`${settings.databaseFolder()}db.json`, {storage});
     };

@@ -1,6 +1,16 @@
 #!/bin/bash
 
-args=$@
+args=""
+
+whitespace="[[:space:]]"
+for i in "$@"
+do
+    if [[ $i =~ $whitespace ]]
+    then
+        i=\"$i\"
+    fi
+    args=$args" $i"
+done
 
 if [[ -z "${args// }" ]]
 then

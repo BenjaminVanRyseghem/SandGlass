@@ -7,6 +7,8 @@ const info = require("./info");
 
 const net = require("net");
 const nodeREPL = require("repl");
+const fs = require("fs");
+const spawnargs = require('spawn-args');
 const commandLineArgs = require("command-line-args");
 
 function repl() {
@@ -92,6 +94,12 @@ function repl() {
             });
 
         });
+
+        try {
+            fs.unlinkSync("/tmp/sand-glass-sock");
+        } catch (e) {
+        }
+
         server.listen("/tmp/sand-glass-sock");
 
         app.on("quit", function() {
@@ -109,7 +117,11 @@ function repl() {
 
     function evalCmd(cmd, context, filename, callback) {
         cmd = cmd.trim();
-        let args = cmd.split(" ");
+        let args = spawnargs(cmd);
+        args = args.map((value) => {
+            return value.replace(/^['"]|['"]$/g, '');
+        });
+
         let options = {};
 
         try {
