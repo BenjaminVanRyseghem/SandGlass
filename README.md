@@ -1,4 +1,7 @@
 # SandGlass
+
+[![Build Status](https://travis-ci.org/BenjaminVanRyseghem/SandGlass.svg?branch=master)](https://travis-ci.org/BenjaminVanRyseghem/SandGlass)
+
 An electron-based time tracker
 
 # How to
