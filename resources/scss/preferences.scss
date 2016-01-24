@@ -1,0 +1,28 @@
+#container.preferences {
+  .control-label {
+    padding-top: 7px;
+    text-align: right;
+  }
+
+  .col-xs-8.checkbox {
+    float: none;
+  }
+
+  .form-footer {
+    border-top: 1px solid #888;
+    width: 100%;
+    text-align: right;
+    margin-top: 20px;
+    padding-top: 20px;
+
+    .btn {
+      font-size: 12px;
+      padding: 2px 10px;
+      margin-right: 12px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}

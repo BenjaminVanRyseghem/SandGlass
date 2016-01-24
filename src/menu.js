@@ -55,21 +55,23 @@ function menu() {
             settingWindow.close();
         } else {
             settingWindow = new BrowserWindow({
-                width: 800,
-                height: 600,
-                show: false
+                width: 540,
+                height: 170,
+                show: false,
+                titleBarStyle: "hidden",
+                resizable: false,
+                center: true,
+                transparent: true
             });
             settingWindow.on("closed", function() {
                 settingWindow = null;
             });
 
-            settingWindow.on("close", function() {
-                settingWindow = null;
-            });
-
             settingWindow.loadURL(`file://${__dirname}/../resources/preferences.html`);
             settingWindow.openDevTools();
-            settingWindow.show();
+            settingWindow.webContents.on('did-finish-load', function() {
+                settingWindow.show();
+            });
             settingWindow.focus();
         }
     }

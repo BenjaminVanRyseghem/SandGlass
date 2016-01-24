@@ -1,0 +1,26 @@
+#html, body {
+  background: #ECECEC;
+  color: #0C1E3A;
+  margin-top: 22px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 22px;
+    text-align: center;
+    background: linear-gradient(#EDEDED, #CFCFCF);
+    overflow: hidden;
+
+    border-bottom: 1px solid #BABABA;
+  }
+}
+
+#container {
+  padding: 20px 40px;
+}

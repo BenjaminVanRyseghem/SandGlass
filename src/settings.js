@@ -25,9 +25,6 @@ function settings() {
             return my.get("projectToShowInTray") || undefined;
         } else {
             return my.set("projectToShowInTray", project || undefined);
-            //let result = my.set("projectToShowInTray", project);
-            //require("./tray").updateTitle();
-            //return result;
         }
     };
 
