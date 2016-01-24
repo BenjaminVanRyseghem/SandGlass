@@ -28,7 +28,7 @@ function db() {
             project: project,
             action: "start",
             timestamp: Date.now(),
-            time: moment(Date.now()).format("HH:mm:ss")
+            time: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
         });
     };
 
@@ -48,7 +48,7 @@ function db() {
             project: project,
             action: "stop",
             timestamp: Date.now(),
-            time: moment(Date.now()).format("HH:mm:ss")
+            time: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
         });
     };
 
@@ -84,6 +84,19 @@ function db() {
 
         let last = records[records.length - 1];
         return last.action === "start";
+    };
+
+    that.getAllData = () => {
+        let data = [];
+
+        let keys = Object.keys(database.object);
+
+        for (let key of keys) {
+            let value = database.object[key];
+            data = data.concat(value);
+        }
+
+        return data;
     };
 
     that.migrate = (options) => {

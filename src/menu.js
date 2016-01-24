@@ -58,14 +58,14 @@ function menu() {
         } else {
             settingWindow = new BrowserWindow({
                 width: 540,
-                height: 237,
+                height: 324,
                 show: false,
                 titleBarStyle: "hidden",
                 resizable: false,
                 center: true,
                 transparent: true
             });
-            
+
             settingWindow.on("closed", function() {
                 settingWindow = null;
             });

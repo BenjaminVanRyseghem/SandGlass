@@ -1,4 +1,16 @@
 #container.preferences {
+
+  // OSX like button
+  .btn {
+    font-size: 12px;
+    padding: 2px 10px;
+    margin-right: 12px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
   .control-label {
     padding-top: 7px;
     text-align: right;
@@ -19,16 +31,14 @@
     .button-bar {
       padding-right: 15px;
       float: right;
+    }
+  }
 
-      .btn {
-        font-size: 12px;
-        padding: 2px 10px;
-        margin-right: 12px;
-
-        &:last-child {
-          margin-right: 0;
-        }
-      }
+  .exportToCSV {
+    margin-top: 40px;
+    
+    #exportToCSV {
+      margin-top: 6px;
     }
   }
 

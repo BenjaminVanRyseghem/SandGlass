@@ -1,11 +1,16 @@
 (()=> {
     "use strict";
 
+    const json2csv = require("json2csv");
     const remote = require("remote");
-    const settings = remote.require("../src/settings");
     const app = remote.require("electron");
     const BrowserWindow = app.BrowserWindow;
     const Dialog = app.dialog;
+
+    const fs = remote.require("fs");
+    const settings = remote.require("../src/settings");
+
+    const db = remote.require("../src/db");
 
     $(document).ready(function() {
         initializeForm();
@@ -49,6 +54,30 @@
             if (newPath) {
                 settings.databaseFolder(newPath[0]);
                 $("#databaseFolder").get(0).innerText = `${settings.databaseFolder()}db.json`;
+            }
+        });
+
+        $("#exportToCSV").click(() => {
+            let win = BrowserWindow.fromId(window.windowId);
+            let newPath = Dialog.showSaveDialog(win, {
+                filters: [
+                    {name: 'Comma Separated Value', extensions: ['csv']},
+                    {name: 'All Files', extensions: ['*']}
+                ]
+            });
+
+            if (newPath) {
+                console.log(newPath);
+                let data = db.getAllData();
+                let csv = json2csv({
+                    data: data
+                }, (err, csv) => {
+                    if (err) {
+                        dialog.showErrorBox("CSV Export", `The CSV export failed. The exact error was: \n\n${err}`);
+                    } else {
+                        fs.writeFileSync(newPath, csv, 'utf8');
+                    }
+                });
             }
         });
     }
