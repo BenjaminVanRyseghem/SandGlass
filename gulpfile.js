@@ -10,7 +10,9 @@ var $ = require('gulp-load-plugins')({
         'gulp-concat': 'concat',
         'gulp-cssnano': 'cssnano',
         'gulp-jshint': 'jshint',
-        'gulp-jasmine': 'jasmine'
+        'gulp-jasmine': 'jasmine',
+        'gulp-download-electron': 'electron',
+        'gulp-jasmine-browser': 'jasmineBrowser'
     }
 });
 
@@ -51,11 +53,19 @@ gulp.task('js-lint', function() {
 
 gulp.task('lint', ['sass-lint', 'js-lint']);
 
+// Tests
+
 gulp.task('tests', function() {
     return gulp.src('./tests/**/*.js')
         .pipe($.jasmine({
             reporter: new reporters.TerminalReporter()
         }));
+});
+
+gulp.task('jasmine', function() {
+    return gulp.src(['src/**/*.js', './tests/**/*.js'])
+        .pipe($.jasmineBrowser.specRunner())
+        .pipe($.jasmineBrowser.server({port: 8888}));
 });
 
 // Build
@@ -64,10 +74,23 @@ gulp.task('build', function() {
     return gulp.src('').pipe($.shell([
         'rm -rf ./release',
         'mkdir -p <%= release %>',
+
         'cp -R <%= electron_app %> <%= release_app %>',
         'mv <%= release_electron %> <%= release_example %>',
-        'mkdir -p <%= release_build %> <%= release_build %>/build <%= release_modules %>',
-        'cp ./*.* <%= release_build %>/',
+        'mkdir -p <%= release_build %>',
+
+        'mkdir -p <%= electron_asar %>',
+        'cp ./*.* <%= electron_asar %>/',
+        'cp -r ./src <%= electron_asar %>/src',
+        'cp -r ./resources <%= electron_asar %>/resources',
+        'mkdir -p <%= electron_asar %>/node_modules',
+        'npm install --prefix <%= electron_asar %> --production &>/dev/null',
+        'rm -rf <%= electron_asar %>/node_modules/electron-prebuilt',
+        'rm -rf <%= electron_asar %>/node_modules/.bin',
+        'asar pack <%= electron_asar %> app.asar',
+        'mv app.asar <%= release_build %>/app.asar',
+        'rm -rf <%= electron_asar %>',
+
         'cp <%= release_example_icon %> <%= release_electron_icon %>',
         'cp <%= release_example_plist %> <%= release_plist %>',
 
@@ -79,10 +102,10 @@ gulp.task('build', function() {
     ], {
         templateData: {
             electron_app: './cache/Electron.app',
+            electron_asar: './asar',
             release: './release/osx',
             release_app: './release/osx/' + options.app,
-            release_build: './release/osx/' + options.app + '/Contents/Resources/app',
-            release_modules: './release/osx/' + options.app + '/Contents/Resources/app/node_modules',
+            release_build: './release/osx/' + options.app + '/Contents/Resources',
             release_electron: './release/osx/' + options.app + '/Contents/MacOS/Electron',
             release_example: './release/osx/' + options.app + '/Contents/MacOS/' + options.name,
             release_bin: './release/osx/' + options.app + '"/Contents/Frameworks/Electron Helper.app/Contents/MacOS"',
@@ -95,6 +118,13 @@ gulp.task('build', function() {
             release_version: '1.0.0'
         }
     }));
+});
+
+gulp.task('download', function(cb) {
+    $.electron({
+        version: '0.36.5',
+        outputDir: 'cache'
+    }, cb);
 });
 
 gulp.task('dmg', function() {
