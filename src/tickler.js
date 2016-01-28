@@ -21,6 +21,10 @@ function tickler() {
     that.onStart = (callback) => onStart.push(callback);
     that.onStop = (callback) => onStop.push(callback);
 
+    that.isRunning = () => {
+        return running;
+    };
+
     that.start = () => {
         if (!running) {
             running = true;

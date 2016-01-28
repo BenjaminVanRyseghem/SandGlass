@@ -24,10 +24,15 @@
     function initializeForm() {
         let projectToShowInTray = settings.projectToShowInTray();
         let showTimerInTray = settings.showTimerInTray();
+        let hideWhenStopped = settings.hideWhenStopped();
         let databaseFolder = settings.databaseFolder();
 
         if (showTimerInTray) {
             $("#showTimerInTray").attr({checked: true});
+        }
+
+        if (hideWhenStopped) {
+            $("#hideWhenStopped").attr({checked: true});
         }
 
         $("#projectToShowInTray").val(projectToShowInTray);
@@ -38,6 +43,11 @@
         $("#showTimerInTray").change(() => {
             let value = $("#showTimerInTray").is(':checked');
             settings.showTimerInTray(value);
+        });
+
+        $("#hideWhenStopped").change(() => {
+            let value = $("#hideWhenStopped").is(':checked');
+            settings.hideWhenStopped(value);
         });
 
         $("#projectToShowInTray").keyup(() => {

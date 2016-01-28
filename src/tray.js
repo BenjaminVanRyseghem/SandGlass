@@ -24,12 +24,21 @@ function tray() {
     };
 
     that.updateTitle = () => {
+        if (!tickler.isRunning() && settings.hideWhenStopped()) {
+            hideTitle();
+            return;
+        }
+
         if (settings.showTimerInTray()) {
             setDottedDurationTitle();
         } else {
-            tray.setTitle("");
+            hideTitle();
         }
     };
+
+    function hideTitle() {
+        tray.setTitle("");
+    }
 
     function setDottedDurationTitle() {
         let project = settings.projectToShowInTray();
@@ -45,9 +54,7 @@ function tray() {
         tickler.onStart(() => dotted = true);
         tickler.onStop(() => that.updateTitle());
 
-        if (settings.showTimerInTray()) {
-            setDottedDurationTitle();
-        }
+        that.updateTitle();
     }
 
     function iniBblinkingTitle() {

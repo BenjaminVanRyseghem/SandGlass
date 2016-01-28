@@ -46,11 +46,25 @@ function settings() {
         }
     };
 
+    that.hideWhenStopped = (boolean) => {
+        if (boolean === undefined) {
+            return my.get("hideWhenStopped") || false;
+        } else {
+            let result = my.set("hideWhenStopped", boolean);
+
+            if (!tickler.isRunning()) {
+                require("./tray").updateTitle();
+            }
+
+            return result;
+        }
+    };
+
     that.databaseFolder = (newPath) => {
         if (newPath === undefined) {
             let result = my.get("databaseFolder") || my.defaultDatabaseFolder();
             my.ensureSettingsFolderPath(result);
-            
+
             return result;
         } else {
             let oldPath = that.databaseFolder();

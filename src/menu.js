@@ -57,8 +57,8 @@ function menu() {
             settingWindow.close();
         } else {
             settingWindow = new BrowserWindow({
-                width: 540,
-                height: 324,
+                width: 640,
+                height: 378,
                 show: false,
                 titleBarStyle: "hidden",
                 resizable: false,
