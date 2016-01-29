@@ -35,8 +35,8 @@ function tickler() {
 
     that.stop = () => {
         if (running) {
-            my.applyOnStop();
             running = false;
+            my.applyOnStop();
         }
     };
 
