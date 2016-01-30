@@ -50,14 +50,14 @@ function tray() {
     }
 
     function initTitle() {
-        iniBblinkingTitle();
+        initBlinkingTitle();
         tickler.onStart(() => dotted = true);
         tickler.onStop(() => that.updateTitle());
 
         that.updateTitle();
     }
 
-    function iniBblinkingTitle() {
+    function initBlinkingTitle() {
         tickler.onTick(() => {
             let title = "";
             let project = settings.projectToShowInTray();
