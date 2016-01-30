@@ -5,7 +5,7 @@ const visitor = require("../helpers/periods/yearVisitor");
 
 const firstDay = new Date("2016-01-01");
 
-describe("year", function() {
+describe("yearBuilder", function() {
     "use strict";
 
     let daysData = [];
@@ -24,7 +24,7 @@ describe("year", function() {
         expect(year2016.periodIndex()).toBe(2016);
     });
 
-    it("2016 has 366 days", () => {
+    it(": 2016 has 366 days", () => {
         let year2016 = yearBuilder.build(daysData);
         year2016.accept(visitor);
 
