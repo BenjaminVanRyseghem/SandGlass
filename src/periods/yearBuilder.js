@@ -1,4 +1,4 @@
-const moment = require("moment");
+const helper = require("./helper");
 
 function yearBuilder() {
     "use strict";
@@ -7,9 +7,6 @@ function yearBuilder() {
 
     that.build = (daysData) => {
         let dayClass = require("./day");
-        let weekClass = require("./week");
-        let brokenWeekClass = require("./brokenWeek");
-        let monthClass = require("./month");
         let yearClass = require("./year");
 
         let currentYear = new Date(daysData[0]).getFullYear();
@@ -17,18 +14,27 @@ function yearBuilder() {
         let days = daysData.map(function(identifier) {
             return dayClass({
                 identifier: identifier,
-                periodIndex: moment(identifier).format("YYYY-MM-DD")
+                periodIndex: helper.getDayIndex(identifier)
             });
         });
 
+        let monthsData = that.buildMonthData(days);
+        let months = that.linkPeriods(monthsData, currentYear);
+
+        return yearClass({
+            months: months,
+            periodIndex: currentYear
+        });
+    };
+
+    that.buildMonthData = (days) => {
         let monthsData = [];
 
         // group per months
         for (let day of days) {
-            let data = day.identifier();
-            let dayMonthIndex = +moment(data).format("M");
-            let dayWeekIndex = +moment(data).format("w");
-            let dayIndex = +moment(data).format("D");
+            let identifier = day.identifier();
+            let dayMonthIndex = helper.getMonthIndex(identifier);
+            let dayWeekIndex = helper.getWeekIndex(identifier);
 
             if (!monthsData[dayMonthIndex]) {
                 monthsData[dayMonthIndex] = {
@@ -45,6 +51,14 @@ function yearBuilder() {
             monthData.weeks[dayWeekIndex].push(day);
         }
 
+        return monthsData;
+    };
+
+    that.linkPeriods = (monthsData, currentYear) => {
+        let weekClass = require("./week");
+        let brokenWeekClass = require("./brokenWeek");
+        let monthClass = require("./month");
+
         let months = [];
 
         let keys = Object.keys(monthsData);
@@ -56,7 +70,7 @@ function yearBuilder() {
             wKeys.forEach((weekIndex) => {
                 let weekData = monthData.weeks[weekIndex];
 
-                let broken = isWeekBroken(weekIndex, currentYear);
+                let broken = helper.isWeekBroken(weekIndex, currentYear);
                 let classToUse = broken ? brokenWeekClass : weekClass;
 
                 weeks.push(classToUse({
@@ -71,39 +85,8 @@ function yearBuilder() {
             }));
         });
 
-        return yearClass({
-            months: months,
-            periodIndex: currentYear
-        });
+        return months;
     };
-
-    function isWeekBroken(weekNo, year) {
-        var week = getDateRangeOfWeek(weekNo, year);
-        var start = week.start;
-        var end = week.end;
-        return start.getMonth() !== end.getMonth();
-    }
-
-    // From https://gist.github.com/Abhinav1217/5038863
-    function getDateRangeOfWeek(weekNo, year) {
-        if (weekNo < 1) {
-            throw new Error("`weekNo` must be greater or equal to 1");
-        }
-
-        let date = new Date(year + "-02-03");
-
-        let numOfdaysPastSinceLastMonday = date.getDay() - 1;
-        date.setDate(date.getDate() - numOfdaysPastSinceLastMonday);
-
-        let weekNoToday = +moment(date).format("W");
-        let weeksInTheFuture = weekNo - weekNoToday;
-        date.setDate(date.getDate() + 7 * weeksInTheFuture);
-
-        return {
-            start: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
-            end: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 6)
-        };
-    }
 
     return that;
 }

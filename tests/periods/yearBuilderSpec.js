@@ -5,7 +5,7 @@ const visitor = require("../helpers/periods/yearVisitor");
 
 const firstDay = new Date("2016-01-01");
 
-describe("yearBuilder", function() {
+describe("periods/yearBuilder", function() {
     "use strict";
 
     let daysData = [];
