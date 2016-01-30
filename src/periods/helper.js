@@ -2,7 +2,7 @@ const moment = require("moment");
 
 function helper() {
     "use strict";
-    
+
     let that = {};
 
     that.getMonthIndex = (data) => {
@@ -11,6 +11,10 @@ function helper() {
 
     that.getWeekIndex = (data) => {
         return +moment(data).format("W");
+    };
+
+    that.getYearIndex = (data) => {
+        return +moment(data).format("YYYY");
     };
 
     that.getDayIndex = (data) => {
@@ -43,6 +47,18 @@ function helper() {
             start: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
             end: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 6)
         };
+    };
+
+    that.getWeekDays = function(weekNumber, year) {
+        let start = that.getDateRangeOfWeek(weekNumber, year).start;
+        let days = [];
+
+        for (let i = 0; i < 7; i++) {
+            let day = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+            days.push(moment(day).format("YYYY-MM-DD"));
+        }
+
+        return days;
     };
 
     return that;

@@ -1,5 +1,7 @@
 const db = require("./db");
 const timeComputer = require("./timeComputer");
+const helper = require("./periods/helper");
+
 const moment = require("moment");
 require("moment-duration-format");
 
@@ -32,6 +34,19 @@ function time() {
 
         let ms = timeComputer.computeWorkingTimeFor(records);
         return moment.duration(ms);
+    };
+
+    that.getDurationForWeek = (project, weekNumber, year) => {
+        let weekDays = helper.getWeekDays(weekNumber, year);
+
+        let result = moment.duration();
+
+        for (let day of weekDays) {
+            let duration = that.getDurationForDay(project, day);
+            result.add(duration);
+        }
+
+        return result;
     };
 
     that.getTodayDurationFor = (project) => {

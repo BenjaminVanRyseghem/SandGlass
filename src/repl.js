@@ -4,6 +4,8 @@ const app = electron.app;
 const settings = require("./settings");
 const db = require("./db");
 const info = require("./info");
+const time = require("./time");
+const helper = require("./periods/helper");
 
 const net = require("net");
 const nodeREPL = require("repl");
@@ -44,6 +46,18 @@ function repl() {
             description: "Stop the clock"
         },
         {
+            name: "day",
+            alias: "d",
+            type: Boolean,
+            description: "Display time spent on the current project today"
+        },
+        {
+            name: "week",
+            alias: "w",
+            type: Boolean,
+            description: "Display time spent on the current project this week"
+        },
+        {
             name: "option",
             alias: "o",
             type: String,
@@ -60,6 +74,13 @@ function repl() {
             type: String,
             //multiple: true,
             description: "New value of an option"
+        },
+        {
+            name: "period",
+            alias: "P",
+            type: String,
+            //multiple: true,
+            description: "Specify a period to show the time spent (format \"YYYY-MM-DD\")"
         }
     ];
 
@@ -162,6 +183,14 @@ function repl() {
             return stop(options.project);
         }
 
+        if (options.day) {
+            return showDayTime(options.project, options.period);
+        }
+
+        if (options.week) {
+            return showWeekTime(options.project, options.period);
+        }
+
         if (options.option) {
             return setSettings(options);
         }
@@ -185,6 +214,25 @@ function repl() {
         } else {
             return "Clock stopped";
         }
+    }
+
+    function showDayTime(project, period) {
+        project = project || settings.projectToShowInTray();
+        period = period || time.formatDay(Date.now());
+
+        let duration = time.getDurationForDay(project, period);
+        return time.formatDuration(duration);
+    }
+
+    function showWeekTime(project, period) {
+        project = project || settings.projectToShowInTray();
+        period = period || time.formatDay(Date.now());
+
+        let weekNumber = helper.getWeekIndex(period);
+        let year = helper.getYearIndex(period);
+
+        let duration = time.getDurationForWeek(project, weekNumber, year);
+        return time.formatDuration(duration);
     }
 
     function setSettings(options) {
