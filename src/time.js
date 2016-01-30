@@ -15,7 +15,7 @@ function time() {
      * @param {String} project Name of the project to track
      * @param {String} day Day to check
      */
-    that.getDurationFor = (project, day) => {
+    that.getDurationForDay = (project, day) => {
         let records = db.getRecordsFor(project, day);
 
         if (!records.length) {
@@ -23,7 +23,11 @@ function time() {
         }
 
         if ((records[records.length - 1].action !== "stop")) {
-            throw new Error("The day should end with a \"stop\" event");
+            records.push({
+                action: "stop",
+                timestamp: Date.now(),
+                project: project
+            });
         }
 
         let ms = timeComputer.computeWorkingTimeFor(records);
@@ -32,21 +36,8 @@ function time() {
 
     that.getTodayDurationFor = (project) => {
         let day = that.formatDay(Date.now());
-        let records = db.getRecordsFor(project, day);
 
-        if (!records.length) {
-            return moment.duration(0);
-        }
-
-        // Adds a fake record to compute time
-        records.push({
-            action: "stop",
-            timestamp: Date.now(),
-            project: project
-        });
-
-        let ms = timeComputer.computeWorkingTimeFor(records);
-        return moment.duration(ms);
+        return that.getDurationForDay(project, day);
     };
 
     that.formatDay = (timestamp) => {
