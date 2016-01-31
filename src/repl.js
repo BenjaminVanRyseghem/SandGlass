@@ -10,8 +10,10 @@ const helper = require("./periods/helper");
 const net = require("net");
 const nodeREPL = require("repl");
 const fs = require("fs");
-const spawnargs = require('spawn-args');
+const spawnargs = require("spawn-args");
 const commandLineArgs = require("command-line-args");
+const ansi = require("ansi-styles");
+const Table = require("cli-table");
 
 function repl() {
     "use strict";
@@ -81,6 +83,12 @@ function repl() {
             type: String,
             //multiple: true,
             description: "Specify a period to show the time spent (format \"YYYY-MM-DD\")"
+        },
+        {
+            name: "verbose",
+            alias: "V",
+            type: Boolean,
+            description: "Make output more verbose"
         }
     ];
 
@@ -88,10 +96,10 @@ function repl() {
         title: info.name,
         description: info.description,
         synopsis: [
-            '$ sand-glass [bold]{--start} [[bold]{--project} [underline]{projectName}]',
-            '$ sand-glass [bold]{--option}',
-            '$ sand-glass [bold]{--option} [bold]{--value} [underline]{newValue}',
-            '$ sand-glass [bold]{--help}'
+            "$ sand-glass [bold]{--start} [[bold]{--project} [underline]{projectName}]",
+            "$ sand-glass [bold]{--option}",
+            "$ sand-glass [bold]{--option} [bold]{--value} [underline]{newValue}",
+            "$ sand-glass [bold]{--help}"
         ]
     };
 
@@ -140,7 +148,7 @@ function repl() {
     function evalCmd(cmd, context, filename, callback) {
         let args = spawnargs(cmd.trim());
         args = args.map((value) => {
-            return value.replace(/^['"]|['"]$/g, '');
+            return value.replace(/^['"]|['"]$/g, "");
         });
 
         let options = {};
@@ -176,19 +184,19 @@ function repl() {
     function dispatchAction(options) {
 
         if (options.start) {
-            return start(options.project);
+            return start(options.project, options);
         }
 
         if (options.stop) {
-            return stop(options.project);
+            return stop(options.project, options);
         }
 
         if (options.day) {
-            return showDayTime(options.project, options.period);
+            return showDayTime(options.project, options.period, options);
         }
 
         if (options.week) {
-            return showWeekTime(options.project, options.period);
+            return showWeekTime(options.project, options.period, options);
         }
 
         if (options.option) {
@@ -196,32 +204,55 @@ function repl() {
         }
     }
 
-    function start(project) {
+    function start(project, options) {
         db.start(project);
 
+        let startTime = options.verbose ? ` at ${ansiWrap("underline", time.formatTime(Date.now()))}` : "";
+
         if (project) {
-            return `Clock started for the project "${project}"`;
+            return `Clock started for the project ${ansiWrap("bold", project)}${startTime}`;
         } else {
-            return "Clock started";
+            return `Clock started${startTime}`;
         }
     }
 
-    function stop(project) {
+    function stop(project, options) {
         db.stop(project);
 
+        let stopTime = options.verbose ? ` at ${ansiWrap("underline", time.formatTime(Date.now()))}` : "";
+
         if (project) {
-            return `Clock stopped for the project "${project}"`;
+            return `Clock stopped for the project ${ansiWrap("bold", project)}${stopTime}`;
         } else {
-            return "Clock stopped";
+            return `Clock stopped${stopTime}`;
         }
     }
 
-    function showDayTime(project, period) {
+    function showDayTime(project, period, options) {
         project = project || settings.projectToShowInTray();
         period = period || time.formatDay(Date.now());
 
         let duration = time.getDurationForDay(project, period);
-        return time.formatDuration(duration);
+        let totalTime = time.formatDuration(duration);
+        let result = totalTime;
+
+        if (options.verbose) {
+            let segments = time.getSegmentsForDay(project, period);
+
+            result = ansiWrap("bold", period) + `: ${totalTime}`;
+
+            if (segments.length) {
+                result += "\n\n";
+            }
+
+            let data = segments.map((segment) => {
+                return [time.formatTime(segment.start()), time.formatTime(segment.end()), time.formatDuration(segment.delta())];
+            });
+
+            result += buildTable(["From", "To", "Time"], data);
+        }
+
+        return result;
     }
 
     function showWeekTime(project, period) {
@@ -274,6 +305,41 @@ function repl() {
             default:
                 return value;
         }
+    }
+
+    function ansiWrap(style, string) {
+        return ansi[style].open + string + ansi[style].close;
+    }
+
+    function buildTable(headers, data) {
+        var table = new Table({
+            chars: {
+                "top": "═",
+                "top-mid": "╤",
+                "top-left": "╔",
+                "top-right": "╗",
+                "bottom": "═",
+                "bottom-mid": "╧",
+                "bottom-left": "╚",
+                "bottom-right": "╝",
+                "left": "║",
+                "left-mid": "╟",
+                "mid": "─",
+                "mid-mid": "┼",
+                "right": "║",
+                "right-mid": "╢",
+                "middle": "│"
+            },
+            colAligns: ["middle", "middle", "middle"],
+            style: {
+                head: ["bold", "blue"]
+            },
+            head: headers
+        });
+
+        table.push.apply(table, data);
+
+        return table.toString();
     }
 
     return that;
