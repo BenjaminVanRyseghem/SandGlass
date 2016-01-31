@@ -1,5 +1,5 @@
 const db = require("./db");
-const timeComputer = require("./timeComputer");
+const timeComputer = require("./time/timeComputer");
 const helper = require("./periods/helper");
 
 const moment = require("moment");
@@ -10,18 +10,11 @@ function time() {
 
     let that = {};
 
-    /**
-     * Used to get the worked time for a day once the day is over.
-     * Otherwise, use `getTodayDurationFor`.
-     *
-     * @param {String} project Name of the project to track
-     * @param {String} day Day to check
-     */
-    that.getDurationForDay = (project, day) => {
+    that.getSegmentsForDay = (project, day) => {
         let records = db.getRecordsFor(project, day);
 
         if (!records.length) {
-            return moment.duration(0);
+            return [];
         }
 
         if ((records[records.length - 1].action !== "stop")) {
@@ -32,7 +25,25 @@ function time() {
             });
         }
 
-        let ms = timeComputer.computeWorkingTimeFor(records);
+        return timeComputer.computeWorkingSegmentsFor(records);
+    };
+
+    /**
+     * Used to get the worked time for a day once the day is over.
+     * Otherwise, use `getTodayDurationFor`.
+     *
+     * @param {String} project Name of the project to track
+     * @param {String} day Day to check
+     */
+    that.getDurationForDay = (project, day) => {
+        let segments = that.getSegmentsForDay(project, day);
+
+        if (!segments.length) {
+            return moment.duration(0);
+        }
+
+        let ms = timeComputer.computeTimeFromSegments(segments);
+
         return moment.duration(ms);
     };
 
@@ -59,7 +70,13 @@ function time() {
         return moment(timestamp).format("YYYY-MM-DD");
     };
 
+    that.formatTime = (time) => {
+        return moment(time).format("HH:mm:ss");
+    };
+
     that.formatDuration = (duration, options) => {
+        duration = moment.duration(duration);
+
         let dotted = !(options && options.undotted);
 
         if (dotted) {

@@ -6,15 +6,14 @@ function computingState(spec, my) {
 
     let that = {};
 
-    my.accumulated = spec.accumulated || 0;
-    my.startingTime = spec.startingTime;
+    my.segments = spec.segments || [];
 
     that.compute = (record) => {
         throw new Error("Should be overridden");
     };
 
     my.exit = () => {
-        return my.accumulated;
+        return my.segments;
     };
 
     return that;

@@ -9,7 +9,7 @@ function endState(spec, my) {
     let that = computingState(spec, my);
 
     that.getResult = () => {
-        return my.accumulated;
+        return my.segments;
     };
 
     return that;

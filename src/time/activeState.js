@@ -1,4 +1,5 @@
 const computingState = require("./computingState");
+const segment = require("./segment");
 
 function activeState(spec, my) {
     "use strict";
@@ -7,18 +8,23 @@ function activeState(spec, my) {
     my = my || {};
 
     let that = computingState(spec, my);
+    my.startingTime = spec.startingTime;
 
     that.compute = (record) => {
         if (record.action === "stop") {
-            let delta = record.timestamp - my.startingTime;
+            let newSegment = segment({
+                start: my.startingTime,
+                end: record.timestamp
+            });
+
+            my.segments.push(newSegment);
 
             return require("./inactiveState")({
-                accumulated: my.accumulated + delta,
-                startingTime: record.timestamp
+                segments: my.segments
             });
-        } else {
-            return that;
         }
+
+        return that;
     };
 
     return that;

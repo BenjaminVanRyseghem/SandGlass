@@ -1,7 +1,7 @@
 describe("timeComputer", function() {
     "use strict";
 
-    const timeComputer = require("../src/timeComputer");
+    const timeComputer = require("../src/time/timeComputer");
 
     it("raise an exception if the first record is not a start", function() {
         let records = [

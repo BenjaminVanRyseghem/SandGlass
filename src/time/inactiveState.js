@@ -12,13 +12,13 @@ function inactiveState(spec, my) {
     that.compute = (record) => {
         if (record === null) {
             return endState({
-                accumulated: my.accumulated
+                segments: my.segments
             });
         }
 
         if (record.action === "start") {
             return require("./activeState")({
-                accumulated: my.accumulated,
+                segments: my.segments,
                 startingTime: record.timestamp
             });
         }

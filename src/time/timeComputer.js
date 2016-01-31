@@ -6,7 +6,7 @@ function timeComputer() {
 
     let that = {};
 
-    that.computeWorkingTimeFor = (records) => {
+    that.computeWorkingSegmentsFor = (records) => {
         if ((records[0].action !== "start")) {
             throw new Error("The day should begin with a \"start\" record");
         }
@@ -29,6 +29,20 @@ function timeComputer() {
         }
 
         return currentState.getResult();
+    };
+
+    that.computeWorkingTimeFor = (records) => {
+        let segments = that.computeWorkingSegmentsFor(records);
+
+        return that.computeTimeFromSegments(segments);
+    };
+
+    that.computeTimeFromSegments = function(segments) {
+        //console.log(segments);
+
+        return segments.reduce((previous, current)=> {
+            return previous + current.delta();
+        }, 0);
     };
 
     return that;
