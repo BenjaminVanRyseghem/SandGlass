@@ -1,3 +1,5 @@
+const helper = require("./helper");
+
 function period(spec, my) {
     "use strict";
 
@@ -22,6 +24,22 @@ function period(spec, my) {
 
     that.getWeeks = () => {
         //... Needs to reunite broken weeks
+        let weeks = that.getMonths().reduce((acc, month) => {
+            return acc.concat(month.getWeeks());
+        });
+
+        let unbroken = weeks.filter((week) => {
+            return !week.isBroken();
+        });
+
+        let broken = weeks.filter((week) => {
+            return week.isBroken();
+        });
+
+        let gatheredWeeks = helper.gatherBrokenWeeks(broken);
+        let reunitedWeeks = helper.reuniteGatheredBrokenWeeks(gatheredWeeks);
+
+        return unbroken.concat(reunitedWeeks);
     };
 
     that.getDays = () => {
@@ -32,7 +50,7 @@ function period(spec, my) {
         }, []);
     };
 
-    that.accept = function(visitor) {
+    that.accept = (visitor) => {
         return visitor.visitPeriod(that);
     };
 

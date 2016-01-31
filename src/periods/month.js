@@ -38,7 +38,7 @@ function month(spec, my) {
         return my.weeks;
     };
 
-    that.accept = function(visitor) {
+    that.accept = (visitor) => {
         return visitor.visitMonth(that);
     };
 

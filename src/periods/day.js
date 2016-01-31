@@ -40,8 +40,14 @@ function day(spec, my) {
         return [that];
     };
 
-    that.accept = function(visitor) {
+    that.accept = (visitor) => {
         return visitor.visitDay(that);
+    };
+
+    that.clone = () => {
+        return day({
+            periodIndex: that.periodIndex()
+        });
     };
 
     return that;

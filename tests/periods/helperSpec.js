@@ -1,11 +1,24 @@
 const moment = require("moment");
 
 const helper = require("../../src/periods/helper");
+const yearBuilder = require("../../src/periods/yearBuilder");
 
 const date = "2016-10-17";
 
+const firstDay = new Date("2016-09-01");
+
 describe("periods/helper", function() {
     "use strict";
+
+    let daysData = [];
+
+    beforeEach(() => {
+        daysData = [];
+        for (let i = 0; i < 91; i++) {
+            let newDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate() + i);
+            daysData.push(moment(newDate).format("YYYY-MM-DD"));
+        }
+    });
 
     it("return the correct year index", () => {
         expect(helper.getYearIndex(date)).toBe(2016);
@@ -63,5 +76,80 @@ describe("periods/helper", function() {
         expect(days[4]).toBe("2016-10-21");
         expect(days[5]).toBe("2016-10-22");
         expect(days[6]).toBe("2016-10-23");
+    });
+
+    it("can gather broken weeks", () => {
+        let year = yearBuilder.build(daysData);
+
+        let rawWeeks = year.getMonths().reduce((acc, month) => {
+            return acc.concat(month.getWeeks());
+        }, []);
+
+        let broken = rawWeeks.filter((week) => {
+            return week.isBroken();
+        });
+
+        let gatheredWeeks = helper.gatherBrokenWeeks(broken);
+
+        expect(Object.keys(gatheredWeeks)).toEqual(["35", "39", "44", "48"]);
+        expect(gatheredWeeks["35"].length).toEqual(1);
+        expect(gatheredWeeks["39"].length).toEqual(2);
+        expect(gatheredWeeks["44"].length).toEqual(2);
+        expect(gatheredWeeks["48"].length).toEqual(1);
+    });
+
+    it("can reunite 2 broken weeks into one plain week", () => {
+        let year = yearBuilder.build(daysData);
+
+        let rawWeeks = year.getMonths().reduce((acc, month) => {
+            return acc.concat(month.getWeeks());
+        }, []);
+
+        let broken = rawWeeks.filter((week) => {
+            return week.isBroken();
+        });
+        let gatheredWeeks = helper.gatherBrokenWeeks(broken);
+        let reunitedWeek = helper.reuniteBrokenWeeks("39", gatheredWeeks["39"]);
+
+        expect(reunitedWeek.periodIndex()).toEqual(39);
+        expect(reunitedWeek.isBroken()).toEqual(false);
+    });
+
+    it("cannot reunite 1 broken week", () => {
+        let year = yearBuilder.build(daysData);
+
+        let rawWeeks = year.getMonths().reduce((acc, month) => {
+            return acc.concat(month.getWeeks());
+        }, []);
+
+        let broken = rawWeeks.filter((week) => {
+            return week.isBroken();
+        });
+        let gatheredWeeks = helper.gatherBrokenWeeks(broken);
+        let reunitedWeek = helper.reuniteBrokenWeeks("35", gatheredWeeks["35"]);
+
+        expect(reunitedWeek.isBroken()).toEqual(true);
+    });
+
+    it("can reunite all gathered weeks", () => {
+        let year = yearBuilder.build(daysData);
+
+        let rawWeeks = year.getMonths().reduce((acc, month) => {
+            return acc.concat(month.getWeeks());
+        }, []);
+
+        let broken = rawWeeks.filter((week) => {
+            return week.isBroken();
+        });
+        let gatheredWeeks = helper.gatherBrokenWeeks(broken);
+        let reunitedWeeks = helper.reuniteGatheredBrokenWeeks(gatheredWeeks);
+
+        expect(reunitedWeeks.length).toEqual(4);
+        expect(reunitedWeeks[0].isBroken()).toEqual(true);
+        expect(reunitedWeeks[1].isBroken()).toEqual(false);
+        expect(reunitedWeeks[2].isBroken()).toEqual(false);
+        expect(reunitedWeeks[3].isBroken()).toEqual(true);
+
+        expect(reunitedWeeks[1].getDays().length).toEqual(7);
     });
 });

@@ -24,7 +24,7 @@ function year(spec, my) {
         return my.months;
     };
 
-    that.accept = function(visitor) {
+    that.accept = (visitor) => {
         return visitor.visitYear(that);
     };
 

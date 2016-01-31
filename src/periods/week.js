@@ -15,6 +15,10 @@ function week(spec, my) {
         day.setWeek(that);
     }
 
+    that.isBroken = () => {
+        return false;
+    };
+
     that.getYear = () => {
         return that.getMonths[0].getYear();
     };
@@ -40,7 +44,7 @@ function week(spec, my) {
         return my.days;
     };
 
-    that.accept = function(visitor) {
+    that.accept = (visitor) => {
         return visitor.visitWeek(that);
     };
 

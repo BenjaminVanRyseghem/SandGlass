@@ -61,6 +61,51 @@ function helper() {
         return days;
     };
 
+    that.gatherBrokenWeeks = function(brokenWeeks) {
+        let result = {};
+
+        for (let week of brokenWeeks) {
+            let index = week.periodIndex();
+
+            if (!result[index]) {
+                result[index] = [];
+            }
+
+            result[index].push(week);
+        }
+
+        return result;
+    };
+
+    that.reuniteGatheredBrokenWeeks = (data) => {
+        let indexes = Object.keys(data);
+
+        return indexes.map((index) => {
+            return that.reuniteBrokenWeeks(index, data[index]);
+        });
+    };
+
+    that.reuniteBrokenWeeks = (index, brokenWeeks) => {
+        if (brokenWeeks.length === 1) {
+
+            // Can't be reunited
+            return brokenWeeks[0];
+        }
+
+        let days = brokenWeeks.reduce((previous, current) => {
+            return previous.concat(current.getDays());
+        }, []);
+
+        days = days.map((day) => {
+            return day.clone();
+        });
+
+        return require("./week")({
+            periodIndex: +index,
+            days: days
+        });
+    };
+
     return that;
 }
 
