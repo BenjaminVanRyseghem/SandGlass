@@ -246,7 +246,11 @@ function repl() {
             }
 
             let data = segments.map((segment) => {
-                return [time.formatTime(segment.start()), time.formatTime(segment.end()), time.formatDuration(segment.delta())];
+                return [
+                    time.formatTime(segment.start()),
+                    time.formatTime(segment.end()),
+                    time.formatDuration(segment.delta())
+                ];
             });
 
             result += buildTable(["From", "To", "Time"], data);

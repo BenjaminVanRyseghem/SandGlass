@@ -72,7 +72,7 @@ function menu() {
 
             settingWindow.loadURL(`file://${__dirname}/../resources/preferences.html`);
             settingWindow.openDevTools();
-            settingWindow.webContents.on('did-finish-load', function() {
+            settingWindow.webContents.on("did-finish-load", function() {
                 settingWindow.webContents.executeJavaScript(`window.windowId = ${settingWindow.id};`);
                 settingWindow.show();
             });
