@@ -28,6 +28,10 @@ function year(spec, my) {
         return visitor.visitYear(that);
     };
 
+    that.containsYear = (year) => {
+        return year === that.periodIndex();
+    };
+
     return that;
 }
 

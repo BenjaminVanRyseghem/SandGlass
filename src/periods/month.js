@@ -42,6 +42,10 @@ function month(spec, my) {
         return visitor.visitMonth(that);
     };
 
+    that.containsMonth = (month) => {
+        return month === that.periodIndex();
+    };
+
     return that;
 }
 

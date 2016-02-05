@@ -46,8 +46,13 @@ function day(spec, my) {
 
     that.clone = () => {
         return day({
-            periodIndex: that.periodIndex()
+            identifier: my.identifier,
+            periodIndex: my.periodIndex
         });
+    };
+
+    that.containsDay = (day) => {
+        return day === that.identifier();
     };
 
     return that;

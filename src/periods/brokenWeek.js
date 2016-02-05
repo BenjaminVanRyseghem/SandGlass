@@ -48,6 +48,10 @@ function brokenWeek(spec, my) {
         return visitor.visitBrokenWeek(that);
     };
 
+    that.containsWeek = (week) => {
+        return week === that.periodIndex();
+    };
+
     return that;
 }
 

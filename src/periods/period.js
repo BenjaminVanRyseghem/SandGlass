@@ -15,7 +15,7 @@ function period(spec, my) {
     that.getName = () => {};
 
     that.getYear = () => {
-        return that;
+        return null;
     };
 
     that.getMonths = () => {
@@ -47,6 +47,28 @@ function period(spec, my) {
         }).reduce((previous, current) => {
             return previous.concat(current);
         }, []);
+    };
+
+    that.containsYear = (year) => {
+        return that.getYear().containsYear(year);
+    };
+
+    that.containsMonth = (month) => {
+        return that.getMonths().any((m) => {
+            return m.containsMonth(month);
+        });
+    };
+
+    that.containsWeek = (week) => {
+        return that.getWeeks().any((w) => {
+            return w.containsWeek(week);
+        });
+    };
+
+    that.containsDay = (day) => {
+        return that.getDays().any((d) => {
+            return d.containsDay(day);
+        });
     };
 
     that.accept = (visitor) => {
