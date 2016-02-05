@@ -15,7 +15,7 @@ Array.prototype.any = function(fn) {
     return false;
 };
 
-describe("periods/yearBuilder", function() {
+describe("periods/yearBuilder", () => {
     "use strict";
 
     let daysData = [];
@@ -82,95 +82,98 @@ describe("periods/yearBuilder", function() {
         expect(visitor.getNumberOfDays()).toBe(53);
     });
 
-    it(": year2016 contains 2016-03-04", () => {
-        let year2016 = yearBuilder.build(daysData);
+    describe("contains functions", () => {
 
-        expect(year2016.containsDay("2016-03-04")).toBe(true);
-    });
+        it(": year2016 contains 2016-03-04", () => {
+            let year2016 = yearBuilder.build(daysData);
 
-    it(": year2016 doesn't contains 2017-03-04", () => {
-        let year2016 = yearBuilder.build(daysData);
+            expect(year2016.containsDay("2016-03-04")).toBe(true);
+        });
 
-        expect(year2016.containsDay("2017-03-04")).toBe(false);
-    });
+        it(": year2016 doesn't contains 2017-03-04", () => {
+            let year2016 = yearBuilder.build(daysData);
 
-    it(": year2016 contains month 2", () => {
-        let year2016 = yearBuilder.build(daysData);
+            expect(year2016.containsDay("2017-03-04")).toBe(false);
+        });
 
-        expect(year2016.containsMonth("2")).toBe(true);
-    });
+        it(": year2016 contains month 2", () => {
+            let year2016 = yearBuilder.build(daysData);
 
-    it(": year2016 doesn't contains month 22", () => {
-        let year2016 = yearBuilder.build(daysData);
+            expect(year2016.containsMonth("2")).toBe(true);
+        });
 
-        expect(year2016.containsMonth("22")).toBe(false);
-    });
+        it(": year2016 doesn't contains month 22", () => {
+            let year2016 = yearBuilder.build(daysData);
 
-    it(": truncated year 2016 doesn't contains month 2", () => {
-        daysData = [];
+            expect(year2016.containsMonth("22")).toBe(false);
+        });
 
-        for (let i = 0; i < 366; i++) {
-            let newDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate() + i);
+        it(": truncated year 2016 doesn't contains month 2", () => {
+            daysData = [];
 
-            // All the year but Feb
-            if (newDate.getMonth() !== 1) {
-                daysData.push(moment(newDate).format("YYYY-MM-DD"));
+            for (let i = 0; i < 366; i++) {
+                let newDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate() + i);
+
+                // All the year but Feb
+                if (newDate.getMonth() !== 1) {
+                    daysData.push(moment(newDate).format("YYYY-MM-DD"));
+                }
             }
-        }
 
-        let year2016 = yearBuilder.build(daysData);
+            let year2016 = yearBuilder.build(daysData);
 
-        expect(year2016.containsMonth("2")).toBe(false);
-    });
+            expect(year2016.containsMonth("2")).toBe(false);
+        });
 
-    it(": truncated year 2016 contains month 3", () => {
-        daysData = [];
+        it(": truncated year 2016 contains month 3", () => {
+            daysData = [];
 
-        for (let i = 0; i < 366; i++) {
-            let newDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate() + i);
+            for (let i = 0; i < 366; i++) {
+                let newDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate() + i);
 
-            // All the year but Feb
-            if (newDate.getMonth() !== 1) {
-                daysData.push(moment(newDate).format("YYYY-MM-DD"));
+                // All the year but Feb
+                if (newDate.getMonth() !== 1) {
+                    daysData.push(moment(newDate).format("YYYY-MM-DD"));
+                }
             }
-        }
 
-        let year2016 = yearBuilder.build(daysData);
+            let year2016 = yearBuilder.build(daysData);
 
-        expect(year2016.containsMonth("3")).toBe(true);
-    });
+            expect(year2016.containsMonth("3")).toBe(true);
+        });
 
-    it(": truncated year 2016 doesn't contains week 6", () => {
-        daysData = [];
+        it(": truncated year 2016 doesn't contains week 6", () => {
+            daysData = [];
 
-        for (let i = 0; i < 366; i++) {
-            let newDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate() + i);
+            for (let i = 0; i < 366; i++) {
+                let newDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate() + i);
 
-            // All the year but Feb
-            if (newDate.getMonth() !== 1) {
-                daysData.push(moment(newDate).format("YYYY-MM-DD"));
+                // All the year but Feb
+                if (newDate.getMonth() !== 1) {
+                    daysData.push(moment(newDate).format("YYYY-MM-DD"));
+                }
             }
-        }
 
-        let year2016 = yearBuilder.build(daysData);
+            let year2016 = yearBuilder.build(daysData);
 
-        expect(year2016.containsWeek("6")).toBe(false);
-    });
+            expect(year2016.containsWeek("6")).toBe(false);
+        });
 
-    it(": truncated year 2016 contains week 24", () => {
-        daysData = [];
+        it(": truncated year 2016 contains week 24", () => {
+            daysData = [];
 
-        for (let i = 0; i < 366; i++) {
-            let newDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate() + i);
+            for (let i = 0; i < 366; i++) {
+                let newDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate() + i);
 
-            // All the year but Feb
-            if (newDate.getMonth() !== 1) {
-                daysData.push(moment(newDate).format("YYYY-MM-DD"));
+                // All the year but Feb
+                if (newDate.getMonth() !== 1) {
+                    daysData.push(moment(newDate).format("YYYY-MM-DD"));
+                }
             }
-        }
 
-        let year2016 = yearBuilder.build(daysData);
+            let year2016 = yearBuilder.build(daysData);
 
-        expect(year2016.containsWeek("24")).toBe(true);
+            expect(year2016.containsWeek("24")).toBe(true);
+        });
     });
 });
