@@ -51,8 +51,10 @@
   "wsh": false,
   "globals": {
     "describe": true,
+    "xdescribe": true,
     "beforeEach": true,
     "it": true,
+    "xit": true,
     "expect": true
   }
 }
