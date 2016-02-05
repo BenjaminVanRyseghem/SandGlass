@@ -35,6 +35,18 @@ describe("periods/yearBuilder", () => {
 
     describe("build", () => {
 
+        it("should raise an error when tryng to build multiple years", () => {
+            daysData = [];
+            for (let i = 0; i < 367; i++) {
+                let newDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate() + i);
+                daysData.push(moment(newDate).format("YYYY-MM-DD"));
+            }
+
+            let build = yearBuilder.build.bind(null, daysData);
+
+            expect(build).toThrowError(Error, "All days should be part of the same year");
+        });
+
         it("builds a year correctly", () => {
             let year2016 = yearBuilder.build(daysData);
 
