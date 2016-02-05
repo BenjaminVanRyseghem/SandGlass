@@ -5,6 +5,28 @@ function yearBuilder() {
 
     let that = {};
 
+    that.buildYears = (daysData) => {
+        let result = [];
+        let years = {};
+
+        // Gather all day per year
+        for (let day of daysData) {
+            let year = helper.getYearIndex(day);
+            if (!years[year]) {
+                years[year] = [];
+            }
+            years[year].push(day);
+        }
+
+        let keys = Object.keys(years);
+
+        for (let year of keys) {
+            result.push(that.build(years[year]));
+        }
+
+        return result;
+    };
+
     that.build = (daysData) => {
         let dayClass = require("./day");
         let yearClass = require("./year");
