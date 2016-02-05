@@ -26,12 +26,11 @@ function period(spec, my) {
         //... Needs to reunite broken weeks
         let weeks = that.getMonths().reduce((acc, month) => {
             return acc.concat(month.getWeeks());
-        });
+        }, []);
 
         let unbroken = weeks.filter((week) => {
             return !week.isBroken();
         });
-
         let broken = weeks.filter((week) => {
             return week.isBroken();
         });
