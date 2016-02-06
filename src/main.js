@@ -1,13 +1,13 @@
-const electron = require("electron");
-const app = electron.app;
-
-const tray = require("./tray");
-const menu = require("./menu");
-const tickler = require("./tickler");
-const repl = require("./repl");
-
-(() => {
+(function() {
     "use strict";
+
+    const electron = require("electron");
+    const app = electron.app;
+
+    const tray = require("./tray");
+    const menu = require("./menu");
+    const tickler = require("./tickler");
+    const repl = require("./repl");
 
     app.dock.hide();
     app.on("ready", init);

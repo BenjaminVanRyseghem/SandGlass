@@ -45,7 +45,7 @@ gulp.task('sass-lint', function() {
 });
 
 gulp.task('js-lint', function() {
-    return gulp.src(['./src/**/*.js', './tests/**/*.js'])
+    return gulp.src(['./src/**/*.js', './tests/**/*.js', './resources/src/**/*.js'])
         .pipe($.jshint())
         .pipe($.jshint.reporter('jshint-stylish'))
         .pipe($.jshint.reporter('fail'));

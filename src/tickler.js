@@ -1,71 +1,74 @@
-function tickler() {
+(function() {
     "use strict";
 
-    let that = {};
-    let my = {};
+    function tickler() {
 
-    let duration = 1000;
-    let onTick = [];
-    let onStart = [];
-    let onStop = [];
-    let running = false;
+        let that = {};
+        let my = {};
 
-    that.init = () => {
-        let settings = require("./settings");
-        if (settings.showTimerInTray() && require("./db").isRunningFor(settings.projectToShowInTray())) {
-            that.start();
-        }
-    };
+        let duration = 1000;
+        let onTick = [];
+        let onStart = [];
+        let onStop = [];
+        let running = false;
 
-    that.onTick = (callback) => onTick.push(callback);
-    that.onStart = (callback) => onStart.push(callback);
-    that.onStop = (callback) => onStop.push(callback);
+        that.init = () => {
+            let settings = require("./settings");
+            if (settings.showTimerInTray() && require("./db").isRunningFor(settings.projectToShowInTray())) {
+                that.start();
+            }
+        };
 
-    that.isRunning = () => {
-        return running;
-    };
+        that.onTick = (callback) => onTick.push(callback);
+        that.onStart = (callback) => onStart.push(callback);
+        that.onStop = (callback) => onStop.push(callback);
 
-    that.start = () => {
-        if (!running) {
-            running = true;
-            my.applyOnStart();
-            my.tick();
-        }
-    };
+        that.isRunning = () => {
+            return running;
+        };
 
-    that.stop = () => {
-        if (running) {
-            running = false;
-            my.applyOnStop();
-        }
-    };
+        that.start = () => {
+            if (!running) {
+                running = true;
+                my.applyOnStart();
+                my.tick();
+            }
+        };
 
-    my.tick = () => {
-        if (running) {
-            my.applyOnTick();
-            setTimeout(my.tick, duration);
-        }
-    };
+        that.stop = () => {
+            if (running) {
+                running = false;
+                my.applyOnStop();
+            }
+        };
 
-    my.applyOnTick = () => {
-        for (let callback of onTick) {
-            callback.apply(null, []);
-        }
-    };
+        my.tick = () => {
+            if (running) {
+                my.applyOnTick();
+                setTimeout(my.tick, duration);
+            }
+        };
 
-    my.applyOnStart = () => {
-        for (let callback of onStart) {
-            callback.apply(null, []);
-        }
-    };
+        my.applyOnTick = () => {
+            for (let callback of onTick) {
+                callback.apply(null, []);
+            }
+        };
 
-    my.applyOnStop = () => {
-        for (let callback of onStop) {
-            callback.apply(null, []);
-        }
-    };
+        my.applyOnStart = () => {
+            for (let callback of onStart) {
+                callback.apply(null, []);
+            }
+        };
 
-    return that;
-}
+        my.applyOnStop = () => {
+            for (let callback of onStop) {
+                callback.apply(null, []);
+            }
+        };
 
-module.exports = tickler();
+        return that;
+    }
+
+    module.exports = tickler();
+})();

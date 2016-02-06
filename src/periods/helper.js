@@ -1,112 +1,115 @@
-const moment = require("moment");
-
-function helper() {
+(function() {
     "use strict";
 
-    let that = {};
+    const moment = require("moment");
 
-    that.getMonthIndex = (data) => {
-        return +moment(data).format("M");
-    };
+    function helper() {
 
-    that.getWeekIndex = (data) => {
-        return +moment(data).format("W");
-    };
+        let that = {};
 
-    that.getYearIndex = (data) => {
-        return +moment(data).format("YYYY");
-    };
-
-    that.getDayIndex = (data) => {
-        return +moment(data).format("DDD");
-    };
-
-    that.isWeekBroken = (weekNo, year) => {
-        var week = that.getDateRangeOfWeek(weekNo, year);
-        var start = week.start;
-        var end = week.end;
-        return start.getMonth() !== end.getMonth();
-    };
-
-    // From https://gist.github.com/Abhinav1217/5038863
-    that.getDateRangeOfWeek = (weekNo, year) => {
-        if (weekNo < 1) {
-            throw new Error("`weekNo` must be greater or equal to 1");
-        }
-
-        let date = new Date(year + "-02-03");
-
-        let numOfdaysPastSinceLastMonday = date.getDay() - 1;
-        date.setDate(date.getDate() - numOfdaysPastSinceLastMonday);
-
-        let weekNoToday = that.getWeekIndex(date);
-        let weeksInTheFuture = weekNo - weekNoToday;
-        date.setDate(date.getDate() + 7 * weeksInTheFuture);
-
-        return {
-            start: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
-            end: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 6)
+        that.getMonthIndex = (data) => {
+            return +moment(data).format("M");
         };
-    };
 
-    that.getWeekDays = function(weekNumber, year) {
-        let start = that.getDateRangeOfWeek(weekNumber, year).start;
-        let days = [];
+        that.getWeekIndex = (data) => {
+            return +moment(data).format("W");
+        };
 
-        for (let i = 0; i < 7; i++) {
-            let day = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
-            days.push(moment(day).format("YYYY-MM-DD"));
-        }
+        that.getYearIndex = (data) => {
+            return +moment(data).format("YYYY");
+        };
 
-        return days;
-    };
+        that.getDayIndex = (data) => {
+            return +moment(data).format("DDD");
+        };
 
-    that.gatherBrokenWeeks = function(brokenWeeks) {
-        let result = {};
+        that.isWeekBroken = (weekNo, year) => {
+            var week = that.getDateRangeOfWeek(weekNo, year);
+            var start = week.start;
+            var end = week.end;
+            return start.getMonth() !== end.getMonth();
+        };
 
-        for (let week of brokenWeeks) {
-            let index = week.periodIndex();
-
-            if (!result[index]) {
-                result[index] = [];
+        // From https://gist.github.com/Abhinav1217/5038863
+        that.getDateRangeOfWeek = (weekNo, year) => {
+            if (weekNo < 1) {
+                throw new Error("`weekNo` must be greater or equal to 1");
             }
 
-            result[index].push(week);
-        }
+            let date = new Date(year + "-02-03");
 
-        return result;
-    };
+            let numOfdaysPastSinceLastMonday = date.getDay() - 1;
+            date.setDate(date.getDate() - numOfdaysPastSinceLastMonday);
 
-    that.reuniteGatheredBrokenWeeks = (data) => {
-        let indexes = Object.keys(data);
+            let weekNoToday = that.getWeekIndex(date);
+            let weeksInTheFuture = weekNo - weekNoToday;
+            date.setDate(date.getDate() + 7 * weeksInTheFuture);
 
-        return indexes.map((index) => {
-            return that.reuniteBrokenWeeks(index, data[index]);
-        });
-    };
+            return {
+                start: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+                end: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 6)
+            };
+        };
 
-    that.reuniteBrokenWeeks = (index, brokenWeeks) => {
-        if (brokenWeeks.length === 1) {
+        that.getWeekDays = function(weekNumber, year) {
+            let start = that.getDateRangeOfWeek(weekNumber, year).start;
+            let days = [];
 
-            // Can't be reunited
-            return brokenWeeks[0];
-        }
+            for (let i = 0; i < 7; i++) {
+                let day = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+                days.push(moment(day).format("YYYY-MM-DD"));
+            }
 
-        let days = brokenWeeks.reduce((previous, current) => {
-            return previous.concat(current.getDays());
-        }, []);
+            return days;
+        };
 
-        days = days.map((day) => {
-            return day.clone();
-        });
+        that.gatherBrokenWeeks = function(brokenWeeks) {
+            let result = {};
 
-        return require("./week")({
-            periodIndex: +index,
-            days: days
-        });
-    };
+            for (let week of brokenWeeks) {
+                let index = week.periodIndex();
 
-    return that;
-}
+                if (!result[index]) {
+                    result[index] = [];
+                }
 
-module.exports = helper();
+                result[index].push(week);
+            }
+
+            return result;
+        };
+
+        that.reuniteGatheredBrokenWeeks = (data) => {
+            let indexes = Object.keys(data);
+
+            return indexes.map((index) => {
+                return that.reuniteBrokenWeeks(index, data[index]);
+            });
+        };
+
+        that.reuniteBrokenWeeks = (index, brokenWeeks) => {
+            if (brokenWeeks.length === 1) {
+
+                // Can't be reunited
+                return brokenWeeks[0];
+            }
+
+            let days = brokenWeeks.reduce((previous, current) => {
+                return previous.concat(current.getDays());
+            }, []);
+
+            days = days.map((day) => {
+                return day.clone();
+            });
+
+            return require("./week")({
+                periodIndex: +index,
+                days: days
+            });
+        };
+
+        return that;
+    }
+
+    module.exports = helper();
+})();

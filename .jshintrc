@@ -45,16 +45,9 @@
   "browser": true,
   "couch": false,
   "devel": false,
-  "jquery": false,
+  "jquery": true,
+  "jasmine": true,
   "node": true,
   "nonstandard": false,
-  "wsh": false,
-  "globals": {
-    "describe": true,
-    "xdescribe": true,
-    "beforeEach": true,
-    "it": true,
-    "xit": true,
-    "expect": true
-  }
+  "wsh": false
 }

@@ -1,81 +1,84 @@
-const helper = require("./helper");
-
-function period(spec, my) {
+(function() {
     "use strict";
 
-    spec = spec || {};
-    my = my || {};
+    const helper = require("./helper");
 
-    my.periodIndex = spec.periodIndex;
+    function period(spec, my) {
 
-    let that = {};
+        spec = spec || {};
+        my = my || {};
 
-    that.periodIndex = () => my.periodIndex;
+        my.periodIndex = spec.periodIndex;
 
-    that.getName = () => {};
+        let that = {};
 
-    that.getYear = () => {
-        return null;
-    };
+        that.periodIndex = () => my.periodIndex;
 
-    that.getMonths = () => {
-        return that.getYear().getMonths();
-    };
+        that.getName = () => {};
 
-    that.getWeeks = () => {
-        //... Needs to reunite broken weeks
-        let weeks = that.getMonths().reduce((acc, month) => {
-            return acc.concat(month.getWeeks());
-        }, []);
+        that.getYear = () => {
+            return null;
+        };
 
-        let unbroken = weeks.filter((week) => {
-            return !week.isBroken();
-        });
-        let broken = weeks.filter((week) => {
-            return week.isBroken();
-        });
+        that.getMonths = () => {
+            return that.getYear().getMonths();
+        };
 
-        let gatheredWeeks = helper.gatherBrokenWeeks(broken);
-        let reunitedWeeks = helper.reuniteGatheredBrokenWeeks(gatheredWeeks);
+        that.getWeeks = () => {
+            //... Needs to reunite broken weeks
+            let weeks = that.getMonths().reduce((acc, month) => {
+                return acc.concat(month.getWeeks());
+            }, []);
 
-        return unbroken.concat(reunitedWeeks);
-    };
+            let unbroken = weeks.filter((week) => {
+                return !week.isBroken();
+            });
+            let broken = weeks.filter((week) => {
+                return week.isBroken();
+            });
 
-    that.getDays = () => {
-        return that.getWeeks().map((week) => {
-            return week.getDays();
-        }).reduce((previous, current) => {
-            return previous.concat(current);
-        }, []);
-    };
+            let gatheredWeeks = helper.gatherBrokenWeeks(broken);
+            let reunitedWeeks = helper.reuniteGatheredBrokenWeeks(gatheredWeeks);
 
-    that.containsYear = (year) => {
-        return that.getYear().containsYear(year);
-    };
+            return unbroken.concat(reunitedWeeks);
+        };
 
-    that.containsMonth = (month) => {
-        return that.getMonths().any((m) => {
-            return m.containsMonth(month);
-        });
-    };
+        that.getDays = () => {
+            return that.getWeeks().map((week) => {
+                return week.getDays();
+            }).reduce((previous, current) => {
+                return previous.concat(current);
+            }, []);
+        };
 
-    that.containsWeek = (week) => {
-        return that.getWeeks().any((w) => {
-            return w.containsWeek(week);
-        });
-    };
+        that.containsYear = (year) => {
+            return that.getYear().containsYear(year);
+        };
 
-    that.containsDay = (day) => {
-        return that.getDays().any((d) => {
-            return d.containsDay(day);
-        });
-    };
+        that.containsMonth = (month) => {
+            return that.getMonths().any((m) => {
+                return m.containsMonth(month);
+            });
+        };
 
-    that.accept = (visitor) => {
-        return visitor.visitPeriod(that);
-    };
+        that.containsWeek = (week) => {
+            return that.getWeeks().any((w) => {
+                return w.containsWeek(week);
+            });
+        };
 
-    return that;
-}
+        that.containsDay = (day) => {
+            return that.getDays().any((d) => {
+                return d.containsDay(day);
+            });
+        };
 
-module.exports = period;
+        that.accept = (visitor) => {
+            return visitor.visitPeriod(that);
+        };
+
+        return that;
+    }
+
+    module.exports = period;
+})();

@@ -1,7 +1,7 @@
-const fs = require("fs");
-
-(()=> {
+(function() {
     "use strict";
+
+    const fs = require("fs");
 
     var string = fs.readFileSync(`${__dirname}/../package.json`);
     let packageInfo = JSON.parse(string);

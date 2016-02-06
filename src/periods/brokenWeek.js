@@ -1,58 +1,61 @@
-const period = require("./period");
-
-function brokenWeek(spec, my) {
+(function() {
     "use strict";
 
-    spec = spec || {};
-    my = my || {};
+    const period = require("./period");
 
-    let that = period(spec, my);
+    function brokenWeek(spec, my) {
 
-    my.month = spec.month;
-    my.days = spec.days;
+        spec = spec || {};
+        my = my || {};
 
-    for (let day of my.days) {
-        day.setWeek(that);
-    }
+        let that = period(spec, my);
 
-    that.isBroken = () => {
-        return true;
-    };
+        my.month = spec.month;
+        my.days = spec.days;
 
-    that.getYear = () => {
-        return that.getMonths[0].getYear();
-    };
-
-    // To use only once to set the back pointer
-    that.setMonth = (month) => {
-        if (my.month) {
-            throw new Error("`my.month` has already been set!");
+        for (let day of my.days) {
+            day.setWeek(that);
         }
 
-        my.month = month;
-    };
+        that.isBroken = () => {
+            return true;
+        };
 
-    that.getMonths = () => {
-        return [my.month];
-    };
+        that.getYear = () => {
+            return that.getMonths[0].getYear();
+        };
 
-    that.getWeeks = () => {
-        return [that];
-    };
+        // To use only once to set the back pointer
+        that.setMonth = (month) => {
+            if (my.month) {
+                throw new Error("`my.month` has already been set!");
+            }
 
-    that.getDays = () => {
-        return my.days;
-    };
+            my.month = month;
+        };
 
-    that.accept = (visitor) => {
-        return visitor.visitBrokenWeek(that);
-    };
+        that.getMonths = () => {
+            return [my.month];
+        };
 
-    that.containsWeek = (week) => {
-        return week === that.periodIndex();
-    };
+        that.getWeeks = () => {
+            return [that];
+        };
 
-    return that;
-}
+        that.getDays = () => {
+            return my.days;
+        };
 
-module.exports = brokenWeek;
+        that.accept = (visitor) => {
+            return visitor.visitBrokenWeek(that);
+        };
+
+        that.containsWeek = (week) => {
+            return week === that.periodIndex();
+        };
+
+        return that;
+    }
+
+    module.exports = brokenWeek;
+})();

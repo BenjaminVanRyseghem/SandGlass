@@ -1,61 +1,64 @@
-const period = require("./period");
-
-function day(spec, my) {
+(function() {
     "use strict";
 
-    spec = spec || {};
-    my = my || {};
+    const period = require("./period");
 
-    let that = period(spec, my);
+    function day(spec, my) {
 
-    my.week = spec.week;
-    my.identifier = spec.identifier;
+        spec = spec || {};
+        my = my || {};
 
-    that.identifier = () => {
-        return my.identifier;
-    };
+        let that = period(spec, my);
 
-    that.getYear = () => {
-        return that.getMonths[0].getYear();
-    };
+        my.week = spec.week;
+        my.identifier = spec.identifier;
 
-    that.getMonths = () => {
-        return my.week.getMonths();
-    };
+        that.identifier = () => {
+            return my.identifier;
+        };
 
-    // To use only once to set the back pointer
-    that.setWeek = (week) => {
-        if (my.week) {
-            throw new Error("`my.week` has already been set!");
-        }
+        that.getYear = () => {
+            return that.getMonths[0].getYear();
+        };
 
-        my.week = week;
-    };
+        that.getMonths = () => {
+            return my.week.getMonths();
+        };
 
-    that.getWeeks = () => {
-        return [my.week];
-    };
+        // To use only once to set the back pointer
+        that.setWeek = (week) => {
+            if (my.week) {
+                throw new Error("`my.week` has already been set!");
+            }
 
-    that.getDays = () => {
-        return [that];
-    };
+            my.week = week;
+        };
 
-    that.accept = (visitor) => {
-        return visitor.visitDay(that);
-    };
+        that.getWeeks = () => {
+            return [my.week];
+        };
 
-    that.clone = () => {
-        return day({
-            identifier: my.identifier,
-            periodIndex: my.periodIndex
-        });
-    };
+        that.getDays = () => {
+            return [that];
+        };
 
-    that.containsDay = (day) => {
-        return day === that.identifier();
-    };
+        that.accept = (visitor) => {
+            return visitor.visitDay(that);
+        };
 
-    return that;
-}
+        that.clone = () => {
+            return day({
+                identifier: my.identifier,
+                periodIndex: my.periodIndex
+            });
+        };
 
-module.exports = day;
+        that.containsDay = (day) => {
+            return day === that.identifier();
+        };
+
+        return that;
+    }
+
+    module.exports = day;
+})();

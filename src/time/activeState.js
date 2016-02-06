@@ -1,33 +1,36 @@
-const computingState = require("./computingState");
-const segment = require("./segment");
-
-function activeState(spec, my) {
+(function() {
     "use strict";
 
-    spec = spec || {};
-    my = my || {};
+    const computingState = require("./computingState");
+    const segment = require("./segment");
 
-    let that = computingState(spec, my);
-    my.startingTime = spec.startingTime;
+    function activeState(spec, my) {
 
-    that.compute = (record) => {
-        if (record.action === "stop") {
-            let newSegment = segment({
-                start: my.startingTime,
-                end: record.timestamp
-            });
+        spec = spec || {};
+        my = my || {};
 
-            my.segments.push(newSegment);
+        let that = computingState(spec, my);
+        my.startingTime = spec.startingTime;
 
-            return require("./inactiveState")({
-                segments: my.segments
-            });
-        }
+        that.compute = (record) => {
+            if (record.action === "stop") {
+                let newSegment = segment({
+                    start: my.startingTime,
+                    end: record.timestamp
+                });
+
+                my.segments.push(newSegment);
+
+                return require("./inactiveState")({
+                    segments: my.segments
+                });
+            }
+
+            return that;
+        };
 
         return that;
-    };
+    }
 
-    return that;
-}
-
-module.exports = activeState;
+    module.exports = activeState;
+})();

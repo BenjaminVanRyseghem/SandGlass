@@ -1,52 +1,74 @@
-#container.preferences {
+body.preferences {
+  background: #ECECEC;
+  color: #0C1E3A;
 
-  // OSX like button
-  .btn {
-    font-size: 12px;
-    padding: 2px 10px;
-    margin-right: 12px;
+  // To compensate the inset
+  margin-top: 22px;
 
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-
-  .control-label {
-    padding-top: 7px;
-    text-align: right;
-  }
-
-  .col-xs-8.checkbox {
-    float: none;
-  }
-
-  .form-group.databaseFolder {
-    .db-path {
-      height: 34px;
-      line-height: 34px;
-      white-space: nowrap;
-      padding-right: 15px;
-      overflow-y: scroll;
-    }
-    .button-bar {
-      padding-right: 15px;
-      float: right;
-    }
-  }
-
-  .exportToCSV {
-    margin-top: 40px;
-    
-    #exportToCSV {
-      margin-top: 6px;
-    }
-  }
-
-  .form-footer {
-    border-top: 1px solid #888;
+  .title {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    text-align: right;
-    margin-top: 20px;
-    padding-top: 20px;
+    height: 22px;
+    text-align: center;
+    background: linear-gradient(#EDEDED, #CFCFCF);
+    overflow: hidden;
+
+    border-bottom: 1px solid #BABABA;
+  }
+
+  #container {
+    padding: 20px 40px;
+
+    // OSX like button
+    .btn {
+      font-size: 12px;
+      padding: 2px 10px;
+      margin-right: 12px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    .control-label {
+      padding-top: 7px;
+      text-align: right;
+    }
+
+    .col-xs-8.checkbox {
+      float: none;
+    }
+
+    .form-group.databaseFolder {
+      .db-path {
+        height: 34px;
+        line-height: 34px;
+        white-space: nowrap;
+        padding-right: 15px;
+        overflow-y: scroll;
+      }
+      .button-bar {
+        padding-right: 15px;
+        float: right;
+      }
+    }
+
+    .exportToCSV {
+      margin-top: 40px;
+
+      #exportToCSV {
+        margin-top: 6px;
+      }
+    }
+
+    .form-footer {
+      border-top: 1px solid #888;
+      width: 100%;
+      text-align: right;
+      margin-top: 20px;
+      padding-top: 20px;
+    }
   }
 }

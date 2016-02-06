@@ -1,18 +1,21 @@
-const computingState = require("./computingState");
-
-function endState(spec, my) {
+(function() {
     "use strict";
 
-    spec = spec || {};
-    my = my || {};
+    const computingState = require("./computingState");
 
-    let that = computingState(spec, my);
+    function endState(spec, my) {
 
-    that.getResult = () => {
-        return my.segments;
-    };
+        spec = spec || {};
+        my = my || {};
 
-    return that;
-}
+        let that = computingState(spec, my);
 
-module.exports = endState;
+        that.getResult = () => {
+            return my.segments;
+        };
+
+        return that;
+    }
+
+    module.exports = endState;
+})();

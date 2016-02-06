@@ -1,51 +1,52 @@
-const activeState = require("./activeState");
-
-// This is a state machine
-function timeComputer() {
+(function() {
     "use strict";
+    const activeState = require("./activeState");
 
-    let that = {};
+    function timeComputer() {
 
-    that.computeWorkingSegmentsFor = (records) => {
-        if ((records[0].action !== "start")) {
-            throw new Error("The day should begin with a \"start\" record");
-        }
+        let that = {};
 
-        if ((records[records.length - 1].action !== "stop")) {
-            throw new Error("The day should end with a \"stop\" record");
-        }
+        that.computeWorkingSegmentsFor = (records) => {
+            if ((records[0].action !== "start")) {
+                throw new Error("The day should begin with a \"start\" record");
+            }
 
-        // Append `null` at the end as ending flag, and remove the head
-        // as the iteration can start on the second element
-        let allRecords = records.slice(1);
-        allRecords.push(null);
+            if ((records[records.length - 1].action !== "stop")) {
+                throw new Error("The day should end with a \"stop\" record");
+            }
 
-        let currentState = activeState({
-            startingTime: records[0].timestamp
-        });
+            // Append `null` at the end as ending flag, and remove the head
+            // as the iteration can start on the second element
+            let allRecords = records.slice(1);
+            allRecords.push(null);
 
-        for (let each of allRecords) {
-            currentState = currentState.compute(each);
-        }
+            let currentState = activeState({
+                startingTime: records[0].timestamp
+            });
 
-        return currentState.getResult();
-    };
+            for (let each of allRecords) {
+                currentState = currentState.compute(each);
+            }
 
-    that.computeWorkingTimeFor = (records) => {
-        let segments = that.computeWorkingSegmentsFor(records);
+            return currentState.getResult();
+        };
 
-        return that.computeTimeFromSegments(segments);
-    };
+        that.computeWorkingTimeFor = (records) => {
+            let segments = that.computeWorkingSegmentsFor(records);
 
-    that.computeTimeFromSegments = function(segments) {
-        //console.log(segments);
+            return that.computeTimeFromSegments(segments);
+        };
 
-        return segments.reduce((previous, current)=> {
-            return previous + current.delta();
-        }, 0);
-    };
+        that.computeTimeFromSegments = function(segments) {
+            //console.log(segments);
 
-    return that;
-}
+            return segments.reduce((previous, current)=> {
+                return previous + current.delta();
+            }, 0);
+        };
 
-module.exports = timeComputer();
+        return that;
+    }
+
+    module.exports = timeComputer();
+})();
