@@ -16,7 +16,7 @@
         initializeForm();
         initializeHooks();
 
-        $(document).bind('keydown', 'meta+,', () => {
+        $(document).bind("keydown", "meta+,", () => {
             window.close();
         });
     });
@@ -41,12 +41,12 @@
 
     function initializeHooks() {
         $("#showTimerInTray").change(() => {
-            let value = $("#showTimerInTray").is(':checked');
+            let value = $("#showTimerInTray").is(":checked");
             settings.showTimerInTray(value);
         });
 
         $("#hideWhenStopped").change(() => {
-            let value = $("#hideWhenStopped").is(':checked');
+            let value = $("#hideWhenStopped").is(":checked");
             settings.hideWhenStopped(value);
         });
 
@@ -58,7 +58,7 @@
         $("#change-db-folder").click(() => {
             let win = BrowserWindow.fromId(window.windowId);
             let newPath = Dialog.showOpenDialog(win, {
-                properties: ['openDirectory']
+                properties: ["openDirectory"]
             });
 
             if (newPath) {
@@ -71,8 +71,8 @@
             let win = BrowserWindow.fromId(window.windowId);
             let newPath = Dialog.showSaveDialog(win, {
                 filters: [
-                    {name: 'Comma Separated Value', extensions: ['csv']},
-                    {name: 'All Files', extensions: ['*']}
+                    {name: "Comma Separated Value", extensions: ["csv"]},
+                    {name: "All Files", extensions: ["*"]}
                 ]
             });
 
@@ -83,9 +83,9 @@
                     data: data
                 }, (err, csv) => {
                     if (err) {
-                        dialog.showErrorBox("CSV Export", `The CSV export failed. The exact error was: \n\n${err}`);
+                        Dialog.showErrorBox("CSV Export", `The CSV export failed. The exact error was: \n\n${err}`);
                     } else {
-                        fs.writeFileSync(newPath, csv, 'utf8');
+                        fs.writeFileSync(newPath, csv, "utf8");
                     }
                 });
             }
