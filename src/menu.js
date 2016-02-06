@@ -1,61 +1,64 @@
-const electron = require("electron");
-const BrowserWindow = electron.BrowserWindow;
-const Menu = electron.Menu;
-const app = electron.app;
-
-const settings = require("./settings");
-const time = require("./time");
-
-function menu() {
+(function() {
     "use strict";
+    const electron = require("electron");
+    const BrowserWindow = electron.BrowserWindow;
+    const Menu = electron.Menu;
+    const app = electron.app;
 
-    let that = {};
-    let settingWindow = null;
+    const settings = require("./settings");
+    const time = require("./time");
 
-    that.init = (tray) => {
-        tray.on("click", () => {
-            let menu = Menu.buildFromTemplate(buildMenuTemplate());
-            tray.popUpContextMenu(menu);
-        });
-    };
+    function menu() {
 
-    function buildMenuTemplate() {
-        let items = [
-            {
-                label: "Preferences",
-                click: toggleSettings,
-                accelerator: "CmdOrCtrl+,",
-                enabled: true
-            },
-            {
-                label: "Quit SandGlass",
-                click: quit,
-                accelerator: "CmdOrCtrl+Q",
-                enabled: true
-            }
-        ];
+        let that = {};
+        let settingWindow = null;
 
-        if (!settings.showTimerInTray()) {
-            items.unshift({type: "separator"});
-            items.unshift({
-                label: getDurationFor(settings.projectToShowInTray()),
-                type: "normal",
-                enabled: false
+        that.init = (tray) => {
+            tray.on("click", () => {
+                let menu = Menu.buildFromTemplate(buildMenuTemplate());
+                tray.popUpContextMenu(menu);
             });
+        };
+
+        function buildMenuTemplate() {
+            let items = [
+                {
+                    label: "Preferences",
+                    click: toggleSettings,
+                    accelerator: "CmdOrCtrl+,",
+                    enabled: true
+                },
+                {
+                    label: "Quit SandGlass",
+                    click: quit,
+                    accelerator: "CmdOrCtrl+Q",
+                    enabled: true
+                }
+            ];
+
+            if (!settings.showTimerInTray()) {
+                items.unshift({type: "separator"});
+                items.unshift({
+                    label: getDurationFor(settings.projectToShowInTray()),
+                    type: "normal",
+                    enabled: false
+                });
+            }
+
+            return items;
         }
 
-        return items;
-    }
+        function getDurationFor(project) {
+            let duration = time.getTodayDurationFor(project);
+            return time.formatDuration(duration);
+        }
 
-    function getDurationFor(project) {
-        let duration = time.getTodayDurationFor(project);
-        return time.formatDuration(duration);
-    }
+        function toggleSettings() {
+            if (settingWindow) {
+                settingWindow.close();
+                return;
+            }
 
-    function toggleSettings() {
-        if (settingWindow) {
-            settingWindow.close();
-        } else {
             settingWindow = new BrowserWindow({
                 width: 640,
                 height: 378,
@@ -79,13 +82,15 @@ function menu() {
 
             settingWindow.focus();
         }
+
+
+
+        function quit() {
+            app.quit();
+        }
+
+        return that;
     }
 
-    function quit() {
-        app.quit();
-    }
-
-    return that;
-}
-
-module.exports = menu();
+    module.exports = menu();
+})();

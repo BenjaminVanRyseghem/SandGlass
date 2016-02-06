@@ -1,22 +1,25 @@
-function computingState(spec, my) {
+(function() {
     "use strict";
 
-    spec = spec || {};
-    my = my || {};
+    function computingState(spec, my) {
 
-    let that = {};
+        spec = spec || {};
+        my = my || {};
 
-    my.segments = spec.segments || [];
+        let that = {};
 
-    that.compute = (record) => {
-        throw new Error("Should be overridden");
-    };
+        my.segments = spec.segments || [];
 
-    my.exit = () => {
-        return my.segments;
-    };
+        that.compute = (record) => {
+            throw new Error("Should be overridden");
+        };
 
-    return that;
-}
+        my.exit = () => {
+            return my.segments;
+        };
 
-module.exports = computingState;
+        return that;
+    }
+
+    module.exports = computingState;
+})();

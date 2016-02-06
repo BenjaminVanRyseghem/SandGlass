@@ -1,120 +1,123 @@
-const helper = require("./helper");
-
-function yearBuilder() {
+(function() {
     "use strict";
 
-    let that = {};
+    const helper = require("./helper");
 
-    that.buildYears = (daysData) => {
-        let result = [];
-        let years = {};
+    function yearBuilder() {
 
-        // Gather all day per year
-        for (let day of daysData) {
-            let year = helper.getYearIndex(day);
-            if (!years[year]) {
-                years[year] = [];
-            }
-            years[year].push(day);
-        }
+        let that = {};
 
-        let keys = Object.keys(years);
+        that.buildYears = (daysData) => {
+            let result = [];
+            let years = {};
 
-        for (let year of keys) {
-            result.push(that.build(years[year]));
-        }
-
-        return result;
-    };
-
-    that.build = (daysData) => {
-        let dayClass = require("./day");
-        let yearClass = require("./year");
-
-        let currentYear = helper.getYearIndex(daysData[0]);
-
-        let days = daysData.map(function(identifier) {
-            if (currentYear !== helper.getYearIndex(identifier)) {
-                throw new Error("All days should be part of the same year");
+            // Gather all day per year
+            for (let day of daysData) {
+                let year = helper.getYearIndex(day);
+                if (!years[year]) {
+                    years[year] = [];
+                }
+                years[year].push(day);
             }
 
-            return dayClass({
-                identifier: identifier,
-                periodIndex: helper.getDayIndex(identifier)
+            let keys = Object.keys(years);
+
+            for (let year of keys) {
+                result.push(that.build(years[year]));
+            }
+
+            return result;
+        };
+
+        that.build = (daysData) => {
+            let dayClass = require("./day");
+            let yearClass = require("./year");
+
+            let currentYear = helper.getYearIndex(daysData[0]);
+
+            let days = daysData.map(function(identifier) {
+                if (currentYear !== helper.getYearIndex(identifier)) {
+                    throw new Error("All days should be part of the same year");
+                }
+
+                return dayClass({
+                    identifier: identifier,
+                    periodIndex: helper.getDayIndex(identifier)
+                });
             });
-        });
 
-        let monthsData = that.buildMonthData(days);
-        let months = that.linkPeriods(monthsData, currentYear);
+            let monthsData = that.buildMonthData(days);
+            let months = that.linkPeriods(monthsData, currentYear);
 
-        return yearClass({
-            months: months,
-            periodIndex: currentYear
-        });
-    };
+            return yearClass({
+                months: months,
+                periodIndex: currentYear
+            });
+        };
 
-    that.buildMonthData = (days) => {
-        let monthsData = [];
+        that.buildMonthData = (days) => {
+            let monthsData = [];
 
-        // group per months
-        for (let day of days) {
-            let identifier = day.identifier();
-            let dayMonthIndex = helper.getMonthIndex(identifier);
-            let dayWeekIndex = helper.getWeekIndex(identifier);
+            // group per months
+            for (let day of days) {
+                let identifier = day.identifier();
+                let dayMonthIndex = helper.getMonthIndex(identifier);
+                let dayWeekIndex = helper.getWeekIndex(identifier);
 
-            if (!monthsData[dayMonthIndex]) {
-                monthsData[dayMonthIndex] = {
-                    weeks: {}
-                };
+                if (!monthsData[dayMonthIndex]) {
+                    monthsData[dayMonthIndex] = {
+                        weeks: {}
+                    };
+                }
+
+                let monthData = monthsData[dayMonthIndex];
+
+                if (!monthData.weeks[dayWeekIndex]) {
+                    monthData.weeks[dayWeekIndex] = [];
+                }
+
+                monthData.weeks[dayWeekIndex].push(day);
             }
 
-            let monthData = monthsData[dayMonthIndex];
+            return monthsData;
+        };
 
-            if (!monthData.weeks[dayWeekIndex]) {
-                monthData.weeks[dayWeekIndex] = [];
-            }
+        that.linkPeriods = (monthsData, currentYear) => {
+            let weekClass = require("./week");
+            let brokenWeekClass = require("./brokenWeek");
+            let monthClass = require("./month");
 
-            monthData.weeks[dayWeekIndex].push(day);
-        }
+            let months = [];
 
-        return monthsData;
-    };
+            let keys = Object.keys(monthsData);
+            keys.forEach((monthIndex) => {
+                let monthData = monthsData[monthIndex];
+                let weeks = [];
 
-    that.linkPeriods = (monthsData, currentYear) => {
-        let weekClass = require("./week");
-        let brokenWeekClass = require("./brokenWeek");
-        let monthClass = require("./month");
+                let wKeys = Object.keys(monthData.weeks);
+                wKeys.forEach((weekIndex) => {
+                    let weekData = monthData.weeks[weekIndex];
 
-        let months = [];
+                    let broken = helper.isWeekBroken(weekIndex, currentYear);
+                    let classToUse = broken ? brokenWeekClass : weekClass;
 
-        let keys = Object.keys(monthsData);
-        keys.forEach((monthIndex) => {
-            let monthData = monthsData[monthIndex];
-            let weeks = [];
+                    weeks.push(classToUse({
+                        days: weekData,
+                        periodIndex: weekIndex
+                    }));
+                });
 
-            let wKeys = Object.keys(monthData.weeks);
-            wKeys.forEach((weekIndex) => {
-                let weekData = monthData.weeks[weekIndex];
-
-                let broken = helper.isWeekBroken(weekIndex, currentYear);
-                let classToUse = broken ? brokenWeekClass : weekClass;
-
-                weeks.push(classToUse({
-                    days: weekData,
-                    periodIndex: weekIndex
+                months.push(monthClass({
+                    weeks: weeks,
+                    periodIndex: monthIndex
                 }));
             });
 
-            months.push(monthClass({
-                weeks: weeks,
-                periodIndex: monthIndex
-            }));
-        });
+            return months;
+        };
 
-        return months;
-    };
+        return that;
+    }
 
-    return that;
-}
-
-module.exports = yearBuilder();
+    module.exports = yearBuilder();
+})();

@@ -1,130 +1,133 @@
-const ElectronSettings = require("electron-settings");
-const path = require("path");
-const fs = require("fs");
-
-const tickler = require("./tickler");
-
-function settings() {
+(function() {
     "use strict";
 
-    let bridge = new ElectronSettings();
+    const ElectronSettings = require("electron-settings");
+    const path = require("path");
+    const fs = require("fs");
 
-    let that = {};
-    let my = {};
+    const tickler = require("./tickler");
 
-    that.showTimerInTray = (boolean) => {
-        if (boolean === undefined) {
-            return my.get("showTimerInTray");
-        } else {
-            let result = my.set("showTimerInTray", boolean);
-            if (boolean && require("./db").isRunningFor(that.projectToShowInTray())) {
-                tickler.start();
-            }
+    function settings() {
 
-            if (!boolean) {
-                tickler.stop();
-            }
+        let bridge = new ElectronSettings();
 
-            return result;
-        }
-    };
+        let that = {};
+        let my = {};
 
-    that.projectToShowInTray = (project) => {
-        if (project === undefined) {
-            return my.get("projectToShowInTray") || "default";
-        } else {
-            let result = my.set("projectToShowInTray", project || undefined);
-            require("./tray").updateTitle();
-
-            if (require("./db").isRunningFor(project) && that.showTimerInTray()) {
-                tickler.start();
+        that.showTimerInTray = (boolean) => {
+            if (boolean === undefined) {
+                return my.get("showTimerInTray");
             } else {
-                tickler.stop();
+                let result = my.set("showTimerInTray", boolean);
+                if (boolean && require("./db").isRunningFor(that.projectToShowInTray())) {
+                    tickler.start();
+                }
+
+                if (!boolean) {
+                    tickler.stop();
+                }
+
+                return result;
             }
+        };
 
-            return result;
-        }
-    };
-
-    that.hideWhenStopped = (boolean) => {
-        if (boolean === undefined) {
-            return my.get("hideWhenStopped") || false;
-        } else {
-            let result = my.set("hideWhenStopped", boolean);
-
-            if (!tickler.isRunning()) {
+        that.projectToShowInTray = (project) => {
+            if (project === undefined) {
+                return my.get("projectToShowInTray") || "default";
+            } else {
+                let result = my.set("projectToShowInTray", project || undefined);
                 require("./tray").updateTitle();
+
+                if (require("./db").isRunningFor(project) && that.showTimerInTray()) {
+                    tickler.start();
+                } else {
+                    tickler.stop();
+                }
+
+                return result;
             }
+        };
+
+        that.hideWhenStopped = (boolean) => {
+            if (boolean === undefined) {
+                return my.get("hideWhenStopped") || false;
+            } else {
+                let result = my.set("hideWhenStopped", boolean);
+
+                if (!tickler.isRunning()) {
+                    require("./tray").updateTitle();
+                }
+
+                return result;
+            }
+        };
+
+        that.databaseFolder = (newPath) => {
+            if (newPath === undefined) {
+                let result = my.get("databaseFolder") || my.defaultDatabaseFolder();
+                my.ensureSettingsFolderPath(result);
+
+                return result;
+            } else {
+                let oldPath = that.databaseFolder();
+
+                if (oldPath === newPath) {
+                    return;
+                }
+
+                if (newPath[newPath.length - 1] !== path.sep) {
+                    newPath += path.sep;
+                }
+
+                let result = my.set("databaseFolder", newPath || undefined);
+                my.ensureSettingsFolderPath(newPath);
+                require("./db").migrate({
+                    from: oldPath,
+                    to: newPath
+                });
+
+                return result;
+            }
+        };
+
+        my.set = (key, value, options) => {
+            return bridge.set(key, value, options);
+        };
+
+        my.get = (key) => {
+            return bridge.get(key);
+        };
+
+        my.unset = (key, options) => {
+            return bridge.unset(key, options);
+        };
+
+        my.settingsPath = () => {
+            return bridge.getUserConfigPath();
+        };
+
+        my.defaultDatabaseFolder = () => {
+            let result = my.settingsPath();
+            result = result.split(path.sep);
+            result.pop();
+            result.pop();
+            result.push("database");
+
+            result = result.join(path.sep) + path.sep;
 
             return result;
-        }
-    };
+        };
 
-    that.databaseFolder = (newPath) => {
-        if (newPath === undefined) {
-            let result = my.get("databaseFolder") || my.defaultDatabaseFolder();
-            my.ensureSettingsFolderPath(result);
-
-            return result;
-        } else {
-            let oldPath = that.databaseFolder();
-
-            if (oldPath === newPath) {
-                return;
+        my.ensureSettingsFolderPath = (path) => {
+            try {
+                fs.accessSync(path, fs.F_OK);
+            } catch (e) {
+                fs.mkdirSync(path);
             }
+        };
 
-            if (newPath[newPath.length - 1] !== path.sep) {
-                newPath += path.sep;
-            }
+        return that;
+    }
 
-            let result = my.set("databaseFolder", newPath || undefined);
-            my.ensureSettingsFolderPath(newPath);
-            require("./db").migrate({
-                from: oldPath,
-                to: newPath
-            });
-
-            return result;
-        }
-    };
-
-    my.set = (key, value, options) => {
-        return bridge.set(key, value, options);
-    };
-
-    my.get = (key) => {
-        return bridge.get(key);
-    };
-
-    my.unset = (key, options) => {
-        return bridge.unset(key, options);
-    };
-
-    my.settingsPath = () => {
-        return bridge.getUserConfigPath();
-    };
-
-    my.defaultDatabaseFolder = () => {
-        let result = my.settingsPath();
-        result = result.split(path.sep);
-        result.pop();
-        result.pop();
-        result.push("database");
-
-        result = result.join(path.sep) + path.sep;
-
-        return result;
-    };
-
-    my.ensureSettingsFolderPath = (path) => {
-        try {
-            fs.accessSync(path, fs.F_OK);
-        } catch (e) {
-            fs.mkdirSync(path);
-        }
-    };
-
-    return that;
-}
-
-module.exports = settings();
+    module.exports = settings();
+})();

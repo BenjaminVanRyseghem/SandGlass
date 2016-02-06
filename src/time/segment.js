@@ -1,27 +1,30 @@
-function segment(spec, my) {
+(function() {
     "use strict";
 
-    spec = spec || {};
-    my = my || {};
+    function segment(spec, my) {
 
-    my.start = spec.start;
-    my.end = spec.end;
+        spec = spec || {};
+        my = my || {};
 
-    let that = {};
+        my.start = spec.start;
+        my.end = spec.end;
 
-    that.start = () => {
-        return my.start;
-    };
+        let that = {};
 
-    that.end = () => {
-        return my.end;
-    };
+        that.start = () => {
+            return my.start;
+        };
 
-    that.delta = () => {
-        return my.end - my.start;
-    };
+        that.end = () => {
+            return my.end;
+        };
 
-    return that;
-}
+        that.delta = () => {
+            return my.end - my.start;
+        };
 
-module.exports = segment;
+        return that;
+    }
+
+    module.exports = segment;
+})();

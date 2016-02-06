@@ -1,114 +1,117 @@
-const moment = require("moment");
-const low = require("lowdb");
-const fs = require("fs");
-const storage = require("lowdb/file-sync");
-
-const settings = require("./settings");
-const tickler = require("./tickler");
-
-function db() {
+(function() {
     "use strict";
 
-    let that = {};
-    let database = low(`${settings.databaseFolder()}db.json`, {storage});
+    const moment = require("moment");
+    const low = require("lowdb");
+    const fs = require("fs");
+    const storage = require("lowdb/file-sync");
 
-    /**
-     * Start the timer for the provided project
-     * @param project
-     */
-    that.start = (project) => {
-        project = project || "default";
+    const settings = require("./settings");
+    const tickler = require("./tickler");
 
-        if (project === settings.projectToShowInTray() && settings.showTimerInTray()) {
-            tickler.start();
-        }
+    function db() {
 
-        let date = require("./time").formatDay(Date.now());
-        database(date).push({
-            project: project,
-            action: "start",
-            timestamp: Date.now(),
-            time: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
-        });
-    };
+        let that = {};
+        let database = low(`${settings.databaseFolder()}db.json`, {storage});
 
-    /**
-     * Stop the timer for the provided project
-     * @param project
-     */
-    that.stop = (project) => {
-        project = project || "default";
+        /**
+         * Start the timer for the provided project
+         * @param project
+         */
+        that.start = (project) => {
+            project = project || "default";
 
-        if (project === settings.projectToShowInTray()) {
-            tickler.stop();
-        }
+            if (project === settings.projectToShowInTray() && settings.showTimerInTray()) {
+                tickler.start();
+            }
 
-        let date = require("./time").formatDay(Date.now());
-        database(date).push({
-            project: project,
-            action: "stop",
-            timestamp: Date.now(),
-            time: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
-        });
-    };
+            let date = require("./time").formatDay(Date.now());
+            database(date).push({
+                project: project,
+                action: "start",
+                timestamp: Date.now(),
+                time: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
+            });
+        };
 
-    /**
-     * Return all the records for the provided day and project.
-     * The records are sorted based on their timestamp
-     * @param project
-     * @param day
-     * @returns {*}
-     */
-    that.getRecordsFor = (project, day) => {
-        project = project || "default";
+        /**
+         * Stop the timer for the provided project
+         * @param project
+         */
+        that.stop = (project) => {
+            project = project || "default";
 
-        if (!day) {
-            throw new Error("`day` is mandatory");
-        }
+            if (project === settings.projectToShowInTray()) {
+                tickler.stop();
+            }
 
-        return database(day)
-            .chain()
-            .filter({project: project})
-            .sortBy("timestamp")
-            .value()
-            .slice();
-    };
+            let date = require("./time").formatDay(Date.now());
+            database(date).push({
+                project: project,
+                action: "stop",
+                timestamp: Date.now(),
+                time: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
+            });
+        };
 
-    that.isRunningFor = (project) => {
-        let day = require("./time").formatDay(Date.now());
-        let records = that.getRecordsFor(project, day);
+        /**
+         * Return all the records for the provided day and project.
+         * The records are sorted based on their timestamp
+         * @param project
+         * @param day
+         * @returns {*}
+         */
+        that.getRecordsFor = (project, day) => {
+            project = project || "default";
 
-        if (!records.length) {
-            return false;
-        }
+            if (!day) {
+                throw new Error("`day` is mandatory");
+            }
 
-        let last = records[records.length - 1];
-        return last.action === "start";
-    };
+            return database(day)
+                .chain()
+                .filter({project: project})
+                .sortBy("timestamp")
+                .value()
+                .slice();
+        };
 
-    that.getAllData = () => {
-        let data = [];
+        that.isRunningFor = (project) => {
+            let day = require("./time").formatDay(Date.now());
+            let records = that.getRecordsFor(project, day);
 
-        let keys = Object.keys(database.object);
+            if (!records.length) {
+                return false;
+            }
 
-        for (let key of keys) {
-            let value = database.object[key];
-            data = data.concat(value);
-        }
+            let last = records[records.length - 1];
+            return last.action === "start";
+        };
 
-        return data;
-    };
+        that.getAllData = () => {
+            let data = [];
 
-    that.migrate = (options) => {
-        let from = options.from;
-        let to = options.to;
+            let keys = Object.keys(database.object);
 
-        fs.renameSync(`${from}db.json`, `${to}db.json`);
+            for (let key of keys) {
+                let value = database.object[key];
+                data = data.concat(value);
+            }
 
-        database = low(`${settings.databaseFolder()}db.json`, {storage});
-    };
+            return data;
+        };
 
-    return that;
-}
+        that.migrate = (options) => {
+            let from = options.from;
+            let to = options.to;
 
-module.exports = db();
+            fs.renameSync(`${from}db.json`, `${to}db.json`);
+
+            database = low(`${settings.databaseFolder()}db.json`, {storage});
+        };
+
+        return that;
+    }
+
+    module.exports = db();
+})();

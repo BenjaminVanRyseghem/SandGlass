@@ -1,52 +1,55 @@
-const period = require("./period");
-
-function month(spec, my) {
+(function() {
     "use strict";
 
-    spec = spec || {};
-    my = my || {};
+    const period = require("./period");
 
-    let that = period(spec, my);
+    function month(spec, my) {
 
-    my.year = spec.year;
-    my.weeks = spec.weeks;
+        spec = spec || {};
+        my = my || {};
 
-    for (let week of my.weeks) {
-        week.setMonth(that);
-    }
+        let that = period(spec, my);
 
-    that.getName = () => {};
+        my.year = spec.year;
+        my.weeks = spec.weeks;
 
-    // To use only once to set the back pointer
-    that.setYear = (year) => {
-        if (my.year) {
-            throw new Error("`my.year` has already been set!");
+        for (let week of my.weeks) {
+            week.setMonth(that);
         }
 
-        my.year = year;
-    };
+        that.getName = () => {};
 
-    that.getYear = () => {
-        return my.year;
-    };
+        // To use only once to set the back pointer
+        that.setYear = (year) => {
+            if (my.year) {
+                throw new Error("`my.year` has already been set!");
+            }
 
-    that.getMonths = () => {
-        return [that];
-    };
+            my.year = year;
+        };
 
-    that.getWeeks = () => {
-        return my.weeks;
-    };
+        that.getYear = () => {
+            return my.year;
+        };
 
-    that.accept = (visitor) => {
-        return visitor.visitMonth(that);
-    };
+        that.getMonths = () => {
+            return [that];
+        };
 
-    that.containsMonth = (month) => {
-        return month === that.periodIndex();
-    };
+        that.getWeeks = () => {
+            return my.weeks;
+        };
 
-    return that;
-}
+        that.accept = (visitor) => {
+            return visitor.visitMonth(that);
+        };
 
-module.exports = month;
+        that.containsMonth = (month) => {
+            return month === that.periodIndex();
+        };
+
+        return that;
+    }
+
+    module.exports = month;
+})();

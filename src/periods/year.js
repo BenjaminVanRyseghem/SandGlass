@@ -1,38 +1,41 @@
-const period = require("./period");
-
-function year(spec, my) {
+(function() {
     "use strict";
 
-    spec = spec || {};
-    my = my || {};
+    const period = require("./period");
 
-    let that = period(spec, my);
+    function year(spec, my) {
 
-    my.months = spec.months;
+        spec = spec || {};
+        my = my || {};
 
-    for (let month of my.months) {
-        month.setYear(that);
+        let that = period(spec, my);
+
+        my.months = spec.months;
+
+        for (let month of my.months) {
+            month.setYear(that);
+        }
+
+        that.getName = () => {};
+
+        that.getYear = () => {
+            return that;
+        };
+
+        that.getMonths = () => {
+            return my.months;
+        };
+
+        that.accept = (visitor) => {
+            return visitor.visitYear(that);
+        };
+
+        that.containsYear = (year) => {
+            return year === that.periodIndex();
+        };
+
+        return that;
     }
 
-    that.getName = () => {};
-
-    that.getYear = () => {
-        return that;
-    };
-
-    that.getMonths = () => {
-        return my.months;
-    };
-
-    that.accept = (visitor) => {
-        return visitor.visitYear(that);
-    };
-
-    that.containsYear = (year) => {
-        return year === that.periodIndex();
-    };
-
-    return that;
-}
-
-module.exports = year;
+    module.exports = year;
+})();
