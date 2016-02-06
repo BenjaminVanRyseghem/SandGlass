@@ -101,6 +101,10 @@
             return data;
         };
 
+        that.getAllDays = () => {
+            return Object.keys(database.object);
+        };
+
         that.migrate = (options) => {
             let from = options.from;
             let to = options.to;
