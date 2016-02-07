@@ -42,7 +42,7 @@
 
                 return dayClass({
                     identifier: identifier,
-                    periodIndex: helper.getDayIndex(identifier)
+                    periodIndex: helper.getDayIndex(identifier).toString()
                 });
             });
 
