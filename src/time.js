@@ -20,9 +20,10 @@
             }
 
             if ((records[records.length - 1].action !== "stop")) {
+                let date = moment(day).endOf("day");
                 records.push({
                     action: "stop",
-                    timestamp: Date.now(),
+                    timestamp: date.valueOf(),
                     project: project
                 });
             }
