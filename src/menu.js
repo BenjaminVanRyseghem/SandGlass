@@ -99,13 +99,11 @@
             }
 
             dashboardWindow = new BrowserWindow({
-                width: 640,
-                height: 378,
+                width: 780,
+                height: 590,
                 show: false,
-                //titleBarStyle: "hidden",
-                //resizable: false,
+                resizable: false,
                 center: true
-                //transparent: true
             });
 
             dashboardWindow.on("closed", function() {
