@@ -2,6 +2,7 @@
     "use strict";
 
     const React = require("react");
+    const moment = require("moment");
 
     const OptionComponent = require("./OptionComponent");
     const BootstrapSelect = require("./BootstrapSelect");
@@ -9,12 +10,13 @@
     const remote = require("remote");
     const nullPeriod = remote.require("../src/periods/nullPeriod");
 
-    class WeekSelection extends React.Component {
-        formatWeek(week) {
-            if (!week) {
+    class DaySelection extends React.Component {
+        formatDay(day) {
+            if(!day){
                 return "";
             }
-            return `Week ${week.periodIndex()}`;
+
+            return moment(day.periodIndex(), "DDD").format("dddd Do");
         }
 
         handleChange(event) {
@@ -25,17 +27,16 @@
                 return;
             }
 
-            let selectedWeek = this.props.weeks.find((week) => {
-                return week.periodIndex() === index;
+            let selectedDay = this.props.days.find((day) => {
+                return day.periodIndex() === index;
             });
-
-            this.props.handler(selectedWeek);
+            this.props.handler(selectedDay);
         }
 
         render() {
             return React.createElement(BootstrapSelect, {
-                    className: "col-md-3 col-sm-3 col-xs-3 WeekSelection",
-                    value: this.props.selectedWeek.periodIndex(),
+                    className: "col-md-3 col-sm-3 col-xs-3 DaySelection",
+                    value: this.props.selectedDay.periodIndex(),
                     onChange: this.handleChange.bind(this)
                 },
                 React.createElement(OptionComponent, {
@@ -43,16 +44,16 @@
                     key: nullPeriod.periodIndex(),
                     value: nullPeriod
                 }),
-                this.props.weeks.map((week) => {
+                this.props.days.map((day) => {
                     return React.createElement(OptionComponent, {
-                        formatter: this.formatWeek,
-                        key: week.periodIndex(),
-                        value: week
+                        formatter: this.formatDay,
+                        key: day.periodIndex(),
+                        value: day
                     });
                 })
             );
         }
     }
 
-    module.exports = WeekSelection;
+    module.exports = DaySelection;
 })();

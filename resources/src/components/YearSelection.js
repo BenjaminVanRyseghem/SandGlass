@@ -2,11 +2,20 @@
     "use strict";
 
     const React = require("react");
-    const ReactDOM = require("react-dom");
+
+    const OptionComponent = require("./OptionComponent");
+    const BootstrapSelect = require("./BootstrapSelect");
 
     class YearSelection extends React.Component {
+        formatYear(year) {
+            if (!year) {
+                return "";
+            }
+
+            return year.periodIndex();
+        }
         handleChange(event) {
-            let index = jQuery(event.target).find(":selected").attr("data-index");
+            let index = event.target.value;
             let selectedYear = this.props.years.find((year) => {
                 return year.periodIndex() === index;
             });
@@ -15,17 +24,22 @@
         }
 
         render() {
-            return React.createElement("select", {
-                    className: "YearSelection",
-                    value: this.props.selectedYear && this.props.selectedYear.periodIndex(),
+            return React.createElement(BootstrapSelect, {
+                    pickerOptions: {
+                        iconBase: "fa",
+                        tickIcon: "fa-check",
+                        showTick: true
+                    },
+                    className: "col-md-3 col-sm-3 col-xs-3 YearSelection",
+                    value: this.props.selectedYear.periodIndex(),
                     onChange: this.handleChange.bind(this)
                 },
                 this.props.years.map((year) => {
-                    let index = year.periodIndex();
-                    return React.createElement("option", {
-                        key: index,
-                        "data-index": index
-                    }, index);
+                    return React.createElement(OptionComponent, {
+                        formatter: this.formatYear,
+                        key: year.periodIndex(),
+                        value: year
+                    });
                 })
             );
         }
