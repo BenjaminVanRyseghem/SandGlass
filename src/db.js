@@ -102,7 +102,23 @@
         };
 
         that.getAllDays = () => {
-            return Object.keys(database.object);
+            return Object.keys(database.object).filter((day) => {
+                return database.object[day].length;
+            });
+        };
+
+        that.projectsFor = (day) => {
+            let data = database.object[day];
+
+            let projects = [];
+
+            for(let d of data) {
+                if(projects.indexOf(d.project) === -1) {
+                    projects.push(d.project);
+                }
+            }
+
+            return projects;
         };
 
         that.migrate = (options) => {
