@@ -1,0 +1,67 @@
+body.about {
+  height: 100%;
+  width: 100%;
+  color: white;
+  background: linear-gradient(-25deg, #723BC9, #E75757);
+
+  a {
+    color: #76C0FF;
+    cursor: pointer;
+  }
+
+  .app-title {
+    text-align: center;
+    margin-top: 84px;
+
+    .app-name {
+      margin-top: 20px;
+    }
+
+    .app-icon {
+      height: 128px;
+      content: url("../img/icon.png");
+    }
+
+    .app-version {
+      color: #333;
+      font-size: 20px;
+      margin-top: 8px;
+    }
+  }
+
+  .contributors {
+    text-align: center;
+    margin-top: 70px;
+
+    .title {
+      font-size: 20px;
+      text-decoration: underline;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+
+      li.contributor {
+        list-style: none;
+
+        & > * {
+          display: inline-block;
+        }
+
+        .fa {
+          margin-left: 4px;
+        }
+      }
+    }
+  }
+
+  .copyright {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 510px;
+    color: #333;
+  }
+}

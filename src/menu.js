@@ -7,12 +7,14 @@
 
     const settings = require("./settings");
     const time = require("./time");
+    const info = require("./info");
 
     function menu() {
 
         let that = {};
         let settingWindow = null;
         let dashboardWindow = null;
+        let aboutWindow = null;
 
         that.init = (tray) => {
             tray.on("click", () => {
@@ -35,6 +37,11 @@
                     label: "Preferences",
                     click: toggleSettings,
                     accelerator: "CmdOrCtrl+,",
+                    enabled: true
+                },
+                {
+                    label: `About ${info.name}`,
+                    click: showAbout,
                     enabled: true
                 },
                 {
@@ -78,18 +85,46 @@
                 transparent: true
             });
 
-            settingWindow.on("closed", function() {
+            settingWindow.on("closed", () => {
                 settingWindow = null;
             });
 
             settingWindow.loadURL(`file://${__dirname}/../resources/preferences.html`);
             settingWindow.openDevTools();
-            settingWindow.webContents.on("did-finish-load", function() {
+            settingWindow.webContents.on("did-finish-load", () => {
                 settingWindow.webContents.executeJavaScript(`window.windowId = ${settingWindow.id};`);
                 settingWindow.show();
             });
 
             settingWindow.focus();
+        }
+
+        function showAbout() {
+            if (aboutWindow) {
+                aboutWindow.focus();
+                return;
+            }
+
+            aboutWindow = new BrowserWindow({
+                width: 780,
+                height: 600,
+                show: false,
+                resizable: false,
+                center: true
+            });
+
+            aboutWindow.on("closed", () => {
+                aboutWindow = null;
+            });
+
+            aboutWindow.loadURL(`file://${__dirname}/../resources/about.html`);
+            aboutWindow.openDevTools();
+            aboutWindow.webContents.on("did-finish-load", () => {
+                aboutWindow.webContents.executeJavaScript(`window.windowId = ${aboutWindow.id};`);
+                aboutWindow.show();
+            });
+
+            aboutWindow.focus();
         }
 
         function showDashboard() {
@@ -106,13 +141,13 @@
                 center: true
             });
 
-            dashboardWindow.on("closed", function() {
+            dashboardWindow.on("closed", () => {
                 dashboardWindow = null;
             });
 
             dashboardWindow.loadURL(`file://${__dirname}/../resources/dashboard.html`);
             dashboardWindow.openDevTools();
-            dashboardWindow.webContents.on("did-finish-load", function() {
+            dashboardWindow.webContents.on("did-finish-load", () => {
                 dashboardWindow.webContents.executeJavaScript(`window.windowId = ${dashboardWindow.id};`);
                 dashboardWindow.show();
             });
