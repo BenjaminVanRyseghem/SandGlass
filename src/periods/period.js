@@ -16,6 +16,8 @@
 
         that.getName = () => {};
 
+        that.isNull = () => false;
+
         that.getYear = () => {
             return null;
         };

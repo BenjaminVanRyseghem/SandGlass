@@ -12,6 +12,7 @@
 
         let that = {};
         let settingWindow = null;
+        let dashboardWindow = null;
 
         that.init = (tray) => {
             tray.on("click", () => {
@@ -22,6 +23,14 @@
 
         function buildMenuTemplate() {
             let items = [
+                {
+                    label: "Dashboard",
+                    click: showDashboard,
+                    enabled: true
+                },
+                {
+                    type: "separator"
+                },
                 {
                     label: "Preferences",
                     click: toggleSettings,
@@ -83,7 +92,33 @@
             settingWindow.focus();
         }
 
+        function showDashboard() {
+            if (dashboardWindow) {
+                dashboardWindow.focus();
+                return;
+            }
 
+            dashboardWindow = new BrowserWindow({
+                width: 780,
+                height: 590,
+                show: false,
+                resizable: false,
+                center: true
+            });
+
+            dashboardWindow.on("closed", function() {
+                dashboardWindow = null;
+            });
+
+            dashboardWindow.loadURL(`file://${__dirname}/../resources/dashboard.html`);
+            dashboardWindow.openDevTools();
+            dashboardWindow.webContents.on("did-finish-load", function() {
+                dashboardWindow.webContents.executeJavaScript(`window.windowId = ${dashboardWindow.id};`);
+                dashboardWindow.show();
+            });
+
+            dashboardWindow.focus();
+        }
 
         function quit() {
             app.quit();

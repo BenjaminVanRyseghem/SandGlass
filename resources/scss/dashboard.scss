@@ -1,0 +1,59 @@
+body.dashboard {
+
+  $d3-colors: (
+          #98abc5,
+          #8a89a6,
+          #7b6888,
+          #6b486b,
+          #a05d56,
+          #d0743c,
+          #ff8c00,
+          #a05d56,
+          #d0743c,
+          #ff8c00
+  );
+
+  @for $i from 0 through 9 {
+    .series-#{$i} {
+      background-color: nth($d3-colors, $i + 1);
+      border-color: darken(nth($d3-colors, $i + 1), 50%);
+
+      .text {
+        @if lightness(nth($d3-colors, $i + 1)) > lightness(#aaa) {
+          color: black;
+        } @else {
+          color: white;
+        }
+      }
+    }
+
+    .subbar.series-#{$i} {
+      fill: nth($d3-colors, $i + 1);
+    }
+
+    .legend-icon.series-#{$i} {
+      fill: nth($d3-colors, $i + 1);
+    }
+
+    .goal-line.series-#{$i} {
+      stroke: lighten(nth($d3-colors, $i + 1), 20%);
+    }
+  }
+
+  .d3-tooltip {
+    padding: 5px 14px;
+    border: 1px solid;
+    text-align: center;
+    border-radius: 4px;
+
+    .text {
+      font-weight: bold;
+    }
+  }
+
+  .graph-title {
+    text-align: center;
+    margin-top: 40px;
+    font-weight: bold;
+  }
+}
