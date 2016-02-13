@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="12px" height="16px" viewBox="0 0 12 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>svg</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Glass-+-Sand" sketch:type="MSLayerGroup">
+            <g id="Glass" sketch:type="MSShapeGroup">
+                <rect id="Rectangle-3" fill="#000000" x="0" y="0" width="12" height="2"></rect>
+                <rect id="Rectangle-3-Copy" fill="#000000" x="0" y="14" width="12" height="2"></rect>
+                <path d="M2.05510936,1.98997527 L2.05510936,5.99999982 L6.02755484,7.99498779 L2.05510936,10.0000003 L2.05510936,14.0000003 L10.0000004,14.0000003 L10.0000004,10.0000003 L6.02755484,7.99498779 L10.0000004,5.99999982 L10.0000004,1.98997527 L2.05510936,1.98997527 Z" id="Path-2" stroke="#000000"></path>
+            </g>
+            <g id="Sand" transform="translate(2.000000, 4.000000)" fill="#000000" sketch:type="MSShapeGroup">
+                <polygon id="Triangle-3" transform="translate(4.000000, 1.000000) scale(1, -1) translate(-4.000000, -1.000000) " points="4 0 7 2 1 2 "></polygon>
+                <polygon id="Triangle-3-Copy" points="4 7 8 10 0 10 "></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
