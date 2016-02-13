@@ -2,14 +2,16 @@
   "name": "SandGlass",
   "version": "1.0.0",
   "year": "2016",
-  "description": "A small app to log your working time",
+  "description": "SandGlass is an electron-based OS X application used to log time spent on a project. It can then display those data as a graph.",
   "homepage": "https://github.com/BenjaminVanRyseghem/SandGlass/",
   "main": "src/main.js",
   "keywords": [
+    "OSX",
     "Electron",
     "time",
     "tracking",
-    "work"
+    "d3",
+    "graph"
   ],
   "author": {
     "name": "Benjamin Van Ryseghem",
