@@ -1,6 +1,14 @@
 # SandGlass
 
-[![Build Status](https://travis-ci.org/BenjaminVanRyseghem/SandGlass.svg?branch=master)](https://travis-ci.org/BenjaminVanRyseghem/SandGlass)
+| Branch | Status |
+--------|--------
+| `master` | [![Build Status](https://travis-ci.org/BenjaminVanRyseghem/SandGlass.svg?branch=master)](https://travis-ci.org/BenjaminVanRyseghem/SandGlass)  |
+| `develop` | [![Build Status](https://travis-ci.org/BenjaminVanRyseghem/SandGlass.svg?branch=develop)](https://travis-ci.org/BenjaminVanRyseghem/SandGlass)|
+
+
+
+
+
 
 An electron-based time tracker
 
@@ -13,6 +21,7 @@ gulp mac
 ```
 
 The `dmg` file will be located in the `dist` directory.
+The `app` file will be located in the `release/osx` directory.
 
 # License
 
