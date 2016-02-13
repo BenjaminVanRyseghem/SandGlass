@@ -6,6 +6,7 @@
     const app = electron.app;
 
     const settings = require("./settings");
+    const db = require("./db");
     const time = require("./time");
     const info = require("./info");
 
@@ -24,7 +25,18 @@
         };
 
         function buildMenuTemplate() {
+
+            let startStopLabel = isRunningForCurrentProject() ? "Stop" : "Start";
+
             let items = [
+                {
+                    label: `${startStopLabel} the clock`,
+                    click: toggleRunning,
+                    enabled: true
+                },
+                {
+                    type: "separator"
+                },
                 {
                     label: "Dashboard",
                     click: showDashboard,
@@ -67,6 +79,21 @@
         function getDurationFor(project) {
             let duration = time.getTodayDurationFor(project);
             return time.formatDuration(duration);
+        }
+
+        function isRunningForCurrentProject() {
+            let project = settings.projectToShowInTray();
+            return db.isRunningFor(project);
+        }
+
+        function toggleRunning() {
+            let project = settings.projectToShowInTray();
+            if (isRunningForCurrentProject()) {
+                db.stop(project);
+            }
+            else {
+                db.start(project);
+            }
         }
 
         function toggleSettings() {
