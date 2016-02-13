@@ -23,7 +23,8 @@
                 let date = moment(day).endOf("day");
                 records.push({
                     action: "stop",
-                    timestamp: date.valueOf(),
+                    //timestamp: date.valueOf(),
+                    timestamp: Date.now(),
                     project: project
                 });
             }
