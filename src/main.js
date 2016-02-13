@@ -15,6 +15,8 @@
         e.preventDefault();
     });
 
+    app.makeSingleInstance(() => {});
+
     function init() {
         initializeTray();
         repl.init();

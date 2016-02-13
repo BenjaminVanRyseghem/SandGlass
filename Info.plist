@@ -28,16 +28,5 @@
 	<string>AtomApplication</string>
 	<key>NSSupportsAutomaticGraphicsSwitching</key>
 	<true/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>sandGlass</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>sandGlass</string>
-			</array>
-		</dict>
-	</array>
 </dict>
 </plist>

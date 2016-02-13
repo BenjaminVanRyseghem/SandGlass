@@ -6,6 +6,8 @@ var del = require("del");
 var merge = require("merge-stream");
 var reporters = require("jasmine-reporters");
 
+var packageInfo = require("./package.json");
+
 var plugins = require("gulp-load-plugins")({
     rename: {
         "gulp-sass-lint": "sasslint",
@@ -20,9 +22,9 @@ var plugins = require("gulp-load-plugins")({
 
 // App options
 var options = {
-    name: "SandGlass",
-    app: "SandGlass.app",
-    dmg: "SandGlass-1.0.0.dmg",
+    name: packageInfo.name,
+    app: packageInfo.name + ".app",
+    dmg: packageInfo.name + "-" + packageInfo.version + ".dmg",
     icon: "./resources/img/SandGlass.icns",
     plist: "./Info.plist",
     bundle: "io.sandglass.www"
@@ -82,9 +84,9 @@ gulp.task("build", function() {
         "mkdir -p <%= release_build %>",
 
         "mkdir -p <%= electron_asar %>",
-        "cp ./*.* <%= electron_asar %>/",
-        "cp -r ./src <%= electron_asar %>/src",
-        "cp -r ./resources <%= electron_asar %>/resources",
+        "cp -p ./*.* <%= electron_asar %>/",
+        "cp -Rp ./src <%= electron_asar %>/src",
+        "cp -Rp ./resources <%= electron_asar %>/resources",
         "mkdir -p <%= electron_asar %>/node_modules",
         "npm install --prefix <%= electron_asar %> --production &>/dev/null",
         "rm -rf <%= electron_asar %>/node_modules/electron-prebuilt",

@@ -90,7 +90,6 @@
             });
 
             settingWindow.loadURL(`file://${__dirname}/../resources/preferences.html`);
-            settingWindow.openDevTools();
             settingWindow.webContents.on("did-finish-load", () => {
                 settingWindow.webContents.executeJavaScript(`window.windowId = ${settingWindow.id};`);
                 settingWindow.show();
@@ -118,7 +117,6 @@
             });
 
             aboutWindow.loadURL(`file://${__dirname}/../resources/about.html`);
-            aboutWindow.openDevTools();
             aboutWindow.webContents.on("did-finish-load", () => {
                 aboutWindow.webContents.executeJavaScript(`window.windowId = ${aboutWindow.id};`);
                 aboutWindow.show();
@@ -146,7 +144,6 @@
             });
 
             dashboardWindow.loadURL(`file://${__dirname}/../resources/dashboard.html`);
-            dashboardWindow.openDevTools();
             dashboardWindow.webContents.on("did-finish-load", () => {
                 dashboardWindow.webContents.executeJavaScript(`window.windowId = ${dashboardWindow.id};`);
                 dashboardWindow.show();

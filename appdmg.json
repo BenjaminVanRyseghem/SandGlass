@@ -1,19 +1,32 @@
 {
   "title": "SandGlass",
+  "icon": "./resources/img/sandGlass.icns",
   "background": "./resources/img/background.png",
   "icon-size": 80,
   "contents": [
     {
-      "x": 50,
+      "x": 140,
       "y": 100,
       "type": "file",
       "path": "./release/osx/SandGlass.app"
     },
     {
-      "x": 200,
+      "x": 310,
       "y": 100,
       "type": "link",
       "path": "/Applications"
+    },
+    {
+      "x": 140,
+      "y": 240,
+      "type": "file",
+      "path": "./sand-glass"
+    },
+    {
+      "x": 310,
+      "y": 240,
+      "type": "link",
+      "path": "/usr/local/bin"
     }
   ]
 }

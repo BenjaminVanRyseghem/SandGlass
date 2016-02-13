@@ -4,6 +4,8 @@
     const electron = require("electron");
     const Tray = electron.Tray;
 
+    const path = require("path");
+
     const settings = require("./settings");
     const time = require("./time");
     const tickler = require("./tickler");
@@ -17,7 +19,8 @@
         let tray;
 
         that.init = () => {
-            tray = new Tray("./resources/img/trayIconTemplate.png");
+            let pathToIcon = path.resolve(`${__dirname}/../resources/img/trayIconTemplate.png`);
+            tray = new Tray(pathToIcon);
             tray.setHighlightMode(false);
 
             initTitle();
