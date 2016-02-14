@@ -32,7 +32,8 @@
             "prefer-rest-params": warning,
             "prefer-spread": warning,
             "prefer-template": error,
-            "no-confusing-arrow": warning
+            "no-confusing-arrow": warning,
+            "quotes": [error, "double"]
         }
     };
 })();

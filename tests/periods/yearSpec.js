@@ -2,7 +2,7 @@ const moment = require("moment");
 
 const yearBuilder = require("../../src/periods/yearBuilder");
 
-describe('periods/year', () => {
+describe("periods/year", () => {
     "use strict";
 
     const firstDay = new Date("2016-01-01");
