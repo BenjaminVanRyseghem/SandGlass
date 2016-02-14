@@ -2,7 +2,6 @@
     "use strict";
 
     const React = require("react");
-    var Input = require("react-bootstrap").Input;
     const ReactDOM = require("react-dom");
 
     class BootstrapSelect extends React.Component {
@@ -21,17 +20,13 @@
 
         componentDidUpdate() {
             $(ReactDOM.findDOMNode(this)).find("select").selectpicker("refresh");
-            var select = $(ReactDOM.findDOMNode(this)).find("div.bootstrap-select");
+            let select = $(ReactDOM.findDOMNode(this)).find("div.bootstrap-select");
             select.toggleClass("open", this.state.open);
         }
 
         componentWillUnmount() {
-            var self = this;
-            var select = $(ReactDOM.findDOMNode(this)).find("select");
-
-            var button = $(ReactDOM.findDOMNode(this)).find("button");
-            var dropdown = $(ReactDOM.findDOMNode(this)).find(".dropdown-menu.open");
-            var items = $(ReactDOM.findDOMNode(this)).find("ul.dropdown-menu li a");
+            let button = $(ReactDOM.findDOMNode(this)).find("button");
+            let items = $(ReactDOM.findDOMNode(this)).find("ul.dropdown-menu li a");
 
             $("html").off("click", this.handler);
             button.off("click");
@@ -39,17 +34,16 @@
         }
 
         componentDidMount() {
-            var self = this;
-            var select = $(ReactDOM.findDOMNode(this)).find("select");
+            let self = this;
+            let select = $(ReactDOM.findDOMNode(this)).find("select");
 
             $(select).selectpicker(this.props.pickerOptions);
 
-            var button = $(ReactDOM.findDOMNode(this)).find("button");
-            var dropdown = $(ReactDOM.findDOMNode(this)).find(".dropdown-menu.open");
+            let button = $(ReactDOM.findDOMNode(this)).find("button");
 
             // This sound unused
-            setTimeout(function() {
-                var items = $(ReactDOM.findDOMNode(self)).find("ul.dropdown-menu li");
+            setTimeout(() => {
+                let items = $(ReactDOM.findDOMNode(self)).find("ul.dropdown-menu li");
 
                 items.click(() => {
                     if (self.props.multiple) {
@@ -61,7 +55,7 @@
 
             $("html").on("click", this.handler);
 
-            button.click(function(e) {
+            button.click((e) => {
                 e.stopPropagation();
                 self.setState({open: !self.state.open});
             });

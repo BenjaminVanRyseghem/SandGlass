@@ -1,3 +1,4 @@
+"use strict";
 const moment = require("moment");
 
 const helper = require("../../src/periods/helper");
@@ -7,8 +8,7 @@ const date = "2016-10-17";
 
 const firstDay = new Date("2016-09-01");
 
-describe("periods/helper", function() {
-    "use strict";
+describe("periods/helper", () => {
 
     let daysData = [];
 

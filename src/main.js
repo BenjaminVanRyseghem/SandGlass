@@ -11,7 +11,7 @@
 
     app.dock.hide();
     app.on("ready", init);
-    app.on("window-all-closed", function(e) {
+    app.on("window-all-closed", (e) => {
         e.preventDefault();
     });
 

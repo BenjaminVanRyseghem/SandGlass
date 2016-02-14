@@ -7,9 +7,9 @@
         let my = {};
 
         let duration = 1000;
-        let onTick = [];
-        let onStart = [];
-        let onStop = [];
+        let onTickCallbacks = [];
+        let onStartCallbacks = [];
+        let onStopCallbacks = [];
         let running = false;
 
         that.init = () => {
@@ -19,9 +19,9 @@
             }
         };
 
-        that.onTick = (callback) => onTick.push(callback);
-        that.onStart = (callback) => onStart.push(callback);
-        that.onStop = (callback) => onStop.push(callback);
+        that.onTick = (callback) => onTickCallbacks.push(callback);
+        that.onStart = (callback) => onStartCallbacks.push(callback);
+        that.onStop = (callback) => onStopCallbacks.push(callback);
 
         that.isRunning = () => {
             return running;
@@ -50,20 +50,20 @@
         };
 
         my.applyOnTick = () => {
-            for (let callback of onTick) {
-                callback.apply(null, []);
+            for (let callback of onTickCallbacks) {
+                Reflect.apply(callback, null, []);
             }
         };
 
         my.applyOnStart = () => {
-            for (let callback of onStart) {
-                callback.apply(null, []);
+            for (let callback of onStartCallbacks) {
+                Reflect.apply(callback, null, []);
             }
         };
 
         my.applyOnStop = () => {
-            for (let callback of onStop) {
-                callback.apply(null, []);
+            for (let callback of onStopCallbacks) {
+                Reflect.apply(callback, null, []);
             }
         };
 

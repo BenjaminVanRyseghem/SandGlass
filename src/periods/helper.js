@@ -24,9 +24,10 @@
         };
 
         that.isWeekBroken = (weekNo, year) => {
-            var week = that.getDateRangeOfWeek(weekNo, year);
-            var start = week.start;
-            var end = week.end;
+            39
+            let week = that.getDateRangeOfWeek(weekNo, year);
+            let start = week.start;
+            let end = week.end;
             return start.getMonth() !== end.getMonth();
         };
 
@@ -36,7 +37,7 @@
                 throw new Error("`weekNo` must be greater or equal to 1");
             }
 
-            let date = new Date(year + "-02-03");
+            let date = new Date(`${year}-02-03`);
 
             let numOfdaysPastSinceLastMonday = date.getDay() - 1;
             date.setDate(date.getDate() - numOfdaysPastSinceLastMonday);

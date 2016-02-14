@@ -1,20 +1,20 @@
 "use strict";
 
-var gulp = require("gulp");
-var sequence = require("run-sequence");
-var del = require("del");
-var merge = require("merge-stream");
-var reporters = require("jasmine-reporters");
+let gulp = require("gulp");
+let sequence = require("run-sequence");
+let del = require("del");
+let merge = require("merge-stream");
+let reporters = require("jasmine-reporters");
 
-var packageInfo = require("./package.json");
+let packageInfo = require("./package.json");
 
-var plugins = require("gulp-load-plugins")({
+let plugins = require("gulp-load-plugins")({
     rename: {
         "gulp-shell": "shell",
         "gulp-sass-lint": "sasslint",
         "gulp-concat": "concat",
         "gulp-cssnano": "cssnano",
-        "gulp-jshint": "jshint",
+        "gulp-eslint": "eslint",
         "gulp-jasmine": "jasmine",
         "gulp-download-electron": "electron",
         "gulp-jasmine-browser": "jasmineBrowser",
@@ -24,10 +24,10 @@ var plugins = require("gulp-load-plugins")({
 });
 
 // App options
-var options = {
+let options = {
     name: packageInfo.name,
-    app: packageInfo.name + ".app",
-    dmg: packageInfo.name + "-" + packageInfo.version + ".dmg",
+    app: `${packageInfo.name}.app`,
+    dmg: `${packageInfo.name}-${packageInfo.version}.dmg`,
     icon: "./resources/img/SandGlass.icns",
     plist: "./Info.plist",
     bundle: "io.sandglass.www"
@@ -36,7 +36,7 @@ var options = {
 gulp.task("default", ["lint", "tests"]);
 
 gulp.task("css", () => {
-    var scssStream = gulp.src("./resources/s+(a|c)ss/*.s+(a|c)ss")
+    let scssStream = gulp.src("./resources/s+(a|c)ss/*.s+(a|c)ss")
         .pipe(plugins.sass())
         .pipe(plugins.concat("scss-files.scss"));
 
@@ -53,9 +53,9 @@ gulp.task("sass-lint", () => {
 
 gulp.task("js-lint", () => {
     return gulp.src(["./src/**/*.js", "./tests/**/*.js", "./resources/src/**/*.js"])
-        .pipe(plugins.jshint())
-        .pipe(plugins.jshint.reporter("jshint-stylish"))
-        .pipe(plugins.jshint.reporter("fail"));
+        .pipe(plugins.eslint())
+        .pipe(plugins.eslint.format())
+        .pipe(plugins.eslint.failAfterError());
 });
 
 gulp.task("lint", ["sass-lint", "js-lint"]);
@@ -148,14 +148,14 @@ gulp.task("build", () => {
             electron_app: "./cache/Electron.app",
             electron_asar: "./asar",
             release: "./release/osx",
-            release_app: "./release/osx/" + options.app,
-            release_build: "./release/osx/" + options.app + "/Contents/Resources",
-            release_electron: "./release/osx/" + options.app + "/Contents/MacOS/Electron",
-            release_example: "./release/osx/" + options.app + "/Contents/MacOS/" + options.name,
-            release_bin: "./release/osx/" + options.app + "/Contents/Frameworks/Electron Helper.app/Contents/MacOS",
+            release_app: `./release/osx/${options.app}`,
+            release_build: `./release/osx/${options.app}/Contents/Resources`,
+            release_electron: `./release/osx/${options.app}/Contents/MacOS/Electron`,
+            release_example: `./release/osx/${options.app}/Contents/MacOS/${options.name}`,
+            release_bin: `./release/osx/${options.app}/Contents/Frameworks/Electron Helper.app/Contents/MacOS`,
             release_example_icon: options.icon,
-            release_electron_icon: "./release/osx/" + options.app + "/Contents/Resources/atom.icns",
-            release_plist: "./release/osx/" + options.app + "/Contents/Info.plist",
+            release_electron_icon: `./release/osx/${options.app}/Contents/Resources/atom.icns`,
+            release_plist: `./release/osx/${options.app}/Contents/Info.plist`,
             release_example_plist: options.plist,
             release_name: options.name,
             release_bundle: options.bundle,
@@ -178,7 +178,7 @@ gulp.task("dmg", () => {
         "node_modules/.bin/appdmg ./appdmg.json <%= release_dmg %>"
     ], {
         templateData: {
-            release_dmg: "./dist/" + options.dmg
+            release_dmg: `./dist/${options.dmg}`
         }
     }));
 });

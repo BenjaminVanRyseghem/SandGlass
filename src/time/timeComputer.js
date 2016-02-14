@@ -40,7 +40,7 @@
         that.computeTimeFromSegments = function(segments) {
             //console.log(segments);
 
-            return segments.reduce((previous, current)=> {
+            return segments.reduce((previous, current) => {
                 return previous + current.delta();
             }, 0);
         };

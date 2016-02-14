@@ -30,9 +30,11 @@ function yearVisitor() {
         week.getDays().forEach((d) => d.accept(that));
     };
 
+    /* eslint-disable no-unused-vars */
     that.visitDay = (day) => {
         numberOfDays++;
     };
+    /* eslint-enable no-unused-vars */
 
     that.getNumberOfDays = () => {
         return numberOfDays;
