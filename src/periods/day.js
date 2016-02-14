@@ -18,7 +18,7 @@
         };
 
         that.getYear = () => {
-            return that.getMonths[0].getYear();
+            return my.week.getYear();
         };
 
         that.getMonths = () => {

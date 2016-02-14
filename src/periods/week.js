@@ -22,7 +22,7 @@
         };
 
         that.getYear = () => {
-            return that.getMonths[0].getYear();
+            return my.month.getYear();
         };
 
         // To use only once to set the back pointer

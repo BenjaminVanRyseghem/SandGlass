@@ -40,6 +40,12 @@
             return my.weeks;
         };
 
+        that.getDays = () => {
+            return that.getWeeks().reduce((acc, week) => {
+                return acc.concat(week.getDays());
+            }, []);
+        };
+
         that.accept = (visitor) => {
             return visitor.visitMonth(that);
         };

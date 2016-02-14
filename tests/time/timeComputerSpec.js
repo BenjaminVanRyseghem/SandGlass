@@ -1,7 +1,7 @@
 "use strict";
 describe("timeComputer", () => {
 
-    const timeComputer = require("../src/time/timeComputer");
+    const timeComputer = require("../../src/time/timeComputer");
 
     it("raise an exception if the first record is not a start", () => {
         let records = [
@@ -45,5 +45,30 @@ describe("timeComputer", () => {
         ];
 
         expect(timeComputer.computeWorkingTimeFor(records)).toBe(duration);
+    });
+
+    it("compute the time correctly when pauses", () => {
+        let duration = 1000;
+
+        let records = [
+            {
+                action: "start",
+                timestamp: 0
+            },
+            {
+                action: "stop",
+                timestamp: duration
+            },
+            {
+                action: "start",
+                timestamp: 2 * duration
+            },
+            {
+                action: "stop",
+                timestamp: 3 * duration
+            }
+        ];
+
+        expect(timeComputer.computeWorkingTimeFor(records)).toBe(2 * duration);
     });
 });
