@@ -10,13 +10,16 @@ var packageInfo = require("./package.json");
 
 var plugins = require("gulp-load-plugins")({
     rename: {
+        "gulp-shell": "shell",
         "gulp-sass-lint": "sasslint",
         "gulp-concat": "concat",
         "gulp-cssnano": "cssnano",
         "gulp-jshint": "jshint",
         "gulp-jasmine": "jasmine",
         "gulp-download-electron": "electron",
-        "gulp-jasmine-browser": "jasmineBrowser"
+        "gulp-jasmine-browser": "jasmineBrowser",
+        "gulp-istanbul": "istanbul",
+        "gulp-codacy": "codacy"
     }
 });
 
@@ -32,7 +35,7 @@ var options = {
 
 gulp.task("default", ["lint", "tests"]);
 
-gulp.task("css", function() {
+gulp.task("css", () => {
     var scssStream = gulp.src("./resources/s+(a|c)ss/*.s+(a|c)ss")
         .pipe(plugins.sass())
         .pipe(plugins.concat("scss-files.scss"));
@@ -43,12 +46,12 @@ gulp.task("css", function() {
         .pipe(gulp.dest("resources/css"));
 });
 
-gulp.task("sass-lint", function() {
+gulp.task("sass-lint", () => {
     return gulp.src("./resources/s+(a|c)ss/**/*.s+(a|c)ss")
         .pipe(plugins.sasslint());
 });
 
-gulp.task("js-lint", function() {
+gulp.task("js-lint", () => {
     return gulp.src(["./src/**/*.js", "./tests/**/*.js", "./resources/src/**/*.js"])
         .pipe(plugins.jshint())
         .pipe(plugins.jshint.reporter("jshint-stylish"))
@@ -59,22 +62,59 @@ gulp.task("lint", ["sass-lint", "js-lint"]);
 
 // Tests
 
-gulp.task("tests", function() {
+gulp.task("pre-test", () => {
+    return gulp.src(["./src/**/*.js", "./resources/src/**/*.js"])
+        .pipe(plugins.istanbul())
+        .pipe(plugins.istanbul.hookRequire());
+});
+
+gulp.task("tests", ["pre-test"], () => {
     return gulp.src("./tests/**/*.js")
         .pipe(plugins.jasmine({
             reporter: new reporters.TerminalReporter()
-        }));
+        }))
+        .pipe(plugins.istanbul.writeReports());
+    // .pipe(plugins.istanbul.enforceThresholds({thresholds: {global: 90}}));
 });
 
-gulp.task("jasmine", function() {
+gulp.task("jasmine", () => {
     return gulp.src(["src/**/*.js", "./tests/**/*.js"])
         .pipe(plugins.jasmineBrowser.specRunner())
         .pipe(plugins.jasmineBrowser.server({port: 8888}));
 });
 
+// Coverage
+
+gulp.task("basic-coverage", () => {
+    return gulp.src("").pipe(plugins.shell("istanbul cover ./node_modules/.bin/jasmine --captureExceptions")
+    );
+});
+
+gulp.task("coveralls", ["basic-coverage"], () => {
+    return gulp.src("").pipe(plugins.shell("cat <%= info %> | <%= coveralls %>", {
+            templateData: {
+                info: "./coverage/lcov.info",
+                coveralls: "./node_modules/coveralls/bin/coveralls.js"
+            }
+        })
+    );
+});
+
+gulp.task("codacy", ["basic-coverage"], () => {
+    return gulp
+        .src(["./coverage/lcov.info"], {read: false})
+        .pipe(plugins.codacy({
+            token: process.env.CODACY_TOKEN
+        }));
+});
+
+gulp.task("coverage", ["coveralls", "codacy"], () => {
+    return gulp.src("").pipe(plugins.shell("rm -rf ./coverage"));
+});
+
 // Build
 
-gulp.task("build", function() {
+gulp.task("build", () => {
     return gulp.src("").pipe(plugins.shell([
         "rm -rf ./release",
         "mkdir -p <%= release %>",
@@ -124,14 +164,14 @@ gulp.task("build", function() {
     }));
 });
 
-gulp.task("download", function(cb) {
+gulp.task("download", (cb) => {
     plugins.electron({
         version: "0.36.5",
         outputDir: "cache"
     }, cb);
 });
 
-gulp.task("dmg", function() {
+gulp.task("dmg", () => {
     return gulp.src("").pipe(plugins.shell([
         "rm -rf ./dist",
         "mkdir -p ./dist",
@@ -143,13 +183,13 @@ gulp.task("dmg", function() {
     }));
 });
 
-gulp.task("mac", function(cb) {
+gulp.task("mac", (cb) => {
     sequence("download", "build", "dmg", cb);
 });
 
 // Clean
 
-gulp.task("clean", function(cb) {
+gulp.task("clean", (cb) => {
     del([
         "dist",
         "build",
