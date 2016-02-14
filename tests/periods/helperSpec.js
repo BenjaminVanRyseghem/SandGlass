@@ -26,6 +26,7 @@ describe("periods/helper", () => {
 
     it("return the correct month index", () => {
         expect(helper.getMonthIndex(date)).toBe(10);
+        expect(helper.getMonthIndex("2016-01-01")).toBe(1);
     });
 
     it("return the correct week index", () => {

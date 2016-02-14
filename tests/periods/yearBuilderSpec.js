@@ -50,7 +50,7 @@ describe("periods/yearBuilder", () => {
         it("builds a year correctly", () => {
             let year2016 = yearBuilder.build(daysData);
 
-            expect(year2016.periodIndex()).toBe(2016);
+            expect(year2016.periodIndex()).toBe("2016");
         });
 
         it(": 2016 has 366 days", () => {
@@ -72,10 +72,10 @@ describe("periods/yearBuilder", () => {
             visitor.visitWeeks(year2016);
             //year2016.accept(visitor);
 
-            expect(visitor.getNumberOfUnbrokenWeeks()).toBe(52);
+            expect(visitor.getNumberOfUnbrokenWeeks()).toBe(51);
 
-            // Very first week that can't be reunited
-            expect(visitor.getNumberOfBrokenWeeks()).toBe(1);
+            // Very first week that can't be reunited, and very last one
+            expect(visitor.getNumberOfBrokenWeeks()).toBe(2);
         });
 
         it("builds years with incomplete data", () => {
@@ -107,8 +107,8 @@ describe("periods/yearBuilder", () => {
 
             let years = yearBuilder.buildYears(daysData);
 
-            expect(years[0].periodIndex()).toBe(2016);
-            expect(years[1].periodIndex()).toBe(2017);
+            expect(years[0].periodIndex()).toBe("2016");
+            expect(years[1].periodIndex()).toBe("2017");
 
         });
     });

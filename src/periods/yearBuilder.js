@@ -51,12 +51,12 @@
 
             return yearClass({
                 months: months,
-                periodIndex: currentYear
+                periodIndex: currentYear.toString()
             });
         };
 
         that.buildMonthData = (days) => {
-            let monthsData = [];
+            let monthsData = {};
 
             // group per months
             for (let day of days) {
@@ -96,20 +96,33 @@
 
                 let wKeys = Object.keys(monthData.weeks);
                 wKeys.forEach((weekIndex) => {
-                    let weekData = monthData.weeks[weekIndex];
+                    let previousYear = false;
+                    if (parseInt(monthIndex, 10) === 1 && parseInt(weekIndex, 10) > 6) {
+                        previousYear = true;
+                    }
 
-                    let broken = helper.isWeekBroken(weekIndex, currentYear);
+                    let weekData = monthData.weeks[weekIndex];
+                    let yearToUse = previousYear ? currentYear - 1 : currentYear;
+
+                    let broken = helper.isWeekBroken(weekIndex, yearToUse);
                     let classToUse = broken ? brokenWeekClass : weekClass;
 
-                    weeks.push(classToUse({
-                        days: weekData,
-                        periodIndex: weekIndex
-                    }));
+                    if (previousYear) {
+                        weeks.unshift(classToUse({
+                            days: weekData,
+                            periodIndex: weekIndex.toString()
+                        }));
+                    } else {
+                        weeks.push(classToUse({
+                            days: weekData,
+                            periodIndex: weekIndex.toString()
+                        }));
+                    }
                 });
 
                 months.push(monthClass({
                     weeks: weeks,
-                    periodIndex: monthIndex
+                    periodIndex: monthIndex.toString()
                 }));
             });
 
