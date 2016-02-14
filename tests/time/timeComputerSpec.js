@@ -71,4 +71,46 @@ describe("timeComputer", () => {
 
         expect(timeComputer.computeWorkingTimeFor(records)).toBe(2 * duration);
     });
+
+    it("compute the time correctly when multiple starts", () => {
+        let duration = 1000;
+
+        let records = [
+            {
+                action: "start",
+                timestamp: 0
+            },
+            {
+                action: "start",
+                timestamp: duration
+            },
+            {
+                action: "stop",
+                timestamp: 2 * duration
+            }
+        ];
+
+        expect(timeComputer.computeWorkingTimeFor(records)).toBe(2 * duration);
+    });
+
+    it("compute the time correctly when multiple stops", () => {
+        let duration = 1000;
+
+        let records = [
+            {
+                action: "start",
+                timestamp: 0
+            },
+            {
+                action: "stop",
+                timestamp: duration
+            },
+            {
+                action: "stop",
+                timestamp: 2 * duration
+            }
+        ];
+
+        expect(timeComputer.computeWorkingTimeFor(records)).toBe(duration);
+    });
 });
