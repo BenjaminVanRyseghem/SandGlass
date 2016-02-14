@@ -46,11 +46,6 @@
         };
 
         that.getDays = () => {
-            // return that.getWeeks().map((week) => {
-            //     return week.getDays();
-            // }).reduce((previous, current) => {
-            //     return previous.concat(current);
-            // }, []);
             return that.getMonths().reduce((acc, month) => {
                 return acc.concat(month.getDays());
             }, [])
