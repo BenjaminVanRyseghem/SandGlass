@@ -1,13 +1,16 @@
 os: osx
-
 language: node
-
 env:
+  matrix:
   - TRAVIS_NODE_VERSION="4"
-
+  global:
+    secure: HaptDxAmjHajswg0Oi8ktrDN+1s2qkJgXB+Sabhn77o9S+Z9SStQZeEWJa+ribR2F7gUGjmHFAvhp+O7ZMTHx9zPDZW1mtHi72Nm8DR/s6KFQtetemkurhxFA7ZBOCBMOoKqB1fD4oylx3YRZBPnz1Xc8DMLrqMbAJJNpisp4Y4K/FS9pkQRDtYe0HiSRRnfJeBIeb2widBarptzO57pjW3+0RC3ORvtycq73VAl8q7e05L7ivRPKzzsZQWH+JdOIyP+utzwtD0D9IexYO6H6vxkT3Z+OegXGWlvH4wK4gFmFBQQsWuKQcaQTUsVDqq7Ond+XR+KTshVsVvh9FmosfUpXbjbNnalkv4LwhDRFZp4skSgObPOpr9qeV8Qwir4GlNHk7n5BkjypBcmOsJlfSy+wjtb7e5/Qxs+bqOtiQHkIq6uSxtxo/PdSK71ku5Rf2HRyTZBEC7IZESXydO4xqNeCjLD4xu7U9/he570C0Pd0xg1XQq0Syzlk6aAxcODp1YQ5LOIP679opVQAZqmYD5SPUL3RlVT0P+xuIeT6EdgSTBgfhOmfmNzoB8znJwJeG921xWoCke+DSlS6ihFugSx9D7EjCTi+kRRdQOsKGAJp5bYkwUaEKeijsBiAdoDUfFI7WkWUisuJQoh4N7HUE2WjxErogx0sLDzEDWLSHY=
 install:
-  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
-  - npm install -g gulp
-  - npm install
-
-script: gulp
+- rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm
+  && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm
+  install $TRAVIS_NODE_VERSION
+- npm install -g gulp
+- npm install
+script:
+- gulp
+- gulp coverage

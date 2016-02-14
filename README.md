@@ -10,6 +10,10 @@
 
 
 
+[![Coverage Status](https://coveralls.io/repos/github/BenjaminVanRyseghem/SandGlass/badge.svg?branch=coverage)](https://coveralls.io/github/BenjaminVanRyseghem/SandGlass?branch=coverage)
+
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/8a72cccb286345988b18625dec8ed986)](https://www.codacy.com/app/benjamin-vanryseghem/SandGlass)
+
 An electron-based time tracker
 
 # How to

@@ -2,8 +2,6 @@
     "use strict";
 
     const React = require("react");
-
-    const remote = require("remote");
     const shell = require("electron").shell;
 
     class ContributorComponent extends React.Component {

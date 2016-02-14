@@ -111,7 +111,7 @@
             let sockets = [];
             let replServer;
 
-            let server = net.createServer(function(socket) {
+            let server = net.createServer((socket) => {
                 sockets.push(socket);
 
                 replServer = nodeREPL.start({
@@ -121,7 +121,7 @@
                     eval: evalCmd
                 });
 
-                replServer.on("exit", function() {
+                replServer.on("exit", () => {
                     socket.end();
                 });
 
@@ -130,11 +130,12 @@
             try {
                 fs.unlinkSync("/tmp/sand-glass-sock");
             } catch (e) {
+                // Absorb errors
             }
 
             server.listen("/tmp/sand-glass-sock");
 
-            app.on("quit", function() {
+            app.on("quit", () => {
                 for (let socket of sockets) {
                     socket.end();
                 }
@@ -162,7 +163,7 @@
                     let output = cli.getUsage(usageOptions);
                     callback(null, output);
                 } else {
-                    console.error(e);
+                    callback(e);
                 }
                 return;
             }
@@ -241,7 +242,7 @@
             if (options.verbose) {
                 let segments = time.getSegmentsForDay(project, period);
 
-                result = ansiWrap("bold", period) + `: ${totalTime}`;
+                result = `${ansiWrap("bold", period)}: ${totalTime}`;
 
                 if (segments.length) {
                     result += "\n\n";
@@ -285,10 +286,10 @@
 
             if (options.value) {
                 let args = sanitizeValue(options.value);
-                fn.apply(null, [args]);
+                Reflect.apply(fn, null, [args]);
                 message = `Option ${key} set to ${args}`;
             } else {
-                message = fn.apply(null, []);
+                message = Reflect.apply(fn, null, []);
             }
 
             return message;
@@ -318,7 +319,7 @@
         }
 
         function buildTable(headers, data) {
-            var table = new Table({
+            let table = new Table({
                 chars: {
                     "top": "═",
                     "top-mid": "╤",
@@ -343,7 +344,7 @@
                 head: headers
             });
 
-            table.push.apply(table, data);
+            Reflect.apply(table.push, table, data);
 
             return table.toString();
         }

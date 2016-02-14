@@ -7,13 +7,13 @@
     const remote = require("remote");
     const info = remote.require("../src/info");
 
-    const DashboardComponent = require("./src/components/AboutComponent");
+    const AboutComponent = require("./src/components/AboutComponent");
 
-    jQuery(document).ready(()=> {
+    jQuery(document).ready(() => {
         document.title = `About ${info.name}`;
 
         ReactDOM.render(
-            React.createElement(DashboardComponent, null),
+            React.createElement(AboutComponent, null),
             document.getElementById("container")
         );
     });

@@ -3,8 +3,7 @@
 
     const moment = require("moment");
 
-    function periodNameBuilder(spec) {
-        spec = spec || {};
+    function periodNameBuilder() {
         let that = {};
 
         that.visitYear = (year) => {
@@ -27,9 +26,11 @@
             return moment(day.identifier()).format("dddd Do MMMM");
         };
 
+        /* eslint-disable no-unused-vars */
         that.visitNullPeriod = (nullPeriod) => {
             return "";
         };
+        /* eslint-enable no-unused-vars */
 
         return that;
     }

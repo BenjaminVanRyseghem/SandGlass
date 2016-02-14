@@ -6,7 +6,7 @@
 
     const DashboardComponent = require("./src/components/DashboardComponent");
 
-    jQuery(document).ready(()=> {
+    jQuery(document).ready(() => {
         ReactDOM.render(
             React.createElement(DashboardComponent, null),
             document.getElementById("container")

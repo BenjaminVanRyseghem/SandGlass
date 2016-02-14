@@ -35,7 +35,7 @@
 
             let currentYear = helper.getYearIndex(daysData[0]);
 
-            let days = daysData.map(function(identifier) {
+            let days = daysData.map((identifier) => {
                 if (currentYear !== helper.getYearIndex(identifier)) {
                     throw new Error("All days should be part of the same year");
                 }

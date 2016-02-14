@@ -1,4 +1,4 @@
-(()=> {
+(() => {
     "use strict";
 
     const json2csv = require("json2csv");
@@ -12,7 +12,7 @@
 
     const db = remote.require("../src/db");
 
-    $(document).ready(function() {
+    $(document).ready(() => {
         initializeForm();
         initializeHooks();
 
@@ -77,9 +77,8 @@
             });
 
             if (newPath) {
-                console.log(newPath);
                 let data = db.getAllData();
-                let csv = json2csv({
+                json2csv({
                     data: data
                 }, (err, csv) => {
                     if (err) {

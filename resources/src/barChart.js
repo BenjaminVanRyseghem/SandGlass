@@ -19,7 +19,7 @@
         let yTicks = [];
 
         let projects = [];
-        var legends = {};
+        let legends = {};
 
         that.initialize = () => {
             buildYTicks();
@@ -42,8 +42,8 @@
                 }
             }
 
-            data.forEach(function(d) {
-                d.times = projects.map(function(name) {
+            data.forEach((d) => {
+                d.times = projects.map((name) => {
                     return {
                         name: name,
                         value: d.projects[name] || 0
@@ -90,7 +90,7 @@
                 .scale(y)
                 .orient("left")
                 .tickValues(yTicks)
-                .tickFormat(function(value) {
+                .tickFormat((value) => {
                     return moment.duration(value, "h").format("hh:mm", {
                         trim: false
                     });
@@ -99,7 +99,7 @@
             let tip = d3.tip()
                 .attr("class", "d3-tip")
                 .offset([-10, 0])
-                .html(function(d) {
+                .html((d) => {
                     let value = moment.duration(d.value, "h").format("hh:mm", {
                         trim: false
                     });
@@ -116,29 +116,33 @@
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                .attr("transform", `translate(${margin.left},${margin.top})`);
 
-            svg.call(tip);
+            Reflect.apply(svg, null, [tip]);
 
-            x.domain(data.map(function(d) { return d.day; }));
+            x.domain(data.map((d) => { return d.day; }));
             x1.domain(projects).rangeRoundBands([0, x.rangeBand()]);
 
-            y.domain([0, d3.max(data, function(d) { return d3.max(d.times, function(d) { return d.value; }); })]);
+            y.domain([0, d3.max(data, (d) => { return d3.max(d.times, (d) => { return d.value; }); })]);
 
+            /* eslint-disable prefer-reflect */
             svg.append("g")
+                /* eslint-enable prefer-reflect */
                 .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
+                .attr("transform", `translate(0,${height})`)
                 .call(xAxis)
                 .selectAll("text")
                 .style("text-anchor", "end")
                 .attr("dx", "-.8em")
                 .attr("dy", "-.55em")
-                .text(function(day) {
+                .text((day) => {
                     return moment(day).format("ddd DD/MM");
                 })
                 .attr("transform", "rotate(-90)");
 
+            /* eslint-disable prefer-reflect */
             svg.append("g")
+                /* eslint-enable prefer-reflect */
                 .attr("class", "y axis")
                 .call(yAxis)
                 .append("text")
@@ -171,27 +175,27 @@
                 .data(data)
                 .enter().append("g")
                 .attr("class", "bar")
-                .attr("transform", function(d) { return "translate(" + x(d.day) + ",0)"; });
+                .attr("transform", (d) => `translate(${x(d.day)},0)`);
 
             state.selectAll("rect")
-                .data(function(d) { return d.times; })
+                .data((d) => { return d.times; })
                 .enter().append("rect")
                 .attr("width", x1.rangeBand())
                 .attr("class", (d) => {
                     let index = projects.indexOf(d.name);
                     return `subbar series-${index} ${d.name}`;
                 })
-                .attr("x", function(d) { return x1(d.name); })
-                .attr("y", function(d) { return y(d.value); })
-                .attr("height", function(d) { return height - y(d.value); })
+                .attr("x", (d) => { return x1(d.name); })
+                .attr("y", (d) => { return y(d.value); })
+                .attr("height", (d) => { return height - y(d.value); })
                 .on("mouseover", tip.show)
                 .on("mouseout", tip.hide);
 
-            var legend = svg.selectAll(".legend")
+            let legend = svg.selectAll(".legend")
                 .data(projects.slice())
                 .enter().append("g")
                 .attr("class", "legend")
-                .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+                .attr("transform", (d, i) => `translate(0,${i * 20})`);
 
             legend.append("rect")
                 .attr("x", width - 18 + margin.right - 20)
@@ -211,7 +215,7 @@
                 .style("text-anchor", "end")
                 .attr("id", (project) => `legend-text-${project}`)
                 .on("click", legendClick)
-                .text(function(d) { return d; });
+                .text((d) => { return d; });
 
             function legendClick(project) {
                 if (legends[project]) {

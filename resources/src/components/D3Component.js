@@ -2,8 +2,6 @@
     "use strict";
 
     const React = require("react");
-    const moment = require("moment");
-
     const remote = require("remote");
 
     const periodNameBuilder = remote.require("../resources/src/periodNameBuilder");
@@ -35,16 +33,6 @@
             let chart = this.props.chart({
                 id: this.state.id,
                 data: this.buildData()
-                //data: this.props.period.getDays().map((day) => {
-                //    let data = this.buildData();
-                //    return {
-                //        day: day.identifier(),
-                //        projects: {
-                //            monitor: moment.duration(Math.random() * 2 * 3600000).asHours(),
-                //            foo: moment.duration(Math.random() * 3 * 3600000).asHours()
-                //        }
-                //    };
-                //})
             });
 
             chart.append();
