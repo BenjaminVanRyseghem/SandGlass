@@ -24,7 +24,6 @@
         };
 
         that.isWeekBroken = (weekNo, year) => {
-            39
             let week = that.getDateRangeOfWeek(weekNo, year);
             let start = week.start;
             let end = week.end;

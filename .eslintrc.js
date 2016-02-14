@@ -22,6 +22,7 @@
             "es6": true
         },
         "rules": {
+            "semi": [error, "always"],
             "no-var": error,
             "no-useless-constructor": error,
             "arrow-parens": error,

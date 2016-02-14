@@ -48,5 +48,5 @@ describe("periods/day", () => {
         let setWeek = day.setWeek.bind(null, null);
 
         expect(setWeek).toThrowError(Error, "`my.week` has already been set!");
-    })
+    });
 });

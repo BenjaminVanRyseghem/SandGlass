@@ -48,7 +48,7 @@
         that.getDays = () => {
             return that.getMonths().reduce((acc, month) => {
                 return acc.concat(month.getDays());
-            }, [])
+            }, []);
         };
 
         that.containsYear = (year) => {

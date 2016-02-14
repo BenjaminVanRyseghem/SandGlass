@@ -43,5 +43,5 @@ describe("periods/week", () => {
         let setMonth = week.setMonth.bind(null, null);
 
         expect(setMonth).toThrowError(Error, "`my.month` has already been set!");
-    })
+    });
 });
