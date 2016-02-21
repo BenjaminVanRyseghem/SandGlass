@@ -159,8 +159,8 @@
             }
 
             dashboardWindow = new BrowserWindow({
-                width: 780,
-                height: 590,
+                width: 850,
+                height: 550,
                 show: false,
                 resizable: false,
                 center: true
