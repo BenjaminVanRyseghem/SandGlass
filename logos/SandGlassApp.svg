@@ -10,16 +10,18 @@
         </linearGradient>
     </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <circle id="Oval-1" stroke="#979797" fill="url(#linearGradient-1)" sketch:type="MSShapeGroup" cx="513" cy="513" r="512"></circle>
-        <g id="Glass-+-Sand" sketch:type="MSLayerGroup" transform="translate(288.000000, 213.000000)">
-            <g id="Glass" sketch:type="MSShapeGroup">
-                <rect id="Rectangle-3" fill="#FFFFFF" x="0" y="0" width="450" height="75"></rect>
-                <rect id="Rectangle-3-Copy" fill="#FFFFFF" x="0" y="525" width="450" height="75"></rect>
-                <path d="M77.0666008,74.6240727 L77.0666008,224.999993 L226.033307,299.812042 L77.0666008,375.000011 L77.0666008,525.000011 L375.000014,525.000011 L375.000014,375.000011 L226.033307,299.812042 L375.000014,224.999993 L375.000014,74.6240727 L77.0666008,74.6240727 Z" id="Path-2" stroke="#FFFFFF" stroke-width="40"></path>
-            </g>
-            <g id="Sand" transform="translate(75.000000, 150.000000)" fill="#FFFFFF" sketch:type="MSShapeGroup">
-                <polygon id="Triangle-3" transform="translate(150.000000, 37.500000) scale(1, -1) translate(-150.000000, -37.500000) " points="150 0 262.5 75 37.5 75 "></polygon>
-                <polygon id="Triangle-3-Copy" points="150 262.5 300 375 0 375 "></polygon>
+        <g id="Oval-1-+-Glass-+-Sand" sketch:type="MSLayerGroup" transform="translate(2.000000, 3.000000)">
+            <circle id="Oval-1" stroke="#979797" fill="url(#linearGradient-1)" sketch:type="MSShapeGroup" cx="512" cy="512" r="512"></circle>
+            <g id="Glass-+-Sand" transform="translate(287.000000, 212.000000)" sketch:type="MSShapeGroup">
+                <g id="Glass">
+                    <rect id="Rectangle-3" fill="#FFFFFF" x="0" y="0" width="450" height="75"></rect>
+                    <rect id="Rectangle-3-Copy" fill="#FFFFFF" x="0" y="525" width="450" height="75"></rect>
+                    <path d="M77.0666008,74.6240727 L77.0666008,224.999993 L226.033307,299.812042 L77.0666008,375.000011 L77.0666008,525.000011 L375.000014,525.000011 L375.000014,375.000011 L226.033307,299.812042 L375.000014,224.999993 L375.000014,74.6240727 L77.0666008,74.6240727 Z" id="Path-2" stroke="#FFFFFF" stroke-width="40"></path>
+                </g>
+                <g id="Sand" transform="translate(75.000000, 148.000000)" fill="#FFFFFF">
+                    <polygon id="Triangle-3" transform="translate(151.500000, 38.500000) scale(1, -1) translate(-151.500000, -38.500000) " points="150 0 229 38.5 229 77 74 77 74 38.5 "></polygon>
+                    <polygon id="Triangle-3-Copy" points="150 264.5 300 377 0 377 "></polygon>
+                </g>
             </g>
         </g>
     </g>
