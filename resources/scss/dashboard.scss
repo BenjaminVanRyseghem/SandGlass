@@ -51,9 +51,25 @@ body.dashboard {
     }
   }
 
-  .graph-title {
-    text-align: center;
-    margin-top: 40px;
-    font-weight: bold;
+  .interval-selection {
+    padding: 8px 14px;
+    background: #eee;
+    border-bottom: 1px solid #444;
+
+    .title {
+      display: inline-block;
+      line-height: 32px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .pickers {
+      float: right;
+      width: 50%;
+    }
+
+    .btn-group.bootstrap-select {
+      width: 50%;
+    }
   }
 }
