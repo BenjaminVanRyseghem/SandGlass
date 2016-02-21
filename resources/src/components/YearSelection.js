@@ -30,7 +30,7 @@
                         tickIcon: "fa-check",
                         showTick: true
                     },
-                    className: "col-md-3 col-sm-3 col-xs-3 YearSelection",
+                    className: "YearSelection",
                     value: this.props.selectedYear.periodIndex(),
                     onChange: this.handleChange.bind(this)
                 },

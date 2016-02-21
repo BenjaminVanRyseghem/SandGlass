@@ -56,19 +56,19 @@
         };
 
         that.containsMonth = (month) => {
-            return that.getMonths().any((m) => {
+            return that.getMonths().some((m) => {
                 return m.containsMonth(month);
             });
         };
 
         that.containsWeek = (week) => {
-            return that.getWeeks().any((w) => {
+            return that.getWeeks().some((w) => {
                 return w.containsWeek(week);
             });
         };
 
         that.containsDay = (day) => {
-            return that.getDays().any((d) => {
+            return that.getDays().some((d) => {
                 return d.containsDay(day);
             });
         };
