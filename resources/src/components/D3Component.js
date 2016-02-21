@@ -4,6 +4,8 @@
     const React = require("react");
     const remote = require("remote");
 
+    const LegendComponent = require("./LegendComponent");
+
     const db = remote.require("../src/db");
     const time = remote.require("../src/time");
 
@@ -29,12 +31,12 @@
                 return;
             }
 
-            let chart = this.props.chart({
+            this.chart = this.props.chart({
                 id: this.state.id,
                 data: this.buildData()
             });
 
-            chart.append();
+            this.chart.append();
         }
 
         componentDidUpdate() {
@@ -48,8 +50,7 @@
 
             return days.map((day) => {
                 let times = {};
-
-                let projects = db.projectsFor(day.identifier());
+                let projects = this.projects || [];
 
                 for (let project of projects) {
                     times[project] = time.getDurationForDay(project, day.identifier()).asHours();
@@ -62,10 +63,47 @@
             });
         }
 
+        updateProjects() {
+            let days = this.props.period.getDays();
+            let result = [];
+
+            for (let day of days) {
+                let projects = db.projectsFor(day.identifier());
+                for (let project of projects) {
+                    if (result.indexOf(project) === -1) {
+                        result.push(project);
+                    }
+                }
+            }
+
+            this.projects = result;
+        }
+
         render() {
+
+            this.updateProjects();
+
             return (
                 React.createElement("div", {className: "dashboard-graph"},
-                    React.createElement("div", {id: this.state.id})
+                    React.createElement("div", {
+                        className: "d3-container",
+                        id: this.state.id
+                    }),
+                    React.createElement("ul", {
+                            className: "legends"
+                        },
+                        this.projects.map((project, index) => {
+                            return React.createElement(LegendComponent, {
+                                key: `legend-${project}`,
+                                project: project,
+                                index: index,
+                                onClick: () => {
+                                    this.chart.toggleSeries(project);
+                                },
+                                period: this.props.period
+                            });
+                        })
+                    )
                 )
             );
         }

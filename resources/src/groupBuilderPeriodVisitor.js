@@ -62,8 +62,8 @@
             return {};
         };
 
-        function buildYearName(year) {
-            return year.periodIndex();
+        function buildYearName(year) { //eslint-disable-line no-unused-vars
+            return "All year";
         }
 
         function buildMonthName(month) {

@@ -38,6 +38,21 @@ body.dashboard {
     .goal-line.series-#{$i} {
       stroke: lighten(nth($d3-colors, $i + 1), 20%);
     }
+
+    .dashboard-graph .legends .legend-item.series-#{$i}.inactive {
+      background-color: #999;
+      color: #666;
+
+      .project-time {
+        color: #ccc;
+      }
+    }
+  }
+
+  .subbar {
+    transition: height 0.5s ease;
+    transform: rotate(180deg);
+    transform-origin: 50% 0;
   }
 
   .d3-tooltip {
@@ -70,6 +85,48 @@ body.dashboard {
 
     .btn-group.bootstrap-select {
       width: 50%;
+    }
+  }
+
+  .dashboard-graph {
+    position: relative;
+
+    .d3-container {
+      display: inline-block;
+      width: 700px;
+      overflow: hidden;
+    }
+
+    .legends {
+      padding: 0;
+      width: 150px;
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: top;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translate(0, -50%);
+
+      .legend-item {
+        list-style: none;
+        text-align: center;
+        width: 130px;
+        padding: 10px;
+        display: inline-block;
+        cursor: pointer;
+
+        .project-name {
+          font-size: 20px;
+          padding-bottom: 8px;
+        }
+
+        .project-time {
+          color: white;
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
     }
   }
 }
