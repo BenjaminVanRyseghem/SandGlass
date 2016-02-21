@@ -4,7 +4,6 @@
     const React = require("react");
     const remote = require("remote");
 
-    const periodNameBuilder = remote.require("../resources/src/periodNameBuilder");
     const db = remote.require("../src/db");
     const time = remote.require("../src/time");
 
@@ -64,14 +63,8 @@
         }
 
         render() {
-            let visitor = periodNameBuilder();
-            let name = this.props.period.accept(visitor);
-
             return (
                 React.createElement("div", {className: "dashboard-graph"},
-                    React.createElement("h2", {className: "graph-title"},
-                        `Data for ${name}`
-                    ),
                     React.createElement("div", {id: this.state.id})
                 )
             );
