@@ -17,5 +17,14 @@ then
     args="--help"
 fi
 
-result=`echo ${args} | nc -U /tmp/sand-glass-sock | sed "s/^\([\"']\)\(.*\)\1\$/\2/g" | sed "s/u001b/033/g"`
+result=`echo ${args} | nc -U /tmp/sand-glass-sock`
+rc=$?
+
+if [[ $rc != 0 ]]
+then
+	echo "SandGlass is not running"
+	exit $rc;
+fi
+
+result=`echo ${result} | sed "s/^\([\"']\)\(.*\)\1\$/\2/g" | sed "s/u001b/033/g"`
 echo -e "$result"
