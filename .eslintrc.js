@@ -28,7 +28,7 @@
             "arrow-parens": error,
             "arrow-spacing": error,
             "prefer-arrow-callback": warning,
-            "prefer-reflect": warning,
+            "prefer-reflect": disabled,
             "prefer-rest-params": warning,
             "prefer-spread": warning,
             "prefer-template": error,

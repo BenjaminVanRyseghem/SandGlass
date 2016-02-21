@@ -118,16 +118,14 @@
                 .append("g")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
 
-            Reflect.apply(svg, null, [tip]);
+            svg.call(tip);
 
             x.domain(data.map((d) => { return d.day; }));
             x1.domain(projects).rangeRoundBands([0, x.rangeBand()]);
 
             y.domain([0, d3.max(data, (d) => { return d3.max(d.times, (d) => { return d.value; }); })]);
 
-            /* eslint-disable prefer-reflect */
             svg.append("g")
-                /* eslint-enable prefer-reflect */
                 .attr("class", "x axis")
                 .attr("transform", `translate(0,${height})`)
                 .call(xAxis)
@@ -140,9 +138,7 @@
                 })
                 .attr("transform", "rotate(-90)");
 
-            /* eslint-disable prefer-reflect */
             svg.append("g")
-                /* eslint-enable prefer-reflect */
                 .attr("class", "y axis")
                 .call(yAxis)
                 .append("text")
