@@ -5,16 +5,6 @@ const visitorClass = require("../helpers/periods/yearVisitor");
 
 const firstDay = new Date("2016-01-01");
 
-Array.prototype.any = function(fn) {
-    "use strict";
-    for (let each of this) {
-        if (fn(each)) {
-            return true;
-        }
-    }
-    return false;
-};
-
 describe("periods/yearBuilder", () => {
     "use strict";
 
