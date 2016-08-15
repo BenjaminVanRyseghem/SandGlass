@@ -1,9 +1,9 @@
 # SandGlass
 
-| Branch | Status | Coverage |
---------|--------|--------
-| `master` | [![Build Status](https://travis-ci.org/BenjaminVanRyseghem/SandGlass.svg?branch=master)](https://travis-ci.org/BenjaminVanRyseghem/SandGlass)  | [![Coverage Status](https://coveralls.io/repos/github/BenjaminVanRyseghem/SandGlass/badge.svg?branch=master)](https://coveralls.io/github/BenjaminVanRyseghem/SandGlass?branch=master) |
-| `develop` | [![Build Status](https://travis-ci.org/BenjaminVanRyseghem/SandGlass.svg?branch=develop)](https://travis-ci.org/BenjaminVanRyseghem/SandGlass)| [![Coverage Status](https://coveralls.io/repos/github/BenjaminVanRyseghem/SandGlass/badge.svg?branch=develop)](https://coveralls.io/github/BenjaminVanRyseghem/SandGlass?branch=develop) |
+| Branch | Status |
+--------|--------
+| `master` | [![build status](https://gitlab.com/BenjaminVanRyseghem/SandGlass/badges/master/build.svg)](https://gitlab.com/BenjaminVanRyseghem/SandGlass/commits/master) |
+| `develop` | [![build status](https://gitlab.com/BenjaminVanRyseghem/SandGlass/badges/develop/build.svg)](https://gitlab.com/BenjaminVanRyseghem/SandGlass/commits/develop) |
 
 An electron-based time tracker
 
