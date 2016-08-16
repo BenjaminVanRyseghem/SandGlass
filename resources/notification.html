@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+
+<script>
+	var ipcRenderer = require('electron').ipcRenderer;
+
+	ipcRenderer.on('setup', (event, title, options) => {
+		new Notification(title, options);
+	})
+</script>
+</body>
+</html>
