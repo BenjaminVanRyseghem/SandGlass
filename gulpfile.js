@@ -190,7 +190,7 @@ gulp.task("mac", (cb) => {
 // Clean
 
 gulp.task("clean", (cb) => {
-    del([
+    return del([
         "dist",
         "build",
         "release"
