@@ -23,6 +23,10 @@
         that.onStart = (callback) => onStartCallbacks.push(callback);
         that.onStop = (callback) => onStopCallbacks.push(callback);
 
+        that.duration = () => {
+            return duration;
+        };
+
         that.isRunning = () => {
             return running;
         };

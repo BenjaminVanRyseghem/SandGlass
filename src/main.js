@@ -7,6 +7,9 @@
     const tray = require("./tray");
     const menu = require("./menu");
     const tickler = require("./tickler");
+    const settings = require("./settings");
+    const time = require("./time");
+    const notification = require("./notification");
     const repl = require("./repl");
 
     app.dock.hide();
@@ -21,6 +24,28 @@
         initializeTray();
         repl.init();
         tickler.init();
+        initializeNotification();
+    }
+
+    function initializeNotification() {
+        tickler.onTick(() => {
+            if (settings.notifyWhenReachingLimit()) {
+                let dailyLimit = settings.dailyLimit();
+                let limit = dailyLimit * 3600000; // hours to seconds
+                let project = settings.projectToShowInTray();
+                let duration = time.getTodayDurationFor(project);
+                let ms = duration.asMilliseconds();
+                let upperLimit = limit + tickler.duration();
+
+                if (limit <= ms && ms < upperLimit) {
+                    notification.inform("Limit reached", `You just reached the ${dailyLimit}h limit. Congratulations!`);
+                }
+            }
+        });
+
+        if (settings.notifyWhenReachingLimit()) {
+            tickler.start();
+        }
     }
 
     function initializeTray() {

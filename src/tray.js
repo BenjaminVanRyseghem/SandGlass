@@ -64,22 +64,24 @@
 
         function initBlinkingTitle() {
             tickler.onTick(() => {
-                let title = "";
-                let project = settings.projectToShowInTray();
+                if (settings.showTimerInTray()) {
+                    let title = "";
+                    let project = settings.projectToShowInTray();
 
-                if (db.isRunningFor(project)) {
-                    title = getDurationFor(project, {
-                        undotted: !dotted
-                    });
-                } else {
-                    title = getDurationFor(project, {
-                        undotted: false
-                    });
+                    if (db.isRunningFor(project)) {
+                        title = getDurationFor(project, {
+                            undotted: !dotted
+                        });
+                    } else {
+                        title = getDurationFor(project, {
+                            undotted: false
+                        });
+                    }
+
+                    tray.setTitle(title);
+
+                    dotted = !dotted;
                 }
-
-                tray.setTitle(title);
-
-                dotted = !dotted;
             });
         }
 
