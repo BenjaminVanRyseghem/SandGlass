@@ -286,10 +286,10 @@
 
             if (options.value) {
                 let args = sanitizeValue(options.value);
-                Reflect.apply(fn, null, [args]);
+                fn(args);
                 message = `Option ${key} set to ${args}`;
             } else {
-                message = Reflect.apply(fn, null, []);
+                message = fn();
             }
 
             return message;
@@ -344,7 +344,7 @@
                 head: headers
             });
 
-            Reflect.apply(table.push, table, data);
+            table.push.apply(table, data);
 
             return table.toString();
         }

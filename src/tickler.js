@@ -51,19 +51,19 @@
 
         my.applyOnTick = () => {
             for (let callback of onTickCallbacks) {
-                Reflect.apply(callback, null, []);
+                callback();
             }
         };
 
         my.applyOnStart = () => {
             for (let callback of onStartCallbacks) {
-                Reflect.apply(callback, null, []);
+                callback();
             }
         };
 
         my.applyOnStop = () => {
             for (let callback of onStopCallbacks) {
-                Reflect.apply(callback, null, []);
+                callback();
             }
         };
 

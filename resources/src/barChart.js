@@ -118,7 +118,7 @@
                 .append("g")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
 
-            Reflect.apply(svg, null, [tip]);
+            svg(tip);
 
             x.domain(data.map((d) => { return d.day; }));
             x1.domain(projects).rangeRoundBands([0, x.rangeBand()]);
