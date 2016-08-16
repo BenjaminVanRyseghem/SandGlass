@@ -286,8 +286,12 @@
 
             if (options.value) {
                 let args = sanitizeValue(options.value);
-                fn(args);
-                message = `Option ${key} set to ${args}`;
+                try {
+                    fn(args);
+                    message = `Option ${key} set to ${args}`;
+                } catch (e) {
+                    message = e.message;
+                }
             } else {
                 message = fn();
             }

@@ -90,6 +90,34 @@
             }
         };
 
+        that.dailyLimit = (limit) => {
+            if (limit === undefined) {
+                return my.get("dailyLimit") || 8;
+            } else {
+                let integer = +limit;
+                if (isNaN(integer)) {
+                    throw new Error(`"${limit}" must be an integer.`);
+                }
+                return my.set("dailyLimit", integer);
+            }
+        };
+
+        that.notifyWhenReachingLimit = (notify) => {
+            if (notify === undefined) {
+                return my.get("notifyWhenReachingLimit") || false;
+            } else {
+                if (notify) {
+                    tickler.start();
+                } else {
+                    let shouldContinue = that.showTimerInTray() && require("./db").isRunningFor(that.projectToShowInTray());
+                    if (!shouldContinue) {
+                        tickler.stop();
+                    }
+                }
+                return my.set("notifyWhenReachingLimit", notify);
+            }
+        };
+
         my.set = (key, value, options) => {
             return bridge.set(key, value, options);
         };
