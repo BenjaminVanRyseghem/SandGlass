@@ -9,6 +9,7 @@
     const db = require("./db");
     const time = require("./time");
     const info = require("./info");
+    const moment = require("moment");
 
     function menu() {
 
@@ -65,15 +66,41 @@
             ];
 
             if (!settings.showTimerInTray()) {
+                let label = getDurationFor(settings.projectToShowInTray());
+
+                if (settings.showRemainingTime()) {
+                    label += ` (${getRemainingTime()} left)`;
+                }
+
                 items.unshift({type: "separator"});
                 items.unshift({
-                    label: getDurationFor(settings.projectToShowInTray()),
+                    label: label,
                     type: "normal",
                     enabled: false
                 });
+            } else {
+                if (settings.showRemainingTime()) {
+
+                    items.unshift({type: "separator"});
+                    items.unshift({
+                        label: `Remaining time: ${getRemainingTime()}`,
+                        type: "normal",
+                        enabled: false
+                    });
+                }
             }
 
             return items;
+        }
+
+        function getRemainingTime(project) {
+            project = project || settings.projectToShowInTray();
+
+            let limit = settings.dailyLimit();
+            let limitDuration = moment.duration(limit, "hours");
+            limitDuration.add(1, "seconds");
+            limitDuration.subtract(time.getTodayDurationFor(project));
+            return time.formatDuration(limitDuration);
         }
 
         function getDurationFor(project) {

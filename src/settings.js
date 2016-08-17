@@ -31,6 +31,14 @@
             }
         };
 
+        that.showRemainingTime = (boolean) => {
+            if (boolean === undefined) {
+                return my.get("showRemainingTime");
+            } else {
+                return my.set("showRemainingTime", boolean);
+            }
+        };
+
         that.projectToShowInTray = (project) => {
             if (project === undefined) {
                 return my.get("projectToShowInTray") || "default";
