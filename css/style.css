@@ -1,0 +1,289 @@
+html, body {
+  font-family: "Ubuntu", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  position: relative;
+  height: 100%;
+}
+
+#topbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  border-radius: 0;
+  background-color: #ad498f;
+  border: 0 none;
+  color: white;
+  z-index: 1;
+}
+
+#go-to-top {
+  cursor: pointer;
+}
+
+.navbar-default .navbar-nav > li > a {
+  color: #ffe9f0 !important;
+  background-color: transparent !important;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+  text-decoration: underline;
+  color: #ffe9f0;
+}
+
+.navbar-default .navbar-nav > li > a:focus {
+  text-decoration: underline;
+}
+
+.navbar-default .navbar-nav > .active > a {
+  background-color: #c04e7d;
+  color: white !important;;
+}
+
+.navbar-default .navbar-nav > .active > a:hover {
+  text-decoration: underline;
+  background-color: #c04e7d;
+  color: white;
+}
+
+.navbar-default .navbar-nav > .active > a:focus {
+  text-decoration: underline;
+  background-color: #c04e7d;
+}
+
+.logo-link {
+  padding: 5px 15px !important;
+}
+
+.gitlab-logo-link {
+  padding-right: 0 !important;
+}
+
+#brand {
+  content: url("../img/brand.png");
+}
+
+img.topbar-logo {
+  width: 40px;
+  height: 40px;
+}
+
+#logo {
+  width: 256px;
+  content: url("../img/brand.png");
+}
+
+.center {
+  text-align: center;
+}
+
+.section {
+  height: 694px;
+  padding: 72px;
+}
+
+#intro-section {
+  background: linear-gradient(-25deg, #723BC9, #E75757);
+  color: white;
+}
+
+h1 {
+  font-size: 80px;
+}
+
+.app-name {
+  font-family: 'Pacifico', sans-serif;
+}
+
+.tagline {
+  font-size: 24px;
+}
+
+.title {
+  margin-bottom: 85px;
+}
+
+.title h2 {
+  text-align: center;
+  font-size: 42px;
+  margin-bottom: 72px;
+}
+
+.section-title {
+  margin-bottom: 85px;
+}
+
+.section-title h2 {
+  text-align: center;
+  font-size: 42px;
+}
+
+#features-section .section-title {
+  margin-bottom: 42px;
+}
+
+.download-btn {
+  border: 1px solid white;
+  border-radius: 6px;
+  font-size: 24px;
+  color: white;
+}
+
+.download-btn:hover {
+  color: #ffe9f0;
+  border-color: #ffe9f0;
+}
+
+.separator {
+  border-right: 1px solid #444;
+}
+
+.half {
+  padding: 40px;
+}
+
+.half ul {
+  margin: 0;
+}
+
+.half ul li {
+  list-style: none;
+  margin-bottom: 60px;
+  font-size: 18px;
+}
+
+.half ul li:last-child {
+  margin-bottom: 0;
+}
+
+.half ul li h3 {
+  margin-bottom: 0;
+}
+
+.white-section {
+  background: url("../img/white.png");
+}
+
+.download-section {
+  background: linear-gradient(-115deg, #723BC9, #E75757);;
+  color: white;
+}
+
+.platform-icon {
+  font-size: 120px;
+  margin-bottom: 10px;
+}
+
+.platform-text {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.download-btn .app-name {
+  margin-right: 4px;
+}
+
+.sources {
+  margin-top: 150px;
+}
+
+.sources a {
+  color: #ffe9f0;
+  cursor: pointer;
+  border-bottom: 1px solid #ffe9f0;
+}
+
+.sources a:hover {
+  text-decoration: none;
+}
+
+.sources a:focus {
+  text-decoration: none;
+}
+
+.gitlab-icon {
+  padding-right: 4px;
+}
+
+.part {
+  margin-left: 80px;
+  margin-bottom: 60px;
+}
+
+.part p {
+  font-size: 18px;
+}
+
+.footer {
+  height: 160px;
+  background: url('../img/hexabump.png');
+  color: #bbb;
+  padding: 40px;
+  position: relative;
+}
+
+.footer .gitlab {
+  position: absolute;
+  top: 50px;
+  left: 40px;
+}
+
+img.logo {
+  height: 60px;
+  width: 60px;
+}
+
+img.gitlab-logo {
+  content: url("../img/gitlab-logo.png");
+}
+
+.footer .opensource {
+  position: absolute;
+  top: 50px;
+  right: 40px;
+}
+
+img.osi-logo {
+  content: url("../img/opensource-logo.png");
+}
+
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+  #brand, #logo {
+    content: url("../img/brand@2x.png");
+  }
+
+  .footer {
+    background: url('../img/hexabump_@2X.png');
+  }
+
+  img.gitlab-logo {
+    content: url("../img/gitlab-logo@2x.png");
+  }
+
+  img.osi-logo {
+    content: url("../img/opensource-logo@2x.png");
+  }
+}
+
+/*
+ * ATTRIBUTIONS
+ */
+
+.attributions {
+  background: #d65367;
+  color: white;
+  height: 100%;
+}
+
+.attribution {
+  padding: 0 100px;
+  margin-bottom: 80px;
+}
+
+.attribution:last-child {
+  margin-bottom: 0;
+}
+
+.attributions .title {
+  padding: 40px;
+}
