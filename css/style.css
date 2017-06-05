@@ -59,17 +59,18 @@ html, body {
 }
 
 #brand {
-  content: url("../img/brand.png");
-}
-
-img.topbar-logo {
+  margin: auto;
   width: 40px;
   height: 40px;
+  background-size: 40px 40px;
+  background-image: url("../img/brand.png");
 }
 
 #logo {
+  margin: auto;
   width: 256px;
-  content: url("../img/brand.png");
+  height: 256px;
+  background-image: url("../img/brand.png");
 }
 
 .center {
@@ -233,7 +234,9 @@ img.logo {
 }
 
 img.gitlab-logo {
-  content: url("../img/gitlab-logo.png");
+  width: 120px;
+  height: 120px;
+  background-image: url("../img/gitlab-logo.png");
 }
 
 .footer .opensource {
@@ -243,25 +246,28 @@ img.gitlab-logo {
 }
 
 img.osi-logo {
-  content: url("../img/opensource-logo.png");
+  margin: auto;
+  width: 120px;
+  height: 120px;
+  background-image: url("../img/opensource-logo.png");
 }
 
 @media (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
   #brand, #logo {
-    content: url("../img/brand@2x.png");
+    background-image: url("../img/brand@2x.png");
   }
 
   .footer {
-    background: url('../img/hexabump_@2X.png');
+    background-image: url('../img/hexabump_@2X.png');
   }
 
   img.gitlab-logo {
-    content: url("../img/gitlab-logo@2x.png");
+    background-image: url("../img/gitlab-logo@2x.png");
   }
 
   img.osi-logo {
-    content: url("../img/opensource-logo@2x.png");
+    background-image: url("../img/opensource-logo@2x.png");
   }
 }
 
